@@ -1,0 +1,20 @@
+Z sorting
+
+Bloom
+
+Add Imgui
+
+Mouse
+Better sound interface?
+
+
+Beyond the gamejam
+    Move window to renderer impl
+    Profiling
+        glBufferData / glMapBuffer
+        discard
+    Rework arena allocator. Shit's disgusting
+    Vertex attrib alignment
+    Webassembly???
+    Vulkan renderer
+
