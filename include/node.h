@@ -10,14 +10,14 @@ public:
     virtual ~Node() = default;
     Node();
 
-    Node* parent;
+    Node* parent = nullptr;
 	V2 position = V2();
     float rotation = 0;
 
 
 
-    Matrix3f getRelativeMatrix();
-    Matrix3f getAbsoluteMatrix();
+    Matrix3f getRelativeMatrix() const;
+    Matrix3f getAbsoluteMatrix() const;
 
     virtual void update();
     virtual void render();
