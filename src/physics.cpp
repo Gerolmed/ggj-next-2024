@@ -15,18 +15,37 @@ AABB AABB::translate(V2& v2) const{
     return {{position.x+v2.x, position.y + v2.y}, size};
 }
 
-bool AABB::move_and_collide(V2& v2, Level* level){
+bool AABB:: can_move(V2& v2, Level* level){
     AABB newAABB = translate(v2);
     V2 old_position = position;
     position = far_away;
+    //Static colliders
     for(int i=0;i < level->collider_count;i++){
         if(newAABB.intersects(level->collider[i].aabb)){
-            position = old_position;
-            return false;
+            if(!level->collider[i].movable  || !level->collider[i].aabb.can_move(v2,level)){
+                position = old_position;
+                return false;
+            }
         }
     }
     position = newAABB.position;
     return true;
+}
+
+
+bool AABB::move_and_collide(V2& v2, Level* level){
+    if(can_move(v2, level)){
+        move_and_push_boxes(v2,level);
+    }
+}
+
+bool AABB::move_and_push_boxes(V2& v2, Level* level){
+    position = translate(v2).position;
+        for(int i=0;i < level->collider_count;i++){
+            if(level->collider[i].movable){
+                level->collider[i].aabb.move_and_push_boxes(v2,level);
+            }
+        }
 }
 
 
