@@ -21,6 +21,7 @@
 #include "include/game.h"
 #include "include/game_nodes.h"
 #include "include/node.h"
+#include "include/time.h"
 
 struct Window {
     int width;
@@ -135,7 +136,6 @@ i32 main() {
 
     Mat4 proj = projection * view;
 
-    float delta = 0.0f;
     float lastFrame = 0.0f;
 
     const auto scene_root = new Node(&level);
@@ -153,20 +153,27 @@ i32 main() {
         scene_root->AddChild(node3);
     }
 
+
+    // Begin render loop
     while (!glfwWindowShouldClose(global_window.handle)) {
+
+        // Check for window close request
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
 
+        // Calculate delta time
         float time = glfwGetTime();
-        delta = time - lastFrame;
+        time_deltatime = time - lastFrame;
         lastFrame = time;
 
+        // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
                                             index_count, index_buffer,
                                             proj, global_window.width, global_window.height);
 
+        // Request to clear at the beginning
         renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
 
         // renderer_PushSprite(&cmd,
@@ -176,15 +183,19 @@ i32 main() {
         // renderer_PushString(&cmd, &font, "Font rendering, gg!",
         //                     v2(sin(time) * 150, cos(time) * 150));
 
+        // render game grid
+        game_RenderGrid(&cmd, &level, &white);
 
+        // Rune node tree lifecycle
         scene_root->PreUpdate();
         scene_root->Update();
         scene_root->Render(&cmd);
 
-        game_RenderGrid(&cmd, &level, &white);
 
+        // Queue post processing
         renderer_PushPostprocessPass(&cmd);
 
+        // Execute final rendering operations
         opengl_RenderCommands(&cmd);
         // TODO: Setup imgui
         // ImGui_ImplOpenGL3_NewFrame();
@@ -200,7 +211,7 @@ i32 main() {
         glfwPollEvents();
     }
 
-    delete scene_root;
+    delete scene_root; // cleanup scene root. This is probably unnecessary, but currently in charge for testing cleanups
 
     glfwTerminate();
     return 0;
