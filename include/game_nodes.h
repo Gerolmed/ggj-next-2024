@@ -13,9 +13,13 @@ public:
 
 class TextureNode: public Node {
 public:
-    explicit TextureNode(Level* level)
-        : Node(level) {
+    explicit TextureNode(Level* level, TextureHandle* texture_handle, int width, int height)
+        : Node(level), texture_handle(texture_handle), width(width), height(height) {
     }
+
+    TextureHandle* texture_handle;
+    int width;
+    int height;
 
     void Render(CommandBuffer* buffer) override;
 };

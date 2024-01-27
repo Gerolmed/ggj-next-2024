@@ -139,12 +139,17 @@ i32 main() {
     float lastFrame = 0.0f;
 
     auto node1 = new Node(&level);
-    node1->position = {1,1};
+    node1->position = v2(1);
     node1->rotation = degreesToRadians(180);
     node1->Start();
+
     const auto node2 = new TestNode(&level);
-    node2->position = {2,2};
+    node2->position = v2(2);
     node1->AddChild(node2);
+
+    const auto node3 = new TextureNode(&level, &image, 100 , 100);
+    node3->position = v2(1);
+    node1->AddChild(node3);
 
     while (!glfwWindowShouldClose(global_window.handle)) {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -169,14 +174,15 @@ i32 main() {
         // renderer_PushString(&cmd, &font, "Font rendering, gg!", 
         //                     v2(sin(time) * 150, cos(time) * 150));
 
+
+        node1->Update();
+        node1->Render(&cmd);
+
         game_RenderGrid(&cmd, &level, &white);
 
         renderer_PushPostprocessPass(&cmd);
 
         opengl_RenderCommands(&cmd);
-
-        node1->Update();
-        node1->Render(&cmd);
         // TODO: Setup imgui
         // ImGui_ImplOpenGL3_NewFrame();
         // ImGui_ImplGlfw_NewFrame();

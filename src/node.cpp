@@ -18,6 +18,11 @@ Mat3f Node::GetAbsoluteMatrix() const {
     return parent->GetAbsoluteMatrix() * GetRelativeMatrix();
 }
 
+Mat2f Node::GetAbsoluteRotationMatrix() const {
+    if (parent == nullptr) return rotationMatrix2f(rotation);
+    return parent->GetAbsoluteRotationMatrix() * rotationMatrix2f(rotation);
+}
+
 Mat3f Node::GetRelativeMatrix() const {
     float s = sinf(rotation);
     float c = cosf(rotation);
@@ -28,8 +33,8 @@ Mat3f Node::GetRelativeMatrix() const {
            }};
 }
 
-V2 Node::GetAbsolutePosition() {
-    V2 localPos = {0,0};
+V2 Node::GetAbsolutePosition() const {
+    constexpr V2 localPos = {0,0};
     return GetAbsoluteMatrix() * localPos;
 }
 
