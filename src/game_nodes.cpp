@@ -52,8 +52,8 @@ void PlayerNode::Update() {
         movement.y -= 1;
     }
 
-    movement = movement.Normalized();
-    
+    movement = movement.Norm();
+
     aabb->move_and_collide(movement * (time_deltatime * speed), level);
     position = aabb->position;
 

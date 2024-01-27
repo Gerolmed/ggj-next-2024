@@ -18,7 +18,7 @@ float V2::Magnitude() {
     return sqrtf(x * x + y * y);
 };
 
-V2 V2::Normalized() {
+V2 V2::Norm() {
     float magnitude = Magnitude();
     if (magnitude == 0) return {0, 0};
     return {
