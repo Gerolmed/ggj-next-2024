@@ -1,5 +1,13 @@
 #include "include/types.h"
 
+V2 V2::operator+(const V2& v2) const {
+    return  {
+        x + v2.x,
+        y + v2.y,
+    };
+}
+
+
 Mat2f Mat2f::operator*(const Mat2f& other) const{
     return {data[0]*other.data[0] + data[1]*other.data[2],
             data[0]*other.data[1] + data[1]*other.data[3],
