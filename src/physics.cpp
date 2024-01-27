@@ -36,10 +36,12 @@ bool AABB:: can_move(V2& v2, Level* level){
 bool AABB::move_and_collide(V2& v2, Level* level){
     if(can_move(v2, level)){
         move_and_push_boxes(v2,level);
+        return true;
     }
+    return false;
 }
 
-bool AABB::move_and_push_boxes(V2& v2, Level* level){
+void AABB::move_and_push_boxes(V2& v2, Level* level){
     AABB newAABB = translate(v2);
     position = far_away;
         for(int i=0;i < level->collider_count;i++){
