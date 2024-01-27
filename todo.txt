@@ -1,13 +1,13 @@
+Art
+
 Vision system
     Rendering
 
-Map loading
-
 Npc and player movement
 Box movment
+    Pathfinding
 
-Matrix
 Gamplay concept
 
-Art
+
 

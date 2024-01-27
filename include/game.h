@@ -19,8 +19,7 @@ enum TileType
 
 struct Camera
 {
-    float center_x;
-    float center_y;
+    V2 center;
 };
 
 struct AABB {
@@ -64,5 +63,7 @@ void game_RenderGrid(CommandBuffer* cmd,
                      TextureHandle* texture);
 void game_PushCollider(Level* level, Collider c, bool static_c);
 void game_ClearDynamicCollider(Level* level);
+
+float game_Raycast(Level* level, V2 pos, V2 dir);
 
 #endif

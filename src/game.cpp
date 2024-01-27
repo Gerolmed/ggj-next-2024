@@ -7,8 +7,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 {
     level->static_collider = 0;
     level->collider_count = 0;
-    level->camera.center_x = 5 * TILE_SIZE;
-    level->camera.center_y = 5 * TILE_SIZE;
+    level->camera.center = v2(2 * TILE_SIZE, 5 * TILE_SIZE);
 
     char path[1024];
     sprintf(path,"assets/stages/%d.png",stage);
@@ -55,10 +54,10 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
 
             if (type == Wall) {
                 renderer_PushSprite(cmd, 
-                    v2(x * TILE_SIZE - level->camera.center_x, 
-                       y * TILE_SIZE - level->camera.center_y), 
-                    v2((x + 1) * TILE_SIZE - level->camera.center_x, 
-                       (y + 1) * TILE_SIZE - level->camera.center_y), 
+                    v2(x * TILE_SIZE - level->camera.center.x, 
+                       y * TILE_SIZE - level->camera.center.y), 
+                    v2((x + 1) * TILE_SIZE - level->camera.center.x, 
+                       (y + 1) * TILE_SIZE - level->camera.center.y), 
                     v2(0), v2(1),
                     mat2(1), v3(0, 1, 0), texture);
             }
@@ -81,3 +80,27 @@ void game_ClearDynamicCollider(Level* level)
 {
     level->collider_count = level->static_collider;
 }
+
+float game_Raycast(Level* level, V2 pos, V2 dir)
+{
+    float min_t = 99999999;
+    for (u32 i = 0; i < level->collider_count; ++i) {
+        Collider* col = level->collider + i;
+
+        // x collision
+        if (dir.x > 0.00001 || dir.x < 0.00001) {
+            float t = (col->aabb.position.x - pos.x) / dir.x;
+            float y = t * dir.y + pos.y;
+            float y_diff = col->aabb.position.y - y;
+
+            if (y_diff >= 0 && y_diff <= col->aabb.size.y) {
+                if (t >= 0 && t < min_t) {
+                    min_t = t;
+                }
+            }
+        }
+    }
+
+    return min_t;
+}
+

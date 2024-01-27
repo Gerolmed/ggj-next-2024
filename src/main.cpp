@@ -196,8 +196,11 @@ i32 main() {
         // Rune node tree lifecycle
         scene_root->PreUpdate();
         scene_root->Update();
-        scene_root->Render(&cmd);
 
+        float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
+        printf("Got distance: %f\n", t);
+
+        scene_root->Render(&cmd);
 
         // Queue post processing
         renderer_PushPostprocessPass(&cmd);
