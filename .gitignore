@@ -4,6 +4,9 @@ game.exe
 game.zip
 release.zip
 
+.vs
+.vscode
+
 # C++ GitIgnore
 
 # Prerequisites

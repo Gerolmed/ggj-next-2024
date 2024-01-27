@@ -7,11 +7,10 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 {
     level->static_collider = 0;
     level->collider_count = 0;
-    level->camera.center = v2(10 * TILE_SIZE, 5 * TILE_SIZE);
+    level->camera.center = v2(10.5 * TILE_SIZE, 5.5 * TILE_SIZE);
 
     char path[1024];
     sprintf(path,"assets/stages/%d.png",stage);
-    printf("%s\n", path);
     u8* temp = stbi_load(
             path,
             &level->grid_width,
@@ -40,6 +39,10 @@ void game_Init(Level* level, u32 stage, Arena* arena)
                 temp[index+1] == 57 &&
                 temp[index+2] == 39)
                 type = Box;
+            if (temp[index] == 255 &&
+                temp[index+1] == 0 &&
+                temp[index+2] == 0)
+                type = Player;
 
 
 
@@ -52,6 +55,11 @@ void game_Init(Level* level, u32 stage, Arena* arena)
                 collider.aabb.size.x = TILE_SIZE;
                 collider.aabb.size.y = TILE_SIZE;
                 game_PushCollider(level, collider, true);
+            }
+            else if(type == Player){
+                level->player_node->aabb.position.x = x * TILE_SIZE;
+                level->player_node->aabb.position.y = y * TILE_SIZE;
+                
             }
         }
     }
@@ -212,14 +220,58 @@ float game_Raycast(Level* level, V2 pos, V2 dir)
 
         // x collision
         if (dir.x > 0.00001 || dir.x < 0.00001) {
-            float t = (col->aabb.position.x - pos.x) / dir.x;
-            float y = t * dir.y + pos.y;
-            float y_diff = col->aabb.position.y - y;
+            {
+                float t = (col->aabb.position.x - pos.x) / dir.x;
+                float y = t * dir.y + pos.y;
+                float y_diff = y - col->aabb.position.y;
 
-            if (y_diff >= 0 && y_diff <= col->aabb.size.y) {
-                if (t >= 0 && t < min_t) {
-                    min_t = t;
+                if (y_diff >= 0 && y_diff <= col->aabb.size.y) {
+                    if (t >= 0 && t < min_t) {
+                        min_t = t;
+                    }
                 }
+
+            }
+
+            {
+                float t = (col->aabb.position.x + col->aabb.size.x - pos.x) / dir.x;
+                float y = t * dir.y + pos.y;
+                float y_diff = y - col->aabb.position.y;
+
+                if (y_diff >= 0 && y_diff <= col->aabb.size.y) {
+                    if (t >= 0 && t < min_t) {
+                        min_t = t;
+                    }
+                }
+            }
+        }
+
+        // y collision
+        if (dir.y > 0.00001 || dir.y < 0.00001) {
+            {
+                float t = (col->aabb.position.y - pos.y) / dir.y;
+                float x = t * dir.x + pos.x;
+                float x_diff = x - col->aabb.position.x;
+
+                if (x_diff >= 0 && x_diff <= col->aabb.size.x) {
+                    if (t >= 0 && t < min_t) {
+                        min_t = t;
+                    }
+                }
+
+            }
+
+            {
+                float t = (col->aabb.position.y + col->aabb.size.y - pos.y) / dir.y;
+                float x = t * dir.x + pos.x;
+                float x_diff = x - col->aabb.position.x;
+
+                if (x_diff >= 0 && x_diff <= col->aabb.size.x) {
+                    if (t >= 0 && t < min_t) {
+                        min_t = t;
+                    }
+                }
+
             }
         }
     }
