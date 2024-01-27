@@ -82,11 +82,11 @@ i32 main() {
     Arena arena;
     init_arena(&arena, &pool);
 
-    u32 vertex_count = 10000;
+    u32 vertex_count = 20000;
     Vertex* vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
-    u32 index_count = 10000;
+    u32 index_count = 20000;
     u32* index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
-    u32 cmd_len = 10000;
+    u32 cmd_len = 20000;
     u8* cmd_memory = (u8 *) push_size(&arena, cmd_len);
 
     audio_Setup();
@@ -226,11 +226,21 @@ i32 main() {
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 
+#ifdef DEBUG
+        renderer_PushBase(&cmd, level.camera.center);
+        for (u32 i = 0; i < level.collider_count; ++i) {
+            AABB aabb = level.collider[i].aabb;
+            renderer_PushOutline(&cmd, aabb.position,
+                v2(aabb.position.x + aabb.size.x, aabb.position.y + aabb.size.y),
+                40, 1, v3(0, 1, 0));
+        }
+
+        renderer_PushBase(&cmd, v2(0));
         V2 ray = v2(1, 0);
         float t = game_Raycast(&level, level.camera.center, ray);
-        renderer_PushLine(&cmd, level.camera.center, 
-                          v2(ray.x * t, ray.y * t), 30, 0.5, v3(0, 0, 1));
-        printf("Got distance: %f\n", t);
+        renderer_PushLine(&cmd, v2(0), 
+                          v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
+#endif
 
         renderer_PushBase(&cmd, level.camera.center);
         scene_root->TryRender(&cmd);
