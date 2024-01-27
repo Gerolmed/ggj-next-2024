@@ -17,6 +17,9 @@ void game_Init(Level* level, u32 stage, Arena* arena)
             level->grid[x + y * level->grid_width] = type;
         }
     }
+    level->grid[4 + level->grid_width * 3] = 1;
+    level->grid[5 + level->grid_width * 3] = 1;
+    level->grid[4 + level->grid_width * 4] = 1;
 }
 
 void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
