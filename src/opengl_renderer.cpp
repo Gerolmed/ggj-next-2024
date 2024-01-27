@@ -155,12 +155,12 @@ void opengl_Init(u32 render_width, u32 render_height)
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
 
-    u32 arrs[2];
-    glGenVertexArrays(2, arrs);
+    u32 arrs[3];
+    glGenVertexArrays(3, arrs);
     glBindVertexArray(arrs[0]);
 
-    u32 buffers[3];
-    glGenBuffers(3, buffers);
+    u32 buffers[4];
+    glGenBuffers(4, buffers);
 
     float quad_data[] = {
         -1, 1,
@@ -193,6 +193,14 @@ void opengl_Init(u32 render_width, u32 render_height)
 
     SetupBloomMips();
 
+    OpenGL.mask_arr = arrs[2];
+    glBindVertexArray(OpenGL.mask_arr);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[3]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(MaskVertex) * 1000, NULL, GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+    OpenGL.mask_vertex_buffer = buffers[3];
+
     OpenGL.quad_arr = arrs[1];
     glBindVertexArray(OpenGL.quad_arr);
     glEnableVertexAttribArray(0);
@@ -206,6 +214,7 @@ void opengl_Init(u32 render_width, u32 render_height)
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 10000, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * 10000, NULL, GL_DYNAMIC_DRAW);
+    OpenGL.vertex_buffer = buffers[0];
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
@@ -226,6 +235,13 @@ void opengl_Init(u32 render_width, u32 render_height)
     glUniform1i(OpenGL.post_shader.bloom_buffer, 1);
 }
 
+void CopyToBuffer(u32 slot, u32 size, void* data)
+{
+    void* map = glMapBufferRange(slot, 0, size, GL_MAP_WRITE_BIT);
+    memcpy(map, data, size);
+    glUnmapBuffer(slot);
+}
+
 void opengl_RenderCommands(CommandBuffer* buffer)
 {
     glEnable(GL_DEPTH_TEST);
@@ -242,14 +258,12 @@ void opengl_RenderCommands(CommandBuffer* buffer)
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer->index_curr * sizeof(u32), 
     //              buffer->index_buffer, GL_DYNAMIC_DRAW);
 
-    void* map = glMapBufferRange(GL_ARRAY_BUFFER, 0, 
-                                 sizeof(Vertex) * buffer->vertex_curr, GL_MAP_WRITE_BIT);
-    memcpy(map, buffer->vertex_buffer, sizeof(Vertex) * buffer->vertex_curr);
-    glUnmapBuffer(GL_ARRAY_BUFFER);
-    map = glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, 
-                           sizeof(u32) * buffer->index_curr, GL_MAP_WRITE_BIT);
-    memcpy(map, buffer->index_buffer, sizeof(u32) * buffer->index_curr);
-    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    glBindBuffer(GL_ARRAY_BUFFER, OpenGL.mask_vertex_buffer);
+    CopyToBuffer(GL_ARRAY_BUFFER, sizeof(MaskVertex) * buffer->mask_vertex_count, 
+                 buffer->mask_vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, OpenGL.vertex_buffer);
+    CopyToBuffer(GL_ARRAY_BUFFER, sizeof(Vertex) * buffer->vertex_curr, buffer->vertex_buffer);
+    CopyToBuffer(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * buffer->index_curr, buffer->index_buffer);
 
     glUseProgram(OpenGL.sprite_shader.id);
     glUniformMatrix4fv(OpenGL.sprite_shader.proj, 1, GL_FALSE, &(buffer->proj)[0][0]);
@@ -309,6 +323,13 @@ void opengl_RenderCommands(CommandBuffer* buffer)
 
                 offset += sizeof(CommandEntry_PostprocessPass);
             } break;
+
+            case MaskOp:
+            {
+                CommandEntry_MaskOp* draw = (CommandEntry_MaskOp*) (buffer->cmd_memory + offset);
+                // TODO: Render to mask here
+                offset += sizeof(CommandEntry_MaskOp);
+            }
 
             default:
             {

@@ -84,11 +84,13 @@ i32 main() {
     init_arena(&arena, &pool);
 
     u32 vertex_count = 20000;
-    Vertex* vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
+    Vertex* vertex_buffer = (Vertex*) push_size(&arena, sizeof(Vertex) * vertex_count);
     u32 index_count = 20000;
-    u32* index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
+    u32* index_buffer = (u32*) push_size(&arena, sizeof(u32) * index_count);
+    u32 mask_vertex_count = 200;
+    MaskVertex* mask_vertices = (MaskVertex*) push_size(&arena, sizeof(MaskVertex) * mask_vertex_count);
     u32 cmd_len = 20000;
-    u8* cmd_memory = (u8 *) push_size(&arena, cmd_len);
+    u8* cmd_memory = (u8*) push_size(&arena, cmd_len);
 
     audio_Setup();
     AudioHandle song = audio_Load("audio/CantinaBand60.wav");
@@ -173,6 +175,7 @@ i32 main() {
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
                                             index_count, index_buffer,
+                                            mask_vertex_count, mask_vertices,
                                             proj, global_window.width, global_window.height,
                                             white);
 

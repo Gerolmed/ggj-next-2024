@@ -45,6 +45,11 @@ struct Vertex
     V3 color;
 };
 
+struct MaskVertex
+{
+    V2 pos;
+};
+
 struct RenderSettings
 {
     u32 width;
@@ -60,6 +65,10 @@ struct CommandBuffer
     u32 vertex_count;
     u32 vertex_curr;
     Vertex* vertex_buffer;
+
+    u32 mask_vertex_count;
+    u32 mask_vertex_curr;
+    MaskVertex* mask_vertex_buffer;
 
     u32 index_count;
     u32 index_curr;
@@ -79,6 +88,7 @@ enum CommandEntryType
     Clear = 0,
     DrawQuads = 1,
     PostProcessPass = 2,
+    MaskOp = 3,
 };
 
 enum QuadType
@@ -112,9 +122,17 @@ struct CommandEntry_PostprocessPass
     CommandEntryHeader header;
 };
 
+struct CommandEntry_MaskOp
+{
+    CommandEntryHeader header;
+    u32 vertex_offset;
+    u32 vertex_count;
+};
+
 CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory, 
                               u32 vertex_count, Vertex* vertex_buffer, 
                               u32 index_count, u32* index_buffer,
+                              u32 mask_vertex_count, MaskVertex* mask_vertices,
                               Mat4 proj, u32 width, u32 height,
                               TextureHandle white);
 
@@ -142,5 +160,7 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str,
 void renderer_PushPostprocessPass(CommandBuffer* buffer);
 
 void renderer_PushBase(CommandBuffer* buffer, V2 base);
+
+void renderer_PushMaskOp(CommandBuffer* buffer, u32 vertex_count, MaskVertex* vertices);
 
 #endif

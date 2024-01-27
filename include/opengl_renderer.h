@@ -42,6 +42,8 @@ struct OpenGLContext
 
     u32 render_framebuffer;
     u32 color_buffer;
+    u32 vertex_buffer;
+    u32 mask_vertex_buffer;
 
     u32 bloom_framebuffer;
     BloomMip bloom_mips[BLOOM_MIPS];
@@ -50,6 +52,7 @@ struct OpenGLContext
 
     u32 quad_arr;
     u32 draw_arr;
+    u32 mask_arr;
 
     u32 render_width;
     u32 render_height;

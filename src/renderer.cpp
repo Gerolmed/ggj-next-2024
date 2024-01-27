@@ -10,6 +10,7 @@
 CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory, 
                               u32 vertex_count, Vertex* vertex_buffer, 
                               u32 index_count, u32* index_buffer,
+                              u32 mask_vertex_count, MaskVertex* mask_vertices,
                               Mat4 proj, u32 width, u32 height,
                               TextureHandle white)
 {
@@ -28,6 +29,10 @@ CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory,
     buffer.index_count = index_count;
     buffer.index_curr = 0;
     buffer.index_buffer = index_buffer;
+
+    buffer.mask_vertex_count = mask_vertex_count;
+    buffer.mask_vertex_curr = 0;
+    buffer.mask_vertex_buffer = mask_vertices;
 
     buffer.proj = proj;
     buffer.base.x = 0;
@@ -311,4 +316,24 @@ void renderer_PushPostprocessPass(CommandBuffer* buffer)
 void renderer_PushBase(CommandBuffer* buffer, V2 base)
 {
     buffer->base = base;
+}
+
+void renderer_PushMaskOp(CommandBuffer* buffer, u32 vertex_count, MaskVertex* vertices)
+{
+    if (buffer->curr_len + sizeof(CommandEntry_MaskOp) > buffer->byte_len) {
+        printf("Warning: Buffer size exceeded on mask\n");
+        return;
+    }
+    if (buffer->mask_vertex_curr + vertex_count > buffer->mask_vertex_count) {
+        printf("Warning: Mask vertex count exceeded\n");
+        return;
+    }
+
+    CommandEntry_MaskOp* mask_op = (CommandEntry_MaskOp*) (buffer->cmd_memory + buffer->curr_len);
+    mask_op->header.type = MaskOp;
+    mask_op->vertex_count = vertex_count;
+    mask_op->vertex_offset = buffer->mask_vertex_curr;
+
+    buffer->mask_vertex_curr += vertex_count;
+    buffer->curr_len += sizeof(CommandEntry_MaskOp);
 }
