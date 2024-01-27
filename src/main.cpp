@@ -151,40 +151,6 @@ i32 main() {
     Mat4 proj = projection * view;
 
     float lastFrame = 0.0f;
-    
-
-    {
-        const auto node2 = new TestNode(&level);
-        scene_root->AddChild(node2);
-
-        // const auto node3 = new TextureNode(&level, &image, 100 , 100);
-        // scene_root->AddChild(node3);
-
-        auto sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        // sheet_node->position = level.camera.center;
-        sheet_node->seconds_per_frame = 0.1f;
-        sheet_node->current_frame = 1;
-        scene_root->AddChild(sheet_node);
-
-        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{100, 0};
-        sheet_node->seconds_per_frame = 0.1f;
-        sheet_node->visible = false;
-        sheet_node->current_frame = 2;
-        scene_root->AddChild(sheet_node);
-
-        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{200, 0};
-        sheet_node->seconds_per_frame = 0.1f;
-        sheet_node->current_frame = 3;
-        scene_root->AddChild(sheet_node);
-
-        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{-100, 0};
-        sheet_node->seconds_per_frame = 0.1f;
-        sheet_node->current_frame = 0;
-        scene_root->AddChild(sheet_node);
-    }
 
 
     // Begin render loop
