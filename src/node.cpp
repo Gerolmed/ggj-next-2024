@@ -5,7 +5,7 @@ Node::~Node() {
     for (int i = children.size() - 1; i >= 0; --i) {
         auto child = children[i];
         RemoveChild(child);
-        child.~Node();
+        delete child;
     }
 }
 
