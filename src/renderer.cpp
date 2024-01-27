@@ -10,7 +10,8 @@
 CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory, 
                               u32 vertex_count, Vertex* vertex_buffer, 
                               u32 index_count, u32* index_buffer,
-                              Mat4 proj, u32 width, u32 height)
+                              Mat4 proj, u32 width, u32 height,
+                              TextureHandle white)
 {
 
     CommandBuffer buffer;
@@ -31,6 +32,7 @@ CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory,
     buffer.proj = proj;
     buffer.base.x = 0;
     buffer.base.y = 0;
+    buffer.white = white;
     return buffer;
 }
 
@@ -184,10 +186,61 @@ void renderer_PushSprite(CommandBuffer* buffer,
     }
 }
 
-void renderer_PushLine(CommandBuffer* buffer,
-                       V2 start, V2 end, float depth, V3 color)
+void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
+                       float depth, float width, V3 color)
 {
+    if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
+        printf("Warning: Buffer size exceeded on draw\n");
+        return;
+    }
 
+    CommandEntry_DrawQuads* draw = (CommandEntry_DrawQuads*) (buffer->cmd_memory + buffer->curr_len);
+    draw->header.type = DrawQuads;
+    draw->index_offset = buffer->index_curr;
+    draw->index_count = 6;
+    draw->texture = buffer->white;
+    draw->type = QuadTypeSprite;
+
+    V2 dir = v2(end.x - start.x, end.y - start.y).Norm();
+    V2 side = v2(-dir.y * width, dir.x * width);
+
+    V2 vert1 = v2(start.x + side.x, start.y + side.y);
+    V2 uv1 = v2(0);
+
+    V2 vert2 = v2(start.x - side.x, start.y - side.y);
+    V2 uv2 = v2(0, 1);
+
+    V2 vert3 = v2(end.x - side.x, end.y - side.y);
+    V2 uv3 = v2(1);
+
+    V2 vert4 = v2(end.x + side.x, end.y + side.y);
+    V2 uv4 = v2(1, 0);
+
+    if (PushQuad(buffer, vert1, vert2, vert3, vert4, depth, 
+                 uv1, uv2, uv3, uv4, color)) {
+        buffer->curr_len += sizeof(CommandEntry_DrawQuads);
+    }
+}
+
+void renderer_PushOutline(CommandBuffer* buffer, 
+                          V2 down_left, V2 up_right, float depth, 
+                          float width, V3 color)
+{
+    renderer_PushLine(buffer, down_left, 
+                      v2(down_left.x, up_right.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, down_left, 
+                      v2(up_right.x, down_left.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, up_right, 
+                      v2(up_right.x, down_left.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, up_right, 
+                      v2(down_left.x, up_right.y), depth, 
+                      width, color);
 }
 
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 

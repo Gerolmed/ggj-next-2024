@@ -25,11 +25,15 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
     auto* texNode = new TextureNode(level, pp, 100, 100);
 
     AddChild(texNode);
+
+
 }
 
 
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
+    aabb.position = position;
+    aabb.size = { 32, 32 };
 
 }
 void PlayerNode::Update() {
@@ -48,8 +52,15 @@ void PlayerNode::Update() {
         movement.y -= 1;
     }
 
-    movement = movement.Normalized();
+    movement = movement.Norm();
 
+<<<<<<< HEAD
+    // aabb.move_and_collide(movement * (time_deltatime * speed), level);
+    // position = aabb.position;
+=======
+    aabb.move_and_collide(movement * (time_deltatime * speed), level);
+    position = aabb.position;
+>>>>>>> bdc211406eedf936fc28bb31cbf16b311c8c7f5a
 
     position = position + movement * (time_deltatime * speed);
 
