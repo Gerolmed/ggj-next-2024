@@ -120,9 +120,9 @@ void renderer_FreeTextureLoadOp(TextureLoadOp* load_op);
 void renderer_PushClear(CommandBuffer* buffer, V3 color);
 
 void renderer_PushSprite(CommandBuffer* buffer, 
-                         V2 v1, V2 v2, V2 v3, V2 v4, 
-                         V2 uv1, V2 uv2, V2 uv3, V2 uv4, 
-                         V3 color, TextureHandle* texture);
+                         V2 down_left, V2 up_right, 
+                         V2 uv_down_left, V2 uv_up_right,
+                         Mat2f rot, V3 color, TextureHandle* texture);
 
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 pos);
 

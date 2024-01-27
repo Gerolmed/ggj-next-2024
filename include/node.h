@@ -2,7 +2,6 @@
 #define NODE_H
 
 #include "include/types.h"
-#include "include/math.h"
 
 class Node {
 

@@ -1,7 +1,4 @@
-#include "include/math.h"
-#include <cmath>
-
-
+#include "include/types.h"
 
 Mat2f Mat2f::operator*(const Mat2f& other) const{
     return {data[0]*other.data[0] + data[1]*other.data[2],

@@ -197,6 +197,8 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 
     float x_pos = 0;
     u32 index_count = 0;
 
+    V3 color = v3(1);
+
     while (*str) {
         Glyph* glyph = font->glyphs + *str;
 
@@ -213,7 +215,9 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 
         float y_pos = pos.y + glyph->height - glyph->top;
         V2 down_left = v2(pos.x + x_pos + glyph->left, -y_pos);
         V2 up_right = v2(down_left.x + glyph->width, down_left.y + glyph->height);
-        if (!PushQuad(buffer, down_left, up_right, v3(1), v2(uvx0, uvy0), v2(uvx1, uvy1))) {
+        if (!PushQuad(buffer, down_left, up_right, 
+                      v2(uvx0, uvy0), v2(uvx1, uvy1), 
+                      mat2(0), color)) {
             break;
         }
 

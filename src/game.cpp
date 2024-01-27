@@ -32,7 +32,7 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
     }
 
     renderer_PushSprite(cmd, 
-                        v2(-30), v2(-30, 30), v2(30), v2(30, -30), 
-                        v2(0), v2(0, 1), v2(1), v2(1, 0),
-                        v3(0, 1, 0), texture);
+                        v2(-30), v2(30), 
+                        v2(0), v2(1),
+                        mat2(1), v3(0, 1, 0), texture);
 }
