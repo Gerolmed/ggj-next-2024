@@ -28,7 +28,7 @@ void TextureNode::Render(CommandBuffer* buffer) {
     const V2 down_left = V2{-std::ceil(width/2.0f), -std::ceil(height/2.0f)} + GetAbsolutePosition();
     const V2 up_right = V2{std::floor(width/2.0f), std::floor(height/2.0f)} + GetAbsolutePosition();
     renderer_PushSprite(buffer,
-                        down_left, up_right,
+                        down_left, up_right, 10,
                         {0, 0}, {1, 1},
                         GetAbsoluteRotationMatrix(), V3{1,1,1}, texture_handle
     );
@@ -48,7 +48,7 @@ void SpritesheetNode::Render(CommandBuffer* buffer) {
     const float remainingX = current_frame % columns;
     const V2 uv_bot_left = V2{remainingX * item_width, ((current_frame - remainingX) / columns + 1) * item_height};
     renderer_PushSprite(buffer,
-                        down_left, up_right,
+                        down_left, up_right, 10,
                         uv_bot_left, uv_bot_left + V2{item_width, item_height},
                         GetAbsoluteRotationMatrix(), V3{1,1,1}, texture_handle
     );

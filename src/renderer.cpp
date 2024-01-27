@@ -68,7 +68,7 @@ void renderer_PushClear(CommandBuffer* buffer, V3 color)
 };
 
 bool PushQuad(CommandBuffer* buffer, 
-              V2 v1, V2 v2, V2 v3, V2 v4, 
+              V2 v1, V2 v2, V2 v3, V2 v4, float depth,
               V2 uv1, V2 uv2, V2 uv3, V2 uv4, 
               V3 color)
 {
@@ -80,24 +80,29 @@ bool PushQuad(CommandBuffer* buffer,
 
     buffer->vertex_buffer[curr + 0].pos.x = v1.x - buffer->base.x;
     buffer->vertex_buffer[curr + 0].pos.y = v1.y - buffer->base.y;
+    buffer->vertex_buffer[curr + 0].pos.z = depth;
+    buffer->vertex_buffer[curr + 0].pos.y = v1.y - buffer->base.y;
     buffer->vertex_buffer[curr + 0].uv.x = uv1.x;
     buffer->vertex_buffer[curr + 0].uv.y = uv1.y;
     buffer->vertex_buffer[curr + 0].color = color;
 
     buffer->vertex_buffer[curr + 1].pos.x = v2.x - buffer->base.x;
     buffer->vertex_buffer[curr + 1].pos.y = v2.y - buffer->base.y;
+    buffer->vertex_buffer[curr + 1].pos.z = depth;
     buffer->vertex_buffer[curr + 1].uv.x = uv2.x;
     buffer->vertex_buffer[curr + 1].uv.y = uv2.y;
     buffer->vertex_buffer[curr + 1].color = color;
 
     buffer->vertex_buffer[curr + 2].pos.x = v3.x - buffer->base.x;
     buffer->vertex_buffer[curr + 2].pos.y = v3.y - buffer->base.y;
+    buffer->vertex_buffer[curr + 2].pos.z = depth;
     buffer->vertex_buffer[curr + 2].uv.x = uv3.x;
     buffer->vertex_buffer[curr + 2].uv.y = uv3.y;
     buffer->vertex_buffer[curr + 2].color = color;
 
     buffer->vertex_buffer[curr + 3].pos.x = v4.x - buffer->base.x;
     buffer->vertex_buffer[curr + 3].pos.y = v4.y - buffer->base.y;
+    buffer->vertex_buffer[curr + 3].pos.z = depth;
     buffer->vertex_buffer[curr + 3].uv.x = uv4.x;
     buffer->vertex_buffer[curr + 3].uv.y = uv4.y;
     buffer->vertex_buffer[curr + 3].color = color;
@@ -115,8 +120,9 @@ bool PushQuad(CommandBuffer* buffer,
     return true;
 }
 
-bool PushQuad(CommandBuffer* buffer, V2 down_left, 
-              V2 up_right, V2 uv_down_left, V2 uv_up_right, 
+bool PushQuad(CommandBuffer* buffer, 
+              V2 down_left, V2 up_right, float depth,
+              V2 uv_down_left, V2 uv_up_right, 
               Mat2f rot, V3 color)
 {
     V2 uv1;
@@ -141,12 +147,12 @@ bool PushQuad(CommandBuffer* buffer, V2 down_left,
     uv4.x = uv_up_right.x;
     uv4.y = uv_down_left.y;
 
-    return PushQuad(buffer, vert1, vert2, vert3, vert4, 
+    return PushQuad(buffer, vert1, vert2, vert3, vert4, depth,
                     uv1, uv2, uv3, uv4, color);
 }
 
 void renderer_PushSprite(CommandBuffer* buffer, 
-                         V2 down_left, V2 up_right, 
+                         V2 down_left, V2 up_right, float depth,
                          V2 uv_down_left, V2 uv_up_right,
                          Mat2f rot, V3 color, TextureHandle* texture)
 {
@@ -171,14 +177,15 @@ void renderer_PushSprite(CommandBuffer* buffer,
     draw->type = QuadTypeSprite;
 
     if (PushQuad(buffer, 
-                 down_left, up_right,
+                 down_left, up_right, depth,
                  uv_down_left, uv_up_right,
                  rot, color)) {
         buffer->curr_len += sizeof(CommandEntry_DrawQuads);
     }
 }
 
-void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 pos)
+void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
+                         V2 pos, float depth)
 {
     if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
         printf("Warning: Buffer size exceeded on draw\n");
@@ -213,7 +220,7 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 
         float y_pos = pos.y + glyph->height - glyph->top;
         V2 down_left = v2(pos.x + x_pos + glyph->left, -y_pos);
         V2 up_right = v2(down_left.x + glyph->width, down_left.y + glyph->height);
-        if (!PushQuad(buffer, down_left, up_right, 
+        if (!PushQuad(buffer, down_left, up_right, depth,
                       v2(uvx0, uvy0), v2(uvx1, uvy1), 
                       mat2(0), color)) {
             break;

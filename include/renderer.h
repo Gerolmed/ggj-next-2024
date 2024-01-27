@@ -40,7 +40,7 @@ struct TextureLoadOp
 
 struct Vertex
 {
-    V2 pos;
+    V3 pos;
     V2 uv;
     V3 color;
 };
@@ -122,11 +122,12 @@ void renderer_FreeTextureLoadOp(TextureLoadOp* load_op);
 void renderer_PushClear(CommandBuffer* buffer, V3 color);
 
 void renderer_PushSprite(CommandBuffer* buffer, 
-                         V2 down_left, V2 up_right, 
+                         V2 down_left, V2 up_right, float depth,
                          V2 uv_down_left, V2 uv_up_right,
                          Mat2f rot, V3 color, TextureHandle* texture);
 
-void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 pos);
+void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
+                         V2 pos, float depth);
 
 void renderer_PushPostprocessPass(CommandBuffer* buffer);
 

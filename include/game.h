@@ -6,7 +6,7 @@
 #include "include/arena.h"
 
 #define MAX_COLLIDERS 150
-#define TILE_SIZE 60
+#define TILE_SIZE 32
 
 
 struct Level;
