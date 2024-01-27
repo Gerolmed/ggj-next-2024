@@ -21,6 +21,8 @@ struct V2
 {
     float x;
     float y;
+
+    V2 operator+(const V2& v2) const;
 };
 
 inline V2 v2(float x)

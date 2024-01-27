@@ -23,10 +23,13 @@ struct Camera
     float center_y;
 };
 
+
 struct Collider
 {
     AABB aabb;
+    bool movable;
 };
+
 
 struct Level
 {

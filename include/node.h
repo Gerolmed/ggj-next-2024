@@ -23,8 +23,9 @@ public:
 
     Mat3f GetRelativeMatrix() const;
     Mat3f GetAbsoluteMatrix() const;
+    Mat2f GetAbsoluteRotationMatrix() const;
 
-    V2 GetAbsolutePosition();
+    V2 GetAbsolutePosition() const;
 
     void AddChild(Node* child);
     void RemoveChild(Node* child);
@@ -37,6 +38,7 @@ public:
 
     virtual void Start();
 
+    virtual void PreUpdate();
     virtual void Update();
     virtual void Render(CommandBuffer* buffer);
 
