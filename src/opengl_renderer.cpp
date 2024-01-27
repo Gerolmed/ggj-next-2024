@@ -208,7 +208,7 @@ void opengl_Init(u32 render_width, u32 render_height)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * 10000, NULL, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) offsetof(Vertex, uv));
     glEnableVertexAttribArray(2);
@@ -279,7 +279,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glUseProgram(shader);
 
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, draw->texture->id);
+                glBindTexture(GL_TEXTURE_2D, draw->texture.id);
                 glDrawElements(GL_TRIANGLES, draw->index_count, 
                                GL_UNSIGNED_INT, (void*) (draw->index_offset * sizeof(u32)));
                 offset += sizeof(CommandEntry_DrawQuads);

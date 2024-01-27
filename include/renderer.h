@@ -40,7 +40,7 @@ struct TextureLoadOp
 
 struct Vertex
 {
-    V2 pos;
+    V3 pos;
     V2 uv;
     V3 color;
 };
@@ -65,9 +65,13 @@ struct CommandBuffer
     u32 index_curr;
     u32* index_buffer;
 
+    V2 base;
+
     RenderSettings settings;
     // Note: proj and view matrix
     Mat4 proj;
+
+    TextureHandle white;
 };
 
 enum CommandEntryType 
@@ -100,7 +104,7 @@ struct CommandEntry_DrawQuads
     u32 index_offset;
     u32 index_count;
     u32 type;
-    TextureHandle* texture;
+    TextureHandle texture;
 };
 
 struct CommandEntry_PostprocessPass
@@ -111,7 +115,8 @@ struct CommandEntry_PostprocessPass
 CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory, 
                               u32 vertex_count, Vertex* vertex_buffer, 
                               u32 index_count, u32* index_buffer,
-                              Mat4 proj, u32 width, u32 height);
+                              Mat4 proj, u32 width, u32 height,
+                              TextureHandle white);
 
 TextureLoadOp renderer_TextureLoadOp(TextureHandle* handle, const char* path);
 
@@ -120,12 +125,22 @@ void renderer_FreeTextureLoadOp(TextureLoadOp* load_op);
 void renderer_PushClear(CommandBuffer* buffer, V3 color);
 
 void renderer_PushSprite(CommandBuffer* buffer, 
-                         V2 down_left, V2 up_right, 
+                         V2 down_left, V2 up_right, float depth,
                          V2 uv_down_left, V2 uv_up_right,
-                         Mat2f rot, V3 color, TextureHandle* texture);
+                         Mat2f rot, V3 color, TextureHandle texture);
 
-void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 pos);
+void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
+                       float depth, float width, V3 color);
+
+void renderer_PushOutline(CommandBuffer* buffer, 
+                          V2 down_left, V2 up_right, float depth, 
+                          float width, V3 color);
+
+void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
+                         V2 pos, float depth);
 
 void renderer_PushPostprocessPass(CommandBuffer* buffer);
+
+void renderer_PushBase(CommandBuffer* buffer, V2 base);
 
 #endif

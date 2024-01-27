@@ -82,11 +82,11 @@ i32 main() {
     Arena arena;
     init_arena(&arena, &pool);
 
-    u32 vertex_count = 10000;
+    u32 vertex_count = 20000;
     Vertex* vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
-    u32 index_count = 10000;
+    u32 index_count = 20000;
     u32* index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
-    u32 cmd_len = 10000;
+    u32 cmd_len = 20000;
     u8* cmd_memory = (u8 *) push_size(&arena, cmd_len);
 
     audio_Setup();
@@ -159,26 +159,26 @@ i32 main() {
         const auto player_node = new PlayerNode(&level);
         scene_root->AddChild(player_node);
 
-        auto sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        auto sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         // sheet_node->position = level.camera.center;
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 1;
         scene_root->AddChild(sheet_node);
 
-        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         sheet_node->position = V2{100,0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->visible = false;
         sheet_node->current_frame = 2;
         scene_root->AddChild(sheet_node);
 
-        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         sheet_node->position = V2{200,0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 3;
         scene_root->AddChild(sheet_node);
 
-        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         sheet_node->position = V2{-100,0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 0;
@@ -206,7 +206,8 @@ i32 main() {
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
                                             index_count, index_buffer,
-                                            proj, global_window.width, global_window.height);
+                                            proj, global_window.width, global_window.height,
+                                            white);
 
         // Request to clear at the beginning
         renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
@@ -219,15 +220,29 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderGrid(&cmd, &level, &white);
+        game_RenderGrid(&cmd, &level, white);
 
         // Rune node tree lifecycle
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 
-        float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
-        printf("Got distance: %f\n", t);
+#ifdef DEBUG
+        renderer_PushBase(&cmd, level.camera.center);
+        for (u32 i = 0; i < level.collider_count; ++i) {
+            AABB aabb = level.collider[i].aabb;
+            renderer_PushOutline(&cmd, aabb.position,
+                v2(aabb.position.x + aabb.size.x, aabb.position.y + aabb.size.y),
+                40, 1, v3(0, 1, 0));
+        }
 
+        renderer_PushBase(&cmd, v2(0));
+        V2 ray = v2(1, 0);
+        float t = game_Raycast(&level, level.camera.center, ray);
+        renderer_PushLine(&cmd, v2(0), 
+                          v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
+#endif
+
+        renderer_PushBase(&cmd, level.camera.center);
         scene_root->TryRender(&cmd);
 
         // Queue post processing
