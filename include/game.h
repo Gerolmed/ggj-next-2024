@@ -34,7 +34,7 @@ struct AABB {
     //Checks whether it can move.
     bool can_move(V2& v2, Level* level);
     //Moves and pushes boxes, ignoring wall collisions.
-    bool move_and_push_boxes(V2& v2, Level* level);
+    void move_and_push_boxes(V2& v2, Level* level);
 };
 
 
