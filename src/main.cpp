@@ -19,6 +19,7 @@
 #include "include/renderer.h"
 #include "include/opengl_renderer.h"
 #include "include/game.h"
+#include "include/game_init.h"
 #include "include/game_nodes.h"
 #include "include/input.h"
 #include "include/node.h"
@@ -110,7 +111,7 @@ i32 main() {
     renderer_FreeTextureLoadOp(&load_op);
 
     TextureHandle wall_texture;
-    load_op = renderer_TextureLoadOp(&animated_image, "assets/player/test-animation.png");
+    load_op = renderer_TextureLoadOp(&wall_texture, "assets/tilesets/wall_base.png");
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
@@ -128,7 +129,9 @@ i32 main() {
     // ImGui_ImplOpenGL3_Init();
 
     Level level;
-    game_Init(&level, 1, &arena);
+    auto* scene_root = new Node(&level);
+
+    game_Init(&level, 1, &arena, scene_root);
 
     Mat4 projection = glm::ortho(
         -game_width / 2,
@@ -148,11 +151,6 @@ i32 main() {
     Mat4 proj = projection * view;
 
     float lastFrame = 0.0f;
-
-    const auto scene_root = new Node(&level);
-    // scene_root->position = v2(0);
-    // scene_root->rotation = degreesToRadians(180);
-    scene_root->Start();
     
 
     {
@@ -161,10 +159,6 @@ i32 main() {
 
         // const auto node3 = new TextureNode(&level, &image, 100 , 100);
         // scene_root->AddChild(node3);
-
-        const auto player_node = new PlayerNode(&level);
-        scene_root->AddChild(player_node);
-        level.player_node = player_node;
 
         auto sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         // sheet_node->position = level.camera.center;

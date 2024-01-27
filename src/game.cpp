@@ -1,9 +1,13 @@
 #include "include/game.h"
+#include "include/game_init.h"
 #include "include/stb_image.h"
 
 #include <assert.h>
 
-void game_Init(Level* level, u32 stage, Arena* arena)
+#include "include/arena.h"
+#include "include/game_nodes.h"
+
+void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
 {
     level->static_collider = 0;
     level->collider_count = 0;
@@ -57,8 +61,10 @@ void game_Init(Level* level, u32 stage, Arena* arena)
                 game_PushCollider(level, collider, true);
             }
             else if(type == Player){
-                level->player_node->aabb.position.x = x * TILE_SIZE;
-                level->player_node->aabb.position.y = y * TILE_SIZE;
+
+                const auto player_node = new PlayerNode(level);
+                player_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
+                scene_root->AddChild(player_node);
                 
             }
         }

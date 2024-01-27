@@ -3,7 +3,6 @@
 
 #include "include/types.h"
 #include "include/renderer.h"
-#include "include/arena.h"
 
 #define MAX_COLLIDERS 150
 #define TILE_SIZE 32
@@ -15,7 +14,8 @@ enum TileType
 {
     Floor = 0,
     Wall = 1,
-    Box = 2
+    Box = 2,
+    Player = 3
 };
 
 struct Camera
@@ -58,8 +58,7 @@ struct Level
     Camera camera;
 };
 
-void game_Init(Level* level, u32 stage, Arena* arena);
-void game_RenderGrid(CommandBuffer* cmd, 
+void game_RenderGrid(CommandBuffer* cmd,
                      Level* level, 
                      TextureHandle texture,
                      TextureHandle wall_texture);
