@@ -152,7 +152,8 @@ i32 main() {
         node3->position = v2(1);
         scene_root->AddChild(node3);
 
-        const auto player_node = new PlayerNode();
+        const auto player_node = new PlayerNode(&level);
+        scene_root->AddChild(player_node);
     }
 
 
