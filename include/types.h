@@ -26,6 +26,8 @@ struct V2
     V2 operator-(const V2& v2) const;
     V2 operator*(const float& value) const;
     float Magnitude();
+    float SqrMagnitude();
+    float ToRad();
     V2 Norm();
 };
 

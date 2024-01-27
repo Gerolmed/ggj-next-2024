@@ -23,6 +23,12 @@ V2 V2::operator*(const float &value) const {
 float V2::Magnitude() {
     return sqrtf(x * x + y * y);
 };
+float V2::SqrMagnitude() {
+    return x * x + y * y;
+};
+float V2::ToRad() {
+    return atan2(x, y);
+};
 
 V2 V2::Norm() {
     float magnitude = Magnitude();
