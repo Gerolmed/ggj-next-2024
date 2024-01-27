@@ -1,6 +1,8 @@
 #include "include/node.h"
 
-Node::Node() = default;
+Node::Node(Level* level): level(level) {
+
+}
 Node::~Node() {
     for (int i = children.size() - 1; i >= 0; --i) {
         auto child = children[i];
@@ -82,9 +84,9 @@ void Node::Update() {
     }
 }
 
-void Node::Render() {
+void Node::Render(CommandBuffer* buffer) {
     for (const auto& child : children) {
-        child->Render();
+        child->Render(buffer);
     }
 }
 
