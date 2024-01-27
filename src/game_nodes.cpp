@@ -3,6 +3,7 @@
 #include "include/input.h"
 #include "include/renderer.h"
 #include "include/time.h"
+#include "include/opengl_renderer.h"
 #include <stdio.h>
 
 
@@ -15,30 +16,42 @@ void TestNode::Update() {
 }
 
 
+PlayerNode::PlayerNode(Level* level) : Node(level) {
+    TextureHandle pp;
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/image.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
+    auto* texNode = new TextureNode(level, pp, 100, 100);
+
+    AddChild(texNode);
+}
+
+
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
 
 }
 void PlayerNode::Update() {
     auto movement = v2(0,0);
-    float speed = 1;
+    float speed = 200;
     if (input_KeyA.is_pressed) {
-        movement.x -= speed;
+        movement.x -= 1;
     }
     if (input_KeyD.is_pressed) {
-        movement.x += speed;
+        movement.x += 1;
     }
     if (input_KeyW.is_pressed) {
-        movement.y += speed;
+        movement.y += 1;
     }
     if (input_KeyS.is_pressed) {
-        movement.y -= speed;
+        movement.y -= 1;
     }
 
     movement = movement.Normalized();
 
 
-    position = position + movement * time_deltatime;
+    position = position + movement * (time_deltatime * speed);
 
     V2 localPos = GetAbsolutePosition();
     printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);

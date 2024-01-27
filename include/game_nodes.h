@@ -13,9 +13,7 @@ public:
 
 class PlayerNode : public Node {
 public:
-    explicit PlayerNode(Level* level)
-        : Node(level) {
-    }
+    explicit PlayerNode(Level* level);
     void PreUpdate() override;
     void Update() override;
 
