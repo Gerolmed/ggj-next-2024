@@ -1,4 +1,4 @@
-#include "include/physics.h"
+#include "include/game.h"
 
 
 V2 far_away = {INFINITY,INFINITY};
