@@ -14,7 +14,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
             path,
             &level->grid_width,
             &level->grid_height,
-            (int *) STBI_rgb,
+            NULL,
             STBI_rgb
     );
     assert(temp);
