@@ -21,6 +21,8 @@ public:
     Mat3f GetRelativeMatrix() const;
     Mat3f GetAbsoluteMatrix() const;
 
+    V2 GetAbsolutePosition();
+
     void AddChild(Node* child);
     void RemoveChild(Node* child);
 
