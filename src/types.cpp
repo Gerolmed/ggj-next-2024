@@ -11,7 +11,7 @@ Mat2f Mat2f::operator*(const Mat2f& other) const{
 
 V2 Mat2f::operator*(const V2& other) const{
     return {data[0]*other.x + data[1]*other.y,
-            data[2]*other.x + data[2]*other.y};
+            data[2]*other.x + data[3]*other.y};
 }
 
 

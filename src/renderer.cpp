@@ -116,35 +116,30 @@ bool PushQuad(CommandBuffer* buffer, V2 down_left,
               V2 up_right, V2 uv_down_left, V2 uv_up_right, 
               Mat2f rot, V3 color)
 {
-    V2 v1;
     V2 uv1;
-    v1.x = down_left.x;
-    v1.y = down_left.y;
+    V2 vert1 = rot * down_left;
     uv1.x = uv_down_left.x;
     uv1.y = uv_down_left.y;
 
-    V2 v2;
+    V2 v2o = v2(down_left.x, up_right.y);
+    V2 vert2 = rot * v2o;
     V2 uv2;
-    v2.x = down_left.x;
-    v2.y = up_right.y;
     uv2.x = uv_down_left.x;
     uv2.y = uv_up_right.y;
 
-    V2 v3;
+    V2 vert3 = rot * up_right;
     V2 uv3;
-    v3.x = up_right.x;
-    v3.y = up_right.y;
     uv3.x = uv_up_right.x;
     uv3.y = uv_up_right.y;
 
-    V2 v4;
+    V2 v4o = v2(up_right.x, down_left.y);
+    V2 vert4 = rot * v4o;
     V2 uv4;
-    v4.x = up_right.x;
-    v4.y = down_left.y;
     uv4.x = uv_up_right.x;
     uv4.y = uv_down_left.y;
 
-    return PushQuad(buffer, v1, v2, v3, v4, uv1, uv2, uv3, uv4, color);
+    return PushQuad(buffer, vert1, vert2, vert3, vert4, 
+                    uv1, uv2, uv3, uv4, color);
 }
 
 void renderer_PushSprite(CommandBuffer* buffer, 
