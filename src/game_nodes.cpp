@@ -56,10 +56,18 @@ void EnemyNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 
     renderer_PushBase(buffer, v2(0));
+
+    aabb.position = {INFINITY,INFINITY};
+
     float time = glfwGetTime();
 
-    V2 ray = v2(sin(0.3 * time), cos(0.3 * time));
+    V2 ray = v2(position.x + sin( time), position.y + cos(time));
     float t = game_Raycast(level, position, ray);
+    
+    renderer_PushLine(buffer, v2(position.x, position.y),
+                      v2(position.x + ray.x * t, position.y + ray.y * t), 30, 1, v3(0, 0, 1));
+    aabb.position = {position.x, position.y};
+
 
     renderer_PushLine(buffer, v2(0),
                       v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
@@ -78,8 +86,6 @@ void PlayerNode::PreUpdate() {
 void PlayerNode::Update() {
     auto movement = v2(0, 0);
     float speed = 300;
-    auto movement = v2(0,0);
-    float speed = 200;
     if (input_KeyA.is_pressed) {
         movement.x -= 1;
     }

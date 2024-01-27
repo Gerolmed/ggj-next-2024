@@ -26,7 +26,7 @@ public:
     explicit EnemyNode(Level* level);
     void PreUpdate() override;
     void Update() override;
-
+    void Render(CommandBuffer* buffer);
 private:
     AABB aabb;
 };
