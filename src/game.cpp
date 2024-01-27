@@ -40,6 +40,10 @@ void game_Init(Level* level, u32 stage, Arena* arena)
                 temp[index+1] == 57 &&
                 temp[index+2] == 39)
                 type = Box;
+            if (temp[index] == 255 &&
+                temp[index+1] == 0 &&
+                temp[index+2] == 0)
+                type = Player;
 
 
 
@@ -52,6 +56,11 @@ void game_Init(Level* level, u32 stage, Arena* arena)
                 collider.aabb.size.x = TILE_SIZE;
                 collider.aabb.size.y = TILE_SIZE;
                 game_PushCollider(level, collider, true);
+            }
+            else if(type == Player){
+                level->player_node->aabb.position.x = x * TILE_SIZE;
+                level->player_node->aabb.position.y = y * TILE_SIZE;
+                
             }
         }
     }
