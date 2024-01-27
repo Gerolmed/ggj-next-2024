@@ -18,6 +18,7 @@ public:
     void Update() override;
 
 private:
+    Node* rotation_root;
     AABB aabb;
 };
 

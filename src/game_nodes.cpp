@@ -61,14 +61,17 @@ void EnemyNode::Render(CommandBuffer* buffer){
 
 
 PlayerNode::PlayerNode(Level* level) : Node(level) {
+
     TextureHandle pp;
     TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/player/player_idle.png");
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
-    auto* texNode = new TextureNode(level, pp, 32, 32);
+    rotation_root = new Node(level);
+    AddChild(rotation_root);
 
-    AddChild(texNode);
+    auto* texNode = new TextureNode(level, pp, 32, 32);
+    rotation_root->AddChild(texNode);
 }
 
 
@@ -100,10 +103,12 @@ void PlayerNode::Update() {
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
     position = aabb.position + v2(9);
 
-    // position = position + movement * (time_deltatime * speed);
+    if(movement.SqrMagnitude() > 0.1f) {
+        // rotation_root->rotation = degreesToRadians(90);
+    }
 
-    V2 localPos = GetAbsolutePosition();
-    printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);
+    // V2 localPos = GetAbsolutePosition();
+    // printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);
     Node::Update();
 }
 
