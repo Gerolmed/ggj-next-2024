@@ -21,8 +21,8 @@ struct Camera
 struct Level
 {
     u8* grid;
-    u32 grid_width;
-    u32 grid_height;
+    i32 grid_width;
+    i32 grid_height;
 };
 
 
