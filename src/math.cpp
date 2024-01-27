@@ -19,8 +19,8 @@ V2 Mat2f::operator*(const V2& other) const{
 
 
 Mat2f rotationMatrix2f(float angle){
-    float s, c;
-    sincosf(angle,&s,&c);
+    float s = sinf(angle);
+    float c = cosf(angle);
     return {c,-s,s,c};
 }
 
@@ -54,16 +54,16 @@ Mat3f translationMatrix(V2 v2){
 }
 
 Mat3f rotationMatrix3f(float angle){
-    float s, c;
-    sincosf(angle, &s, &c);
+    float s = sinf(angle);
+    float c = cosf(angle);
     return {c, -s, 0,
             s, c, 0,
             0, 0, 1};
 }
 
 Mat3f rotationAndTranslationMatrix(V2 v2, float angle){
-    float s, c;
-    sincosf(angle, &s, &c);
+    float s = sinf(angle);
+    float c = cosf(angle);
     return {c, -s, v2.x,
             s, c, v2.y,
             0, 0, 1};

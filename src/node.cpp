@@ -6,8 +6,8 @@ Mat3f Node::GetAbsoluteMatrix() const {
 }
 
 Mat3f Node::GetRelativeMatrix() const {
-    float s, c;
-    sincosf(rotation, &s, &c);
+    float s = sinf(rotation);
+    float c = cosf(rotation);
     return Mat3f{{
                c, -s, position.x,
                s, c, position.y,
