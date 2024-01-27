@@ -33,7 +33,7 @@ bool AABB:: can_move(V2& v2, Level* level){
 }
 
 
-bool AABB::move_and_collide(V2& v2, Level* level){
+bool AABB::move_and_collide(V2 v2, Level* level){
     if(can_move(v2, level)){
         move_and_push_boxes(v2,level);
         return true;

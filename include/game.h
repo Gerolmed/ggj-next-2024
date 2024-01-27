@@ -30,7 +30,7 @@ struct AABB {
     bool intersects(AABB& other) const;
     AABB translate(V2& v2) const;
     //Tries to move. Fails if it hits a wall. Pushes all boxes in the way.
-    bool move_and_collide(V2& v2, Level* level);
+    bool move_and_collide(V2 v2, Level* level);
     //Checks whether it can move.
     bool can_move(V2& v2, Level* level);
     //Moves and pushes boxes, ignoring wall collisions.
@@ -61,7 +61,8 @@ struct Level
 void game_Init(Level* level, u32 stage, Arena* arena);
 void game_RenderGrid(CommandBuffer* cmd, 
                      Level* level, 
-                     TextureHandle texture);
+                     TextureHandle texture,
+                     TextureHandle wall_texture);
 void game_PushCollider(Level* level, Collider c, bool static_c);
 void game_ClearDynamicCollider(Level* level);
 

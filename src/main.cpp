@@ -225,7 +225,7 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderGrid(&cmd, &level, white);
+        game_RenderGrid(&cmd, &level, white, wall_texture);
 
         // Rune node tree lifecycle
         scene_root->TryPreUpdate();
