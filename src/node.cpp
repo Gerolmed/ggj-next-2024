@@ -1,4 +1,5 @@
 #include "include/node.h"
+#include <algorithm>
 
 Node::Node(Level* level): level(level) {
 

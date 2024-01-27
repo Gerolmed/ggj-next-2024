@@ -1,6 +1,5 @@
 #include "include/game.h"
 #include "include/stb_image.h"
-#include <string.h>
 
 #include <assert.h>
 
@@ -18,6 +17,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
             (int *) STBI_rgb,
             STBI_rgb
     );
+    assert(temp);
     level->grid = (u8*) push_size(arena, sizeof(u8) * level->grid_width * level->grid_height);
 
     for (u32 y = 0; y < level->grid_height; ++y) {
