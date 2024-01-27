@@ -19,6 +19,7 @@
 #include "include/renderer.h"
 #include "include/opengl_renderer.h"
 #include "include/game.h"
+#include "include/game_nodes.h"
 #include "include/node.h"
 
 struct Window {
@@ -139,8 +140,9 @@ i32 main() {
 
     auto node1 = new Node();
     node1->position = {1,1};
+    node1->rotation = degreesToRadians(180);
     node1->Start();
-    auto node2 = new Node();
+    auto node2 = new TestNode();
     node2->position = {2,2};
     node1->AddChild(node2);
 

@@ -26,6 +26,12 @@ Mat3f Node::GetRelativeMatrix() const {
            }};
 }
 
+V2 Node::GetAbsolutePosition() {
+    V2 localPos = {0,0};
+    return GetAbsoluteMatrix() * localPos;
+}
+
+
 
 void Node::AddChild(Node* child) {
     children.push_back(child);

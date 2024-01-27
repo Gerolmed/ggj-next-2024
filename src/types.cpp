@@ -41,6 +41,10 @@ V3 Mat3f::operator*(const V3& other) const{
             data[3]*other.x+data[4]*other.y+data[5]*other.z,
             data[6]*other.x+data[7]*other.y+data[8]*other.z};
 }
+V2 Mat3f::operator*(const V2& other) const{
+    return {data[0]*other.x+data[1]*other.y+data[2]*1,
+            data[3]*other.x+data[4]*other.y+data[5]*1};
+}
 
 
 
