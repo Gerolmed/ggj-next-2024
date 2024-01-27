@@ -20,6 +20,7 @@
 #include "include/opengl_renderer.h"
 #include "include/game.h"
 #include "include/game_nodes.h"
+#include "include/input.h"
 #include "include/node.h"
 #include "include/time.h"
 
@@ -169,6 +170,9 @@ i32 main() {
         float time = glfwGetTime();
         time_deltatime = time - lastFrame;
         lastFrame = time;
+
+        // Update input keys
+        input_UpdateAll(global_window.handle);
 
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
