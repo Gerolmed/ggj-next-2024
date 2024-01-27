@@ -3,6 +3,8 @@
 #include "include/types.h"
 
 
+
+
 struct AABB {
     V2 position;
     V2 size;
@@ -10,6 +12,8 @@ struct AABB {
     bool intersects(AABB& other) const;
     
     AABB translate(V2& v2) const;
+
+    bool move_and_collide(V2& v2);
 
 };
 
