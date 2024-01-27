@@ -139,14 +139,14 @@ i32 main() {
     float lastFrame = 0.0f;
 
     auto node1 = new Node(&level);
-    node1->position = {1,1};
+    node1->position = v2(1);
     node1->rotation = degreesToRadians(180);
     node1->Start();
     const auto node2 = new TestNode(&level);
-    node2->position = {2,2};
+    node2->position = v2(2);
     node1->AddChild(node2);
     const auto node3 = new TextureNode(&level, &image, 100 , 100);
-    node3->position = {1,1};
+    node3->position = v2(1);
     node1->AddChild(node3);
 
     while (!glfwWindowShouldClose(global_window.handle)) {
