@@ -1,11 +1,11 @@
 #include "include/node.h"
 
-Mat3f Node::getAbsoluteMatrix() const {
-    if (parent == nullptr) return getRelativeMatrix();
-    return parent->getAbsoluteMatrix() * getRelativeMatrix();
+Mat3f Node::GetAbsoluteMatrix() const {
+    if (parent == nullptr) return GetRelativeMatrix();
+    return parent->GetAbsoluteMatrix() * GetRelativeMatrix();
 }
 
-Mat3f Node::getRelativeMatrix() const {
+Mat3f Node::GetRelativeMatrix() const {
     float s, c;
     sincosf(rotation, &s, &c);
     return Mat3f{{

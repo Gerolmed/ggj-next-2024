@@ -13,11 +13,11 @@ public:
     Node* parent = nullptr;
 	V2 position = V2();
     float rotation = 0;
+    Node* children[20];
+    int child_count = 0;
 
-
-
-    Mat3f getRelativeMatrix() const;
-    Mat3f getAbsoluteMatrix() const;
+    Mat3f GetRelativeMatrix() const;
+    Mat3f GetAbsoluteMatrix() const;
 
     virtual void update();
     virtual void render();
