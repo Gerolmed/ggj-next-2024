@@ -28,7 +28,7 @@ bool AABB:: can_move(V2& v2, Level* level){
             }
         }
     }
-    position = newAABB.position;
+    position = old_position;
     return true;
 }
 
