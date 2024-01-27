@@ -27,7 +27,7 @@
 struct Window {
     int width;
     int height;
-    GLFWwindow* handle;
+    GLFWwindow *handle;
 };
 
 const float game_width = 960;
@@ -35,7 +35,7 @@ const float game_height = 540;
 
 Window global_window;
 
-void resize_cb(GLFWwindow* window, int width, int height) {
+void resize_cb(GLFWwindow *window, int width, int height) {
     global_window.width = width;
     global_window.height = height;
 }
@@ -54,7 +54,7 @@ void init_window() {
 #else
     global_window.width = 960;
     global_window.height = 540;
-    GLFWmonitor* monitor = NULL;
+    GLFWmonitor *monitor = NULL;
 #endif
     global_window.handle = glfwCreateWindow(global_window.width,
                                             global_window.height,
@@ -83,11 +83,11 @@ i32 main() {
     init_arena(&arena, &pool);
 
     u32 vertex_count = 10000;
-    Vertex* vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
+    Vertex *vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
     u32 index_count = 10000;
-    u32* index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
+    u32 *index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
     u32 cmd_len = 10000;
-    u8* cmd_memory = (u8 *) push_size(&arena, cmd_len);
+    u8 *cmd_memory = (u8 *) push_size(&arena, cmd_len);
 
     audio_Setup();
     AudioHandle song = audio_Load("audio/CantinaBand60.wav");
@@ -109,6 +109,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle wall_texture;
+    load_op = renderer_TextureLoadOp(&animated_image, "assets/player/test-animation.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
@@ -126,18 +131,18 @@ i32 main() {
     game_Init(&level, 1, &arena);
 
     Mat4 projection = glm::ortho(
-        -game_width / 2,
-        game_width / 2,
-        -game_height / 2,
-        game_height / 2,
-        .1f,
-        1000.0f
+            -game_width / 2,
+            game_width / 2,
+            -game_height / 2,
+            game_height / 2,
+            .1f,
+            1000.0f
     );
 
     Mat4 view = glm::lookAt(
-        glm::vec3(0, 0, 100),
-        glm::vec3(0, 0, 0),
-        glm::vec3(0, 1, 0)
+            glm::vec3(0, 0, 100),
+            glm::vec3(0, 0, 0),
+            glm::vec3(0, 1, 0)
     );
 
     Mat4 proj = projection * view;
@@ -166,20 +171,20 @@ i32 main() {
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{100,0};
+        sheet_node->position = V2{100, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->visible = false;
         sheet_node->current_frame = 2;
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{200,0};
+        sheet_node->position = V2{200, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 3;
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{-100,0};
+        sheet_node->position = V2{-100, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 0;
         scene_root->AddChild(sheet_node);
@@ -257,7 +262,9 @@ i32 main() {
 }
 
 #ifdef WINDOWS
+
 i32 WinMain() {
     return main();
 }
+
 #endif
