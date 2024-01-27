@@ -15,18 +15,6 @@ void TestNode::Update() {
     // printf("Update test (Pressed: %d, Up: %d, Down: %d)\n", input_KeySpace.is_pressed, input_KeySpace.up, input_KeySpace.down);
 }
 
-
-PlayerNode::PlayerNode(Level* level) : Node(level) {
-    TextureHandle pp;
-    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/player/player_idle.png");
-    opengl_LoadTexture(&load_op);
-    renderer_FreeTextureLoadOp(&load_op);
-
-    auto* texNode = new TextureNode(level, pp, 32, 32);
-
-    AddChild(texNode);
-}
-
 EnemyNode::EnemyNode(Level* level) : Node(level) {
     TextureHandle pp;
     TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/enemy.png");
@@ -55,15 +43,13 @@ void EnemyNode::Update() {
 void EnemyNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 
-    renderer_PushBase(buffer, v2(0));
-
     aabb.position = {INFINITY,INFINITY};
 
     float time = glfwGetTime();
 
     V2 ray = v2(position.x + sin( time), position.y + cos(time));
     float t = game_Raycast(level, position, ray);
-    
+
     renderer_PushLine(buffer, v2(position.x, position.y),
                       v2(position.x + ray.x * t, position.y + ray.y * t), 30, 1, v3(0, 0, 1));
     aabb.position = {position.x, position.y};
@@ -74,12 +60,22 @@ void EnemyNode::Render(CommandBuffer* buffer){
 }
 
 
+PlayerNode::PlayerNode(Level* level) : Node(level) {
+    TextureHandle pp;
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/player/player_idle.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
+    auto* texNode = new TextureNode(level, pp, 32, 32);
+
+    AddChild(texNode);
+}
+
+
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
     aabb.position = position - v2(9);
     aabb.size = {18, 18};
-    aabb.position = position;
-    aabb.size = { 32, 32 };
 
 }
 
@@ -102,7 +98,7 @@ void PlayerNode::Update() {
     movement = movement.Norm();
 
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb.position;
+    position = aabb.position + v2(9);
 
     // position = position + movement * (time_deltatime * speed);
 
