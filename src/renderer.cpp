@@ -99,11 +99,11 @@ bool PushQuad(CommandBuffer* buffer,
     buffer->vertex_buffer[curr + 3].uv.y = uv4.y;
     buffer->vertex_buffer[curr + 3].color = color;
 
-    buffer->index_buffer[index + 0] = curr + 0;
-    buffer->index_buffer[index + 1] = curr + 1;
-    buffer->index_buffer[index + 2] = curr + 2;
-    buffer->index_buffer[index + 3] = curr + 1;
-    buffer->index_buffer[index + 4] = curr + 2;
+    buffer->index_buffer[index + 0] = curr + 1;
+    buffer->index_buffer[index + 1] = curr + 2;
+    buffer->index_buffer[index + 2] = curr + 0;
+    buffer->index_buffer[index + 3] = curr + 2;
+    buffer->index_buffer[index + 4] = curr + 0;
     buffer->index_buffer[index + 5] = curr + 3;
 
     buffer->vertex_curr += 4;
@@ -112,8 +112,9 @@ bool PushQuad(CommandBuffer* buffer,
     return true;
 }
 
-bool PushQuad(CommandBuffer* buffer, V2 down_left, V2 up_right, V3 color, 
-              V2 uv_down_left, V2 uv_up_right)
+bool PushQuad(CommandBuffer* buffer, V2 down_left, 
+              V2 up_right, V2 uv_down_left, V2 uv_up_right, 
+              Mat2f rot, V3 color)
 {
     V2 v1;
     V2 uv1;
@@ -147,9 +148,9 @@ bool PushQuad(CommandBuffer* buffer, V2 down_left, V2 up_right, V3 color,
 }
 
 void renderer_PushSprite(CommandBuffer* buffer, 
-                         V2 v1, V2 v2, V2 v3, V2 v4, 
-                         V2 uv1, V2 uv2, V2 uv3, V2 uv4, 
-                         V3 color, TextureHandle* texture)
+                         V2 down_left, V2 up_right, 
+                         V2 uv_down_left, V2 uv_up_right,
+                         Mat2f rot, V3 color, TextureHandle* texture)
 {
     if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
         printf("Warning: Buffer size exceeded on draw\n");
@@ -172,9 +173,9 @@ void renderer_PushSprite(CommandBuffer* buffer,
     draw->type = QuadTypeSprite;
 
     if (PushQuad(buffer, 
-                 v1, v2, v3, v4, 
-                 uv1, uv2, uv3, uv4, 
-                 color)) {
+                 down_left, up_right,
+                 uv_down_left, uv_up_right,
+                 rot, color)) {
         buffer->curr_len += sizeof(CommandEntry_DrawQuads);
     }
 }

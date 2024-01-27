@@ -18,6 +18,7 @@
 #include "include/audio.h"
 #include "include/renderer.h"
 #include "include/opengl_renderer.h"
+#include "include/game.h"
 
 struct Window {
     int width;
@@ -115,6 +116,9 @@ i32 main()
     // ImGui_ImplGlfw_InitForOpenGL(global_window.handle, true);
     // ImGui_ImplOpenGL3_Init();
 
+    Level level;
+    game_Init(&level);
+
     Mat4 projection = glm::ortho(
         -game_width / 2, 
         game_width / 2, 
@@ -151,12 +155,14 @@ i32 main()
 
         renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
 
-        renderer_PushSprite(&cmd, 
-                            v2(-30), v2(-30, 30), v2(30), v2(30, -30), 
-                            v2(0), v2(1), 
-                            v3(0, 1, 0), &white);
-        renderer_PushString(&cmd, &font, "Font rendering, gg!", 
-                            v2(sin(time) * 150, cos(time) * 150));
+        // renderer_PushSprite(&cmd, 
+        //                     v2(-30), v2(-30, 30), v2(30), v2(30, -30), 
+        //                     v2(0), v2(1), 
+        //                     v3(0, 1, 0), &white);
+        // renderer_PushString(&cmd, &font, "Font rendering, gg!", 
+        //                     v2(sin(time) * 150, cos(time) * 150));
+
+        game_RenderGrid(&cmd, &level, &white);
 
         renderer_PushPostprocessPass(&cmd);
 

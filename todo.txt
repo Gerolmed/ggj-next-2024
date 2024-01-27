@@ -1,20 +1,13 @@
-Z sorting
+Vision system
+    Rendering
 
-Bloom
+Map loading
 
-Add Imgui
+Npc and player movement
+Box movment
 
-Mouse
-Better sound interface?
+Matrix
+Gamplay concept
 
-
-Beyond the gamejam
-    Move window to renderer impl
-    Profiling
-        glBufferData / glMapBuffer
-        discard
-    Rework arena allocator. Shit's disgusting
-    Vertex attrib alignment
-    Webassembly???
-    Vulkan renderer
+Art
 
