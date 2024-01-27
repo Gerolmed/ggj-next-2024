@@ -132,6 +132,10 @@ void renderer_PushSprite(CommandBuffer* buffer,
 void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
                        float depth, float width, V3 color);
 
+void renderer_PushOutline(CommandBuffer* buffer, 
+                          V2 down_left, V2 up_right, float depth, 
+                          float width, V3 color);
+
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
                          V2 pos, float depth);
 

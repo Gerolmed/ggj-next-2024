@@ -222,6 +222,27 @@ void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end,
     }
 }
 
+void renderer_PushOutline(CommandBuffer* buffer, 
+                          V2 down_left, V2 up_right, float depth, 
+                          float width, V3 color)
+{
+    renderer_PushLine(buffer, down_left, 
+                      v2(down_left.x, up_right.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, down_left, 
+                      v2(up_right.x, down_left.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, up_right, 
+                      v2(up_right.x, down_left.y), depth, 
+                      width, color);
+
+    renderer_PushLine(buffer, up_right, 
+                      v2(down_left.x, up_right.y), depth, 
+                      width, color);
+}
+
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
                          V2 pos, float depth)
 {

@@ -45,7 +45,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 
             level->grid[index/3] = type;
 
-            if (type == Box) {
+            if (type == Box || type == Wall) {
                 Collider collider;
                 collider.aabb.position.x = x * TILE_SIZE;
                 collider.aabb.position.y = y * TILE_SIZE;
