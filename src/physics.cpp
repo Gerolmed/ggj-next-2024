@@ -1,5 +1,9 @@
 #include "include/physics.h"
 
+AABB bounding_boxes[50];
+
+V2 far_away = {INFINITY,INFINITY};
+V2 zero = {0,0};
 
 bool AABB::intersects(AABB& other) const{
     bool intersectsX =  position.x <= (other.position.x + other.size.x) && 
@@ -12,3 +16,24 @@ bool AABB::intersects(AABB& other) const{
 AABB AABB::translate(V2& v2) const{
     return {{position.x+v2.x, position.y + v2.y}, size};
 }
+
+bool AABB::move_and_collide(V2& v2){
+    AABB newAABB = translate(v2);
+    V2 old_position = position;
+    position = far_away;
+    for(AABB other : bounding_boxes){
+        if(newAABB.intersects(other)){
+            position = old_position;
+            return false;
+        }
+    }
+    position = newAABB.position;
+    return true;
+}
+
+
+
+
+
+
+
