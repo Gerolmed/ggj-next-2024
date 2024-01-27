@@ -11,7 +11,7 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
 {
     level->static_collider = 0;
     level->collider_count = 0;
-    level->camera.center = v2(10.5 * TILE_SIZE, 5.5 * TILE_SIZE);
+    level->camera.center = v2(10.5 * TILE_SIZE, 10.5 * TILE_SIZE);
 
     char path[1024];
     sprintf(path,"assets/stages/%d.png",stage);
@@ -65,7 +65,7 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
                 const auto player_node = new PlayerNode(level);
                 player_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
                 scene_root->AddChild(player_node);
-                
+
             }
         }
     }
@@ -114,6 +114,7 @@ u8 GetSpriteIdFromGridPos(Level* level,u32 x, u32 y, u8 type) {
         case 0b00011111: return 10;
         case 0b00010110: return 11;
 
+        case 0b01000110:
         case 0b01000010: return 12;
         case 0b01001010: return 13;
         case 0b01011010: return 14;
@@ -141,7 +142,8 @@ u8 GetSpriteIdFromGridPos(Level* level,u32 x, u32 y, u8 type) {
 
         case 0b00000000: return 36;
         case 0b00001000: return 37;
-        case 0b00011000: return 38;
+        case 0b00011000:
+        case 0b00011001: return 38;
         case 0b00010000: return 39;
         case 0b01011110: return 40;
         case 0b01111000: return 41;
@@ -174,11 +176,12 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,Tex
             if (type == Wall) {
 
                 const u8 current_frame = GetSpriteIdFromGridPos(level, x, y, type);
-                printf("x:%d y:%d id:%d\n", x, y,current_frame);
-                const float item_height = 1.0f / 4;
-                const float item_width = 1.0f / 12;
-                const float remainingX = current_frame % 12;
-                const V2 uv_bot_left = V2{remainingX * item_width, ((current_frame - remainingX) / 12 + 1) * item_height};
+                const int rows = 4;
+                const int columns = 12;
+                const float item_height = 1.0f / rows;
+                const float item_width = 1.0f / columns;
+                const float remainingX = current_frame % columns;
+                const V2 uv_bot_left = V2{remainingX * item_width, (rows - ((current_frame - remainingX) / columns + 1)) * item_height};
                 const V2 uv_top_right = uv_bot_left + V2{item_width, item_height};
 
 
@@ -192,7 +195,7 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,Tex
             if (type == Box) {
                 color = v3(0.3, 0.225, 0.15);
             }
-            renderer_PushSprite(cmd, v2(x * TILE_SIZE, y * TILE_SIZE), 
+            renderer_PushSprite(cmd, v2(x * TILE_SIZE, y * TILE_SIZE),
                                 v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE),
                                 0,
                                 v2(0), v2(1),
