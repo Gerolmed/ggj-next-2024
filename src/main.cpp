@@ -19,6 +19,7 @@
 #include "include/renderer.h"
 #include "include/opengl_renderer.h"
 #include "include/game.h"
+#include "include/node.h"
 
 struct Window {
     int width;
@@ -31,14 +32,12 @@ const float game_height = 540;
 
 Window global_window;
 
-void resize_cb(GLFWwindow *window, int width, int height)
-{
+void resize_cb(GLFWwindow* window, int width, int height) {
     global_window.width = width;
     global_window.height = height;
 }
 
-void init_window() 
-{
+void init_window() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -64,13 +63,12 @@ void init_window()
         exit(1);
     }
 
-    glfwSetFramebufferSizeCallback(global_window.handle, 
+    glfwSetFramebufferSizeCallback(global_window.handle,
                                    resize_cb);
     glfwMakeContextCurrent(global_window.handle);
 }
 
-i32 main() 
-{
+i32 main() {
 #ifdef DEBUG
     printf("Running Debug build\n");
 #endif
@@ -82,11 +80,11 @@ i32 main()
     init_arena(&arena, &pool);
 
     u32 vertex_count = 10000;
-    Vertex* vertex_buffer = (Vertex*) push_size(&arena, sizeof(Vertex) * vertex_count);
+    Vertex* vertex_buffer = (Vertex *) push_size(&arena, sizeof(Vertex) * vertex_count);
     u32 index_count = 10000;
-    u32* index_buffer = (u32*) push_size(&arena, sizeof(u32) * index_count);
+    u32* index_buffer = (u32 *) push_size(&arena, sizeof(u32) * index_count);
     u32 cmd_len = 10000;
-    u8* cmd_memory = (u8*) push_size(&arena, cmd_len);
+    u8* cmd_memory = (u8 *) push_size(&arena, cmd_len);
 
     audio_Setup();
     AudioHandle song = audio_Load("audio/CantinaBand60.wav");
@@ -120,10 +118,10 @@ i32 main()
     game_Init(&level, 0, &arena);
 
     Mat4 projection = glm::ortho(
-        -game_width / 2, 
-        game_width / 2, 
-        -game_height / 2, 
-        game_height / 2, 
+        -game_width / 2,
+        game_width / 2,
+        -game_height / 2,
+        game_height / 2,
         .1f,
         1000.0f
     );
@@ -139,6 +137,13 @@ i32 main()
     float delta = 0.0f;
     float lastFrame = 0.0f;
 
+    auto node1 = new Node();
+    node1->position = {1,1};
+    node1->Start();
+    auto node2 = new Node();
+    node2->position = {2,2};
+    node1->AddChild(node2);
+
     while (!glfwWindowShouldClose(global_window.handle)) {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(global_window.handle, true);
@@ -148,7 +153,7 @@ i32 main()
         delta = time - lastFrame;
         lastFrame = time;
 
-        CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory, 
+        CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
                                             index_count, index_buffer,
                                             proj, global_window.width, global_window.height);
@@ -168,12 +173,14 @@ i32 main()
 
         opengl_RenderCommands(&cmd);
 
+        node1->Update();
+        node1->Render();
         // TODO: Setup imgui
         // ImGui_ImplOpenGL3_NewFrame();
         // ImGui_ImplGlfw_NewFrame();
         // ImGui::NewFrame();
         // ImGui::ShowDemoWindow();
-        
+
         // TODO: Setup
         // ImGui::Render();
         // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -187,8 +194,7 @@ i32 main()
 }
 
 #ifdef WINDOWS
-i32 WinMain()
-{
+i32 WinMain() {
     return main();
 }
 #endif
