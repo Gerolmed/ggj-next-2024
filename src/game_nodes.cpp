@@ -54,10 +54,15 @@ void PlayerNode::Update() {
 
     movement = movement.Norm();
 
+<<<<<<< HEAD
+    // aabb.move_and_collide(movement * (time_deltatime * speed), level);
+    // position = aabb.position;
+=======
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
     position = aabb.position;
+>>>>>>> bdc211406eedf936fc28bb31cbf16b311c8c7f5a
 
-    //position = position + movement * (time_deltatime * speed);
+    position = position + movement * (time_deltatime * speed);
 
     V2 localPos = GetAbsolutePosition();
     printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);

@@ -213,7 +213,7 @@ void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end,
     V2 vert3 = v2(end.x - side.x, end.y - side.y);
     V2 uv3 = v2(1);
 
-    V2 vert4 = v2(end.x + side.x, end.y - side.y);
+    V2 vert4 = v2(end.x + side.x, end.y + side.y);
     V2 uv4 = v2(1, 0);
 
     if (PushQuad(buffer, vert1, vert2, vert3, vert4, depth, 
