@@ -7,10 +7,12 @@ void game_Init(Level* level, u32 stage, Arena* arena)
     level->static_collider = 0;
     level->collider_count = 0;
 
+    // Start test level
     level->grid_width = 10;
     level->grid_height = 10;
     level->grid = (u8*) push_size(arena, 
-                sizeof(u8) * level->grid_width * level->grid_height);
+                                  sizeof(u8) * level->grid_width * level->grid_height);
+
     for (u32 y = 0; y < level->grid_height; ++y) {
         for (u32 x = 0; x < level->grid_width; ++x) {
             u8 type = 0;
@@ -32,6 +34,8 @@ void game_Init(Level* level, u32 stage, Arena* arena)
     level->grid[4 + level->grid_width * 3] = 1;
     level->grid[5 + level->grid_width * 3] = 1;
     level->grid[4 + level->grid_width * 4] = 1;
+
+    // End test level
 }
 
 void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
