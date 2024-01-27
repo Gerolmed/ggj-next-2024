@@ -18,7 +18,7 @@ public:
     void Update() override;
 
 private:
-    AABB* aabb;
+    AABB aabb;
 };
 
 

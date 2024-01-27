@@ -7,7 +7,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 {
     level->static_collider = 0;
     level->collider_count = 0;
-    level->camera.center = v2(2 * TILE_SIZE, 5 * TILE_SIZE);
+    level->camera.center = v2(10 * TILE_SIZE, 5 * TILE_SIZE);
 
     char path[1024];
     sprintf(path,"assets/stages/%d.png",stage);
