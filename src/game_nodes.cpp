@@ -32,8 +32,8 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
 
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
-    aabb->position = position;
-    aabb->size = { 32, 32 };
+    aabb.position = position;
+    aabb.size = { 32, 32 };
 
 }
 void PlayerNode::Update() {
@@ -54,8 +54,8 @@ void PlayerNode::Update() {
 
     movement = movement.Norm();
 
-    aabb->move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb->position;
+    aabb.move_and_collide(movement * (time_deltatime * speed), level);
+    position = aabb.position;
 
     //position = position + movement * (time_deltatime * speed);
 
