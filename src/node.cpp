@@ -84,20 +84,32 @@ void Node::Stop() {
 }
 
 
+void Node::TryUpdate() {
+    if(!updating) return;
+    Update();
+}
+void Node::TryPreUpdate() {
+    if(!updating) return;
+    PreUpdate();
+}
 void Node::Update() {
     for (const auto& child : children) {
-        child->Update();
+        child->TryUpdate();
     }
 }
 void Node::PreUpdate() {
     for (const auto& child : children) {
-        child->PreUpdate();
+        child->TryPreUpdate();
     }
 }
 
+void Node::TryRender(CommandBuffer* buffer) {
+    if(!visible) return;
+    Render(buffer);
+}
 void Node::Render(CommandBuffer* buffer) {
     for (const auto& child : children) {
-        child->Render(buffer);
+        child->TryRender(buffer);
     }
 }
 

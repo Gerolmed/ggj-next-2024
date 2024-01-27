@@ -38,4 +38,35 @@ public:
     void Render(CommandBuffer* buffer) override;
 };
 
+class SpritesheetNode: public Node {
+public:
+    explicit SpritesheetNode(Level* level, TextureHandle* texture_handle, int width, int height, int rows, int columns);
+
+    TextureHandle* texture_handle;
+    int width;
+    int height;
+    const int rows;
+    const int columns;
+    int current_frame = 0;
+
+    void Render(CommandBuffer* buffer) override;
+
+private:
+    float item_height;
+    float item_width;
+};
+
+class AnimatedSpriteNode: public SpritesheetNode {
+public:
+    float seconds_per_frame = 1;
+    int frame_count;
+
+    explicit AnimatedSpriteNode(Level* level, TextureHandle* texture_handle, int width, int height, int rows, int columns);
+
+
+    void Update() override;
+private:
+    float currentDelta = 0;
+};
+
 #endif //GAME_NODES_H

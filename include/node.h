@@ -18,6 +18,8 @@ public:
 	V2 position = V2();
     float rotation = 0;
     bool started = false;
+    bool visible = true;
+    bool updating = true;
 
     std::vector<Node*> children = {};
 
@@ -38,11 +40,16 @@ public:
 
     virtual void Start();
 
+    void TryPreUpdate();
+    void TryUpdate();
+    void TryRender(CommandBuffer* buffer);
+
+    virtual void Stop();
+protected:
+
     virtual void PreUpdate();
     virtual void Update();
     virtual void Render(CommandBuffer* buffer);
-
-    virtual void Stop();
 };
 
 #endif //NODE_H
