@@ -57,9 +57,6 @@ void PlayerNode::Update() {
     // aabb.move_and_collide(movement * (time_deltatime * speed), level);
     // position = aabb.position;
 
-    aabb.move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb.position;
-
     position = position + movement * (time_deltatime * speed);
 
     V2 localPos = GetAbsolutePosition();
