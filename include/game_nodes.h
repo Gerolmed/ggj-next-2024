@@ -21,6 +21,16 @@ private:
     AABB aabb;
 };
 
+class EnemyNode : public Node {
+public:
+    explicit EnemyNode(Level* level);
+    void PreUpdate() override;
+    void Update() override;
+
+private:
+    AABB aabb;
+};
+
 
 
 class TextureNode: public Node {
