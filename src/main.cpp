@@ -104,6 +104,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle animated_image;
+    load_op = renderer_TextureLoadOp(&animated_image, "assets/player/test-animation.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
@@ -140,21 +145,22 @@ i32 main() {
     float lastFrame = 0.0f;
 
     const auto scene_root = new Node(&level);
-    scene_root->position = v2(1);
-    scene_root->rotation = degreesToRadians(180);
+    scene_root->position = v2(0);
+    // scene_root->rotation = degreesToRadians(180);
     scene_root->Start();
 
     {
         const auto node2 = new TestNode(&level);
-        node2->position = v2(2);
         scene_root->AddChild(node2);
 
-        const auto node3 = new TextureNode(&level, &image, 100 , 100);
-        node3->position = v2(1);
-        scene_root->AddChild(node3);
+        // const auto node3 = new TextureNode(&level, &image, 100 , 100);
+        // scene_root->AddChild(node3);
 
         const auto player_node = new PlayerNode(&level);
         scene_root->AddChild(player_node);
+
+        const auto sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        scene_root->AddChild(sheet_node);
     }
 
 

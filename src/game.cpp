@@ -75,10 +75,10 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
             }
             if (type == Box) {
                 renderer_PushSprite(cmd,
-                                    v2(x * TILE_SIZE - level->camera.center_x,
-                                       y * TILE_SIZE - level->camera.center_y),
-                                    v2((x + 1) * TILE_SIZE - level->camera.center_x,
-                                       (y + 1) * TILE_SIZE - level->camera.center_y),
+                                    v2(x * TILE_SIZE - level->camera.center.x,
+                                       y * TILE_SIZE - level->camera.center.y),
+                                    v2((x + 1) * TILE_SIZE - level->camera.center.x,
+                                       (y + 1) * TILE_SIZE - level->camera.center.y),
                                     v2(0), v2(1),
                                     mat2(1), v3(0.3, 0.225, 0.15), texture);
             }
