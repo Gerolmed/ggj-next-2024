@@ -145,7 +145,7 @@ i32 main() {
     float lastFrame = 0.0f;
 
     const auto scene_root = new Node(&level);
-    scene_root->position = v2(0);
+    // scene_root->position = v2(0);
     // scene_root->rotation = degreesToRadians(180);
     scene_root->Start();
 
@@ -159,7 +159,29 @@ i32 main() {
         const auto player_node = new PlayerNode(&level);
         scene_root->AddChild(player_node);
 
-        const auto sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        auto sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        // sheet_node->position = level.camera.center;
+        sheet_node->seconds_per_frame = 0.1f;
+        sheet_node->current_frame = 1;
+        scene_root->AddChild(sheet_node);
+
+        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node->position = V2{100,0};
+        sheet_node->seconds_per_frame = 0.1f;
+        sheet_node->visible = false;
+        sheet_node->current_frame = 2;
+        scene_root->AddChild(sheet_node);
+
+        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node->position = V2{200,0};
+        sheet_node->seconds_per_frame = 0.1f;
+        sheet_node->current_frame = 3;
+        scene_root->AddChild(sheet_node);
+
+        sheet_node = new AnimatedSpriteNode(&level, &animated_image, 100, 100, 2, 3);
+        sheet_node->position = V2{-100,0};
+        sheet_node->seconds_per_frame = 0.1f;
+        sheet_node->current_frame = 0;
         scene_root->AddChild(sheet_node);
     }
 
@@ -200,13 +222,13 @@ i32 main() {
         game_RenderGrid(&cmd, &level, &white);
 
         // Rune node tree lifecycle
-        scene_root->PreUpdate();
-        scene_root->Update();
+        scene_root->TryPreUpdate();
+        scene_root->TryUpdate();
 
         float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
         printf("Got distance: %f\n", t);
 
-        scene_root->Render(&cmd);
+        scene_root->TryRender(&cmd);
 
         // Queue post processing
         renderer_PushPostprocessPass(&cmd);

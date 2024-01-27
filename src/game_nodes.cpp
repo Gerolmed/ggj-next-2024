@@ -61,8 +61,8 @@ AnimatedSpriteNode::AnimatedSpriteNode(Level* level, TextureHandle* texture_hand
 
 void AnimatedSpriteNode::Update() {
     currentDelta += time_deltatime;
-    while (currentDelta > framesPerSecond) {
-        currentDelta -= framesPerSecond;
+    while (currentDelta > seconds_per_frame) {
+        currentDelta -= seconds_per_frame;
         current_frame = (current_frame + 1) % frame_count;
     }
     SpritesheetNode::Update();

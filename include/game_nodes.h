@@ -58,7 +58,7 @@ private:
 
 class AnimatedSpriteNode: public SpritesheetNode {
 public:
-    float framesPerSecond = 1;
+    float seconds_per_frame = 1;
     int frame_count;
 
     explicit AnimatedSpriteNode(Level* level, TextureHandle* texture_handle, int width, int height, int rows, int columns);
