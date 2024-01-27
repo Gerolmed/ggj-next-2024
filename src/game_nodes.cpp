@@ -1,5 +1,6 @@
 #include "include/game_nodes.h"
 
+#include "include/input.h"
 #include "include/renderer.h"
 
 
@@ -7,7 +8,8 @@ void TestNode::Update() {
     Node::Update();
 
     // V2 localPos = GetAbsolutePosition();
-    // printf("Render test (X: %f, Y: %f)\n", localPos.x, localPos.y);
+    // printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);
+    // printf("Update test (Pressed: %d, Up: %d, Down: %d)\n", input_KeySpace.is_pressed, input_KeySpace.up, input_KeySpace.down);
 }
 
 
