@@ -151,6 +151,8 @@ i32 main() {
         const auto node3 = new TextureNode(&level, &image, 100 , 100);
         node3->position = v2(1);
         scene_root->AddChild(node3);
+
+        const auto player_node = new PlayerNode();
     }
 
 

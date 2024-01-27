@@ -11,6 +11,15 @@ void TestNode::Update() {
 }
 
 
+void PlayerNode::PreUpdate() {
+    Node::PreUpdate();
+
+}
+void PlayerNode::Update() {
+    Node::Update();
+
+}
+
 void TextureNode::Render(CommandBuffer* buffer) {
     Node::Render(buffer);
     const V2 down_left = V2{-std::ceil(width/2.0f), -std::ceil(height/2.0f)} + GetAbsolutePosition();
