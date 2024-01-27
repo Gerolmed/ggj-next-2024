@@ -138,18 +138,20 @@ i32 main() {
     float delta = 0.0f;
     float lastFrame = 0.0f;
 
-    auto node1 = new Node(&level);
-    node1->position = v2(1);
-    node1->rotation = degreesToRadians(180);
-    node1->Start();
+    const auto scene_root = new Node(&level);
+    scene_root->position = v2(1);
+    scene_root->rotation = degreesToRadians(180);
+    scene_root->Start();
 
-    const auto node2 = new TestNode(&level);
-    node2->position = v2(2);
-    node1->AddChild(node2);
+    {
+        const auto node2 = new TestNode(&level);
+        node2->position = v2(2);
+        scene_root->AddChild(node2);
 
-    const auto node3 = new TextureNode(&level, &image, 100 , 100);
-    node3->position = v2(1);
-    node1->AddChild(node3);
+        const auto node3 = new TextureNode(&level, &image, 100 , 100);
+        node3->position = v2(1);
+        scene_root->AddChild(node3);
+    }
 
     while (!glfwWindowShouldClose(global_window.handle)) {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -167,17 +169,17 @@ i32 main() {
 
         renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
 
-        // renderer_PushSprite(&cmd, 
-        //                     v2(-30), v2(-30, 30), v2(30), v2(30, -30), 
-        //                     v2(0), v2(1), 
+        // renderer_PushSprite(&cmd,
+        //                     v2(-30), v2(-30, 30), v2(30), v2(30, -30),
+        //                     v2(0), v2(1),
         //                     v3(0, 1, 0), &white);
-        // renderer_PushString(&cmd, &font, "Font rendering, gg!", 
+        // renderer_PushString(&cmd, &font, "Font rendering, gg!",
         //                     v2(sin(time) * 150, cos(time) * 150));
 
 
-        node1->PreUpdate();
-        node1->Update();
-        node1->Render(&cmd);
+        scene_root->PreUpdate();
+        scene_root->Update();
+        scene_root->Render(&cmd);
 
         game_RenderGrid(&cmd, &level, &white);
 
@@ -198,7 +200,7 @@ i32 main() {
         glfwPollEvents();
     }
 
-    delete node1;
+    delete scene_root;
 
     glfwTerminate();
     return 0;
