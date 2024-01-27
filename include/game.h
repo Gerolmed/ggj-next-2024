@@ -6,7 +6,7 @@
 #include "include/arena.h"
 
 #define MAX_COLLIDERS 150
-#define TILE_SIZE 30
+#define TILE_SIZE 60
 
 
 struct Level;
@@ -54,6 +54,8 @@ struct Level
     Collider collider[MAX_COLLIDERS];
     u32 collider_count;
     u32 static_collider;
+
+    Camera camera;
 };
 
 void game_Init(Level* level, u32 stage, Arena* arena);

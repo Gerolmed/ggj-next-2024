@@ -7,9 +7,12 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 {
     level->static_collider = 0;
     level->collider_count = 0;
+    level->camera.center_x = 5 * TILE_SIZE;
+    level->camera.center_y = 5 * TILE_SIZE;
 
     char path[1024];
     sprintf(path,"assets/stages/%d.png",stage);
+    printf("%s\n", path);
     u8* temp = stbi_load(
             path,
             &level->grid_width,
@@ -25,11 +28,10 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 
             u8 type = Floor;
             u32 index = 3*(x+(y*level->grid_width));
-            if (
-                    temp[index] == 255
-                    && temp[index+1] == 0
-                    && temp[index+2] == 0
-                ) type = Wall;
+            if (temp[index] == 255 && 
+                temp[index+1] == 0 && 
+                temp[index+2] == 0) 
+                type = Wall;
             level->grid[index/3] = type;
 
             if (type == Wall) {
@@ -43,10 +45,6 @@ void game_Init(Level* level, u32 stage, Arena* arena)
         }
     }
     stbi_image_free(temp);
-
-    level->grid[4 + level->grid_width * 3] = 1;
-    level->grid[5 + level->grid_width * 3] = 1;
-    level->grid[4 + level->grid_width * 4] = 1;
 }
 
 void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
@@ -57,8 +55,10 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
 
             if (type == Wall) {
                 renderer_PushSprite(cmd, 
-                    v2(x * TILE_SIZE, y * TILE_SIZE), 
-                    v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE), 
+                    v2(x * TILE_SIZE - level->camera.center_x, 
+                       y * TILE_SIZE - level->camera.center_y), 
+                    v2((x + 1) * TILE_SIZE - level->camera.center_x, 
+                       (y + 1) * TILE_SIZE - level->camera.center_y), 
                     v2(0), v2(1),
                     mat2(1), v3(0, 1, 0), texture);
             }
