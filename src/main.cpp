@@ -109,6 +109,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle wall_texture;
+    load_op = renderer_TextureLoadOp(&animated_image, "assets/player/test-animation.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
@@ -148,6 +153,7 @@ i32 main() {
     // scene_root->position = v2(0);
     // scene_root->rotation = degreesToRadians(180);
     scene_root->Start();
+    
 
     {
         const auto node2 = new TestNode(&level);
@@ -158,6 +164,7 @@ i32 main() {
 
         const auto player_node = new PlayerNode(&level);
         scene_root->AddChild(player_node);
+        level.player_node = player_node;
 
         auto sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
         // sheet_node->position = level.camera.center;
@@ -166,20 +173,20 @@ i32 main() {
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{100,0};
+        sheet_node->position = V2{100, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->visible = false;
         sheet_node->current_frame = 2;
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{200,0};
+        sheet_node->position = V2{200, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 3;
         scene_root->AddChild(sheet_node);
 
         sheet_node = new AnimatedSpriteNode(&level, animated_image, 100, 100, 2, 3);
-        sheet_node->position = V2{-100,0};
+        sheet_node->position = V2{-100, 0};
         sheet_node->seconds_per_frame = 0.1f;
         sheet_node->current_frame = 0;
         scene_root->AddChild(sheet_node);
@@ -238,7 +245,7 @@ i32 main() {
         renderer_PushBase(&cmd, v2(0));
         V2 ray = v2(sin(0.3 * time), cos(0.3 * time));
         float t = game_Raycast(&level, level.camera.center, ray);
-        renderer_PushLine(&cmd, v2(0), 
+        renderer_PushLine(&cmd, v2(0),
                           v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
 #endif
 
@@ -271,7 +278,9 @@ i32 main() {
 }
 
 #ifdef WINDOWS
+
 i32 WinMain() {
     return main();
 }
+
 #endif
