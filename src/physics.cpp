@@ -4,6 +4,7 @@
 V2 far_away = {INFINITY,INFINITY};
 
 bool AABB::intersects(AABB& other) const{
+    if(position.x == INFINITY){ return false; }
     bool intersectsX =  position.x <= (other.position.x + other.size.x) && 
                         other.position.x <= (position.x + size.x);
     bool intersectsY = position.y <= (other.position.y + other.size.y) && 
@@ -40,12 +41,14 @@ bool AABB::move_and_collide(V2& v2, Level* level){
 }
 
 bool AABB::move_and_push_boxes(V2& v2, Level* level){
-    position = translate(v2).position;
+    AABB newAABB = translate(v2);
+    position = far_away;
         for(int i=0;i < level->collider_count;i++){
-            if(level->collider[i].movable){
+            if(level->collider[i].movable && newAABB.intersects(level->collider[i].aabb)){
                 level->collider[i].aabb.move_and_push_boxes(v2,level);
             }
         }
+    position = newAABB.position;
 }
 
 
