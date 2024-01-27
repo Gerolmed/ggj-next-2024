@@ -23,21 +23,51 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
     renderer_FreeTextureLoadOp(&load_op);
 
     auto* texNode = new TextureNode(level, pp, 32, 32);
+
     AddChild(texNode);
 
 
 }
 
+EnemyNode::EnemyNode(Level* level) : Node(level) {
+    TextureHandle pp;
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/enemy.png");
+    opengl_LoadTexture(&load_op);
+    
+    renderer_FreeTextureLoadOp(&load_op);
+
+    auto* texNode = new TextureNode(level, pp, 100, 100);
+
+    AddChild(texNode);
+    
+}
+
+void EnemyNode::PreUpdate() {
+    Node:: PreUpdate();
+    
+    Node::PreUpdate();
+    aabb.position = position;
+    aabb.size = { 32, 32 };
+}
+
+void EnemyNode::Update() {
+    //TODO: Rotate raycasting line
+    
+
+    
+    Node::Update();
+}
+
 
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
-    aabb.position = position - v2(9);
-    aabb.size = { 18, 18 };
+    aabb.position = position;
+    aabb.size = { 32, 32 };
 
 }
 void PlayerNode::Update() {
     auto movement = v2(0,0);
-    float speed = 300;
+    float speed = 200;
     if (input_KeyA.is_pressed) {
         movement.x -= 1;
     }
@@ -54,9 +84,9 @@ void PlayerNode::Update() {
     movement = movement.Norm();
 
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb.position + v2(9);
+    position = aabb.position;
 
-    // position = position + movement * (time_deltatime * speed);
+    position = position + movement * (time_deltatime * speed);
 
     V2 localPos = GetAbsolutePosition();
     printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);
