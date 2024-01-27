@@ -25,16 +25,28 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 
     for (u32 y = 0; y < level->grid_height; ++y) {
         for (u32 x = 0; x < level->grid_width; ++x) {
-
-            u8 type = Floor;
             u32 index = 3*(x+(y*level->grid_width));
-            if (temp[index] == 255 && 
-                temp[index+1] == 0 && 
-                temp[index+2] == 0) 
+            u8 type = Floor;
+
+
+            if (temp[index] == 255 &&
+                temp[index+1] == 255 &&
+                temp[index+2] == 255)
+                type = Floor;
+            if (temp[index] == 0 &&
+                temp[index+1] == 0 &&
+                temp[index+2] == 0)
                 type = Wall;
+            if (temp[index] == 88 &&
+                temp[index+1] == 57 &&
+                temp[index+2] == 39)
+                type = Box;
+
+
+
             level->grid[index/3] = type;
 
-            if (type == Wall) {
+            if (type == Box) {
                 Collider collider;
                 collider.aabb.position.x = x * TILE_SIZE;
                 collider.aabb.position.y = y * TILE_SIZE;
@@ -60,7 +72,16 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
                     v2((x + 1) * TILE_SIZE - level->camera.center_x, 
                        (y + 1) * TILE_SIZE - level->camera.center_y), 
                     v2(0), v2(1),
-                    mat2(1), v3(0, 1, 0), texture);
+                    mat2(1), v3(0.5, 0.5, 0.5), texture);
+            }
+            if (type == Box) {
+                renderer_PushSprite(cmd,
+                                    v2(x * TILE_SIZE - level->camera.center_x,
+                                       y * TILE_SIZE - level->camera.center_y),
+                                    v2((x + 1) * TILE_SIZE - level->camera.center_x,
+                                       (y + 1) * TILE_SIZE - level->camera.center_y),
+                                    v2(0), v2(1),
+                                    mat2(1), v3(0.3, 0.225, 0.15), texture);
             }
         }
     }

@@ -1,12 +1,9 @@
 Vision system
     Rendering
 
-Map loading
-
 Npc and player movement
-Box movment
+Box movement
 
-Matrix
 Gamplay concept
 
 Art
