@@ -69,9 +69,9 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
                 const auto player_node = new PlayerNode(level);
                 player_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
                 scene_root->AddChild(player_node);
-
-            }else if(type = Enemy){
-
+                
+            }else if(type == Enemy){
+                
                 const auto enemy_node = new EnemyNode(level);
                 enemy_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
                 scene_root->AddChild(enemy_node);
@@ -165,12 +165,6 @@ u8 GetSpriteIdFromGridPos(Level* level,u32 x, u32 y, u8 type) {
 
         default: return 33;
     }
-
-
-
-
-
-
 }
 
 void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture)
@@ -221,6 +215,9 @@ void game_PushCollider(Level* level, Collider c, bool static_c)
 
     if (static_c) {
         level->static_collider += 1;
+        c.movable = true;
+    }else{
+        c.movable = true;
     }
 }
 
