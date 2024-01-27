@@ -47,6 +47,10 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
                 temp[index+1] == 0 &&
                 temp[index+2] == 0)
                 type = Player;
+            if (temp[index] == 0 &&
+                temp[index+1] == 255 &&
+                temp[index+2] == 0)
+                type = Enemy;
 
 
 
@@ -66,6 +70,11 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
                 player_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
                 scene_root->AddChild(player_node);
 
+            }else if(type = Enemy){
+
+                const auto enemy_node = new EnemyNode(level);
+                enemy_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
+                scene_root->AddChild(enemy_node);
             }
         }
     }

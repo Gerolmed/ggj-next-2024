@@ -23,7 +23,46 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
     renderer_FreeTextureLoadOp(&load_op);
 
     auto* texNode = new TextureNode(level, pp, 32, 32);
+
     AddChild(texNode);
+}
+
+EnemyNode::EnemyNode(Level* level) : Node(level) {
+    TextureHandle pp;
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/enemy.png");
+    opengl_LoadTexture(&load_op);
+
+    renderer_FreeTextureLoadOp(&load_op);
+
+    auto* texNode = new TextureNode(level, pp, 100, 100);
+
+    AddChild(texNode);
+
+}
+
+void EnemyNode::PreUpdate() {
+    Node:: PreUpdate();
+
+    Node::PreUpdate();
+    aabb.position = position;
+    aabb.size = { 32, 32 };
+}
+
+void EnemyNode::Update() {
+    Node::Update();
+}
+
+void EnemyNode::Render(CommandBuffer* buffer){
+    Node::Render(buffer);
+
+    renderer_PushBase(buffer, v2(0));
+    float time = glfwGetTime();
+
+    V2 ray = v2(sin(0.3 * time), cos(0.3 * time));
+    float t = game_Raycast(level, position, ray);
+
+    renderer_PushLine(buffer, v2(0),
+                      v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
 }
 
 
@@ -31,11 +70,16 @@ void PlayerNode::PreUpdate() {
     Node::PreUpdate();
     aabb.position = position - v2(9);
     aabb.size = {18, 18};
+    aabb.position = position;
+    aabb.size = { 32, 32 };
+
 }
 
 void PlayerNode::Update() {
     auto movement = v2(0, 0);
     float speed = 300;
+    auto movement = v2(0,0);
+    float speed = 200;
     if (input_KeyA.is_pressed) {
         movement.x -= 1;
     }
@@ -52,7 +96,7 @@ void PlayerNode::Update() {
     movement = movement.Norm();
 
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb.position + v2(9);
+    position = aabb.position;
 
     // position = position + movement * (time_deltatime * speed);
 
