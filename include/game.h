@@ -6,7 +6,7 @@
 #include "include/arena.h"
 
 #define MAX_COLLIDERS 150
-#define TILE_SIZE 60
+#define TILE_SIZE 32
 
 
 struct Level;
@@ -61,7 +61,7 @@ struct Level
 void game_Init(Level* level, u32 stage, Arena* arena);
 void game_RenderGrid(CommandBuffer* cmd, 
                      Level* level, 
-                     TextureHandle* texture);
+                     TextureHandle texture);
 void game_PushCollider(Level* level, Collider c, bool static_c);
 void game_ClearDynamicCollider(Level* level);
 
