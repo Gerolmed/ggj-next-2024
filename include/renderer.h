@@ -102,7 +102,7 @@ struct CommandEntry_DrawQuads
     u32 index_offset;
     u32 index_count;
     u32 type;
-    TextureHandle* texture;
+    TextureHandle texture;
 };
 
 struct CommandEntry_PostprocessPass
@@ -124,7 +124,10 @@ void renderer_PushClear(CommandBuffer* buffer, V3 color);
 void renderer_PushSprite(CommandBuffer* buffer, 
                          V2 down_left, V2 up_right, float depth,
                          V2 uv_down_left, V2 uv_up_right,
-                         Mat2f rot, V3 color, TextureHandle* texture);
+                         Mat2f rot, V3 color, TextureHandle texture);
+
+void renderer_PushLine(CommandBuffer* buffer,
+                       V2 start, V2 end, float depth, V3 color);
 
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
                          V2 pos, float depth);

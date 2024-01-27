@@ -154,7 +154,7 @@ bool PushQuad(CommandBuffer* buffer,
 void renderer_PushSprite(CommandBuffer* buffer, 
                          V2 down_left, V2 up_right, float depth,
                          V2 uv_down_left, V2 uv_up_right,
-                         Mat2f rot, V3 color, TextureHandle* texture)
+                         Mat2f rot, V3 color, TextureHandle texture)
 {
     if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
         printf("Warning: Buffer size exceeded on draw\n");
@@ -184,6 +184,12 @@ void renderer_PushSprite(CommandBuffer* buffer,
     }
 }
 
+void renderer_PushLine(CommandBuffer* buffer,
+                       V2 start, V2 end, float depth, V3 color)
+{
+
+}
+
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
                          V2 pos, float depth)
 {
@@ -195,7 +201,7 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str,
     CommandEntry_DrawQuads* draw = (CommandEntry_DrawQuads*) (buffer->cmd_memory + buffer->curr_len);
     draw->header.type = DrawQuads;
     draw->index_offset = buffer->index_curr;
-    draw->texture = &font->handle;
+    draw->texture = font->handle;
     draw->type = QuadTypeFont;
     buffer->curr_len += sizeof(CommandEntry_DrawQuads);
 

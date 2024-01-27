@@ -34,7 +34,7 @@ void TextureNode::Render(CommandBuffer* buffer) {
     );
 }
 
-SpritesheetNode::SpritesheetNode(Level* level, TextureHandle* texture_handle, int width, int height, int rows, int columns)
+SpritesheetNode::SpritesheetNode(Level* level, TextureHandle texture_handle, int width, int height, int rows, int columns)
         : Node(level), texture_handle(texture_handle), width(width), height(height) , rows(rows), columns(columns) {
     item_height = 1.0f / rows;
     item_width = 1.0f / columns;
@@ -54,7 +54,7 @@ void SpritesheetNode::Render(CommandBuffer* buffer) {
     );
 }
 
-AnimatedSpriteNode::AnimatedSpriteNode(Level* level, TextureHandle* texture_handle, int width, int height, int rows, int columns)
+AnimatedSpriteNode::AnimatedSpriteNode(Level* level, TextureHandle texture_handle, int width, int height, int rows, int columns)
 : SpritesheetNode(level, texture_handle, width, height, rows, columns) {
     frame_count = columns * rows;
 }

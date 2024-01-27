@@ -279,7 +279,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glUseProgram(shader);
 
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, draw->texture->id);
+                glBindTexture(GL_TEXTURE_2D, draw->texture.id);
                 glDrawElements(GL_TRIANGLES, draw->index_count, 
                                GL_UNSIGNED_INT, (void*) (draw->index_offset * sizeof(u32)));
                 offset += sizeof(CommandEntry_DrawQuads);

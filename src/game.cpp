@@ -58,7 +58,7 @@ void game_Init(Level* level, u32 stage, Arena* arena)
     stbi_image_free(temp);
 }
 
-void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
+void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture)
 {
     renderer_PushBase(cmd, level->camera.center);
     for (u32 y = 0; y < level->grid_height; ++y) {
