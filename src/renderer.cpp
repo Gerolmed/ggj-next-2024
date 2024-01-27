@@ -186,8 +186,8 @@ void renderer_PushSprite(CommandBuffer* buffer,
     }
 }
 
-void renderer_PushLine(CommandBuffer* buffer,
-                       V2 start, V2 end, float depth, V3 color)
+void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
+                       float depth, float width, V3 color)
 {
     if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
         printf("Warning: Buffer size exceeded on draw\n");
@@ -201,20 +201,23 @@ void renderer_PushLine(CommandBuffer* buffer,
     draw->texture = buffer->white;
     draw->type = QuadTypeSprite;
 
-    V2 dir = v2(end.x - start.x, end.y - start.y);
+    V2 dir = v2(end.x - start.x, end.y - start.y).Norm();
+    V2 side = v2(-dir.y * width, dir.x * width);
 
-    V2 vert1;
+    V2 vert1 = v2(start.x + side.x, start.y + side.y);
     V2 uv1 = v2(0);
 
-    V2 vert2;
+    V2 vert2 = v2(start.x - side.x, start.y - side.y);
     V2 uv2 = v2(0, 1);
-    V2 vert3;
+
+    V2 vert3 = v2(end.x - side.x, end.y - side.y);
     V2 uv3 = v2(1);
 
-    V2 vert4;
+    V2 vert4 = v2(end.x + side.x, end.y - side.y);
     V2 uv4 = v2(1, 0);
 
-    if (PushQuad(buffer, ..., depth, uv1, uv2, uv3, uv4, color)) {
+    if (PushQuad(buffer, vert1, vert2, vert3, vert4, depth, 
+                 uv1, uv2, uv3, uv4, color)) {
         buffer->curr_len += sizeof(CommandEntry_DrawQuads);
     }
 }

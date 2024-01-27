@@ -48,7 +48,7 @@ void PlayerNode::Update() {
         movement.y -= 1;
     }
 
-    movement = movement.Normalized();
+    movement = movement.Norm();
 
 
     position = position + movement * (time_deltatime * speed);

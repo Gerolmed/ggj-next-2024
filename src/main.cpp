@@ -226,9 +226,10 @@ i32 main() {
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 
-        float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
+        V2 ray = v2(1, 0);
+        float t = game_Raycast(&level, level.camera.center, ray);
         renderer_PushLine(&cmd, level.camera.center, 
-                          v2(-1 * t, 0 * t), 30, v3(0, 0, 1));
+                          v2(ray.x * t, ray.y * t), 30, 0.5, v3(0, 0, 1));
         printf("Got distance: %f\n", t);
 
         renderer_PushBase(&cmd, level.camera.center);

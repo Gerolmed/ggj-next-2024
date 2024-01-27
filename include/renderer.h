@@ -129,8 +129,8 @@ void renderer_PushSprite(CommandBuffer* buffer,
                          V2 uv_down_left, V2 uv_up_right,
                          Mat2f rot, V3 color, TextureHandle texture);
 
-void renderer_PushLine(CommandBuffer* buffer,
-                       V2 start, V2 end, float depth, V3 color);
+void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
+                       float depth, float width, V3 color);
 
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, 
                          V2 pos, float depth);
