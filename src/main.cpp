@@ -177,7 +177,7 @@ i32 main() {
                                             white);
 
         // Request to clear at the beginning
-        renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
+        renderer_PushClear(&cmd, v3(0.1647058824, 0.1176470588, 0.137254902));
 
         // renderer_PushSprite(&cmd,
         //                     v2(-30), v2(-30, 30), v2(30), v2(30, -30),
@@ -193,7 +193,7 @@ i32 main() {
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 
-#ifdef DEBUG
+#ifdef false
         renderer_PushBase(&cmd, level.camera.center);
         for (u32 i = 0; i < level.collider_count; ++i) {
             AABB aabb = level.collider[i].aabb;
