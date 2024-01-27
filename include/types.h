@@ -14,12 +14,15 @@
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS")
 #endif
 #endif
-
+#define degreesToRadians(angleDegrees) ((angleDegrees) * 3.141592653f / 180.0f)
+#define radiansToDegrees(angleRadians) ((angleRadians) * 180.0f / 3.141592653f)
 
 struct V2 
 {
     float x;
     float y;
+
+    V2 operator+(const V2& v2) const;
 };
 
 inline V2 v2(float x)
@@ -68,6 +71,7 @@ struct Mat3f {
 
     Mat3f operator*(const Mat3f& other) const;
     V3 operator*(const V3& other) const;
+    V2 operator*(const V2& other) const;
 };
 
 Mat3f translationMatrix(V2 v2);

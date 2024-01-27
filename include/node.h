@@ -1,25 +1,48 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <vector>
+
+#include "game.h"
+#include "renderer.h"
 #include "include/types.h"
 
 class Node {
 
 public:
-    virtual ~Node() = default;
-    Node();
+    virtual ~Node();
+    explicit Node(Level* level);
 
+    Level* level;
     Node* parent = nullptr;
 	V2 position = V2();
     float rotation = 0;
-    Node* children[20];
-    int child_count = 0;
+    bool started = false;
+
+    std::vector<Node*> children = {};
 
     Mat3f GetRelativeMatrix() const;
     Mat3f GetAbsoluteMatrix() const;
+    Mat2f GetAbsoluteRotationMatrix() const;
 
-    virtual void update();
-    virtual void render();
+    V2 GetAbsolutePosition() const;
+
+    void AddChild(Node* child);
+    void RemoveChild(Node* child);
+
+    /**
+     * \brief Call AddChild and RemoveChild to change parenting structure
+     * \param parent
+     */
+    void SetParent(Node* parent);
+
+    virtual void Start();
+
+    virtual void PreUpdate();
+    virtual void Update();
+    virtual void Render(CommandBuffer* buffer);
+
+    virtual void Stop();
 };
 
 #endif //NODE_H

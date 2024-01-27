@@ -1,5 +1,13 @@
 #include "include/types.h"
 
+V2 V2::operator+(const V2& v2) const {
+    return  {
+        x + v2.x,
+        y + v2.y,
+    };
+}
+
+
 Mat2f Mat2f::operator*(const Mat2f& other) const{
     return {data[0]*other.data[0] + data[1]*other.data[2],
             data[0]*other.data[1] + data[1]*other.data[3],
@@ -11,7 +19,7 @@ Mat2f Mat2f::operator*(const Mat2f& other) const{
 
 V2 Mat2f::operator*(const V2& other) const{
     return {data[0]*other.x + data[1]*other.y,
-            data[2]*other.x + data[2]*other.y};
+            data[2]*other.x + data[3]*other.y};
 }
 
 
@@ -40,6 +48,10 @@ V3 Mat3f::operator*(const V3& other) const{
     return {data[0]*other.x+data[1]*other.y+data[2]*other.z,
             data[3]*other.x+data[4]*other.y+data[5]*other.z,
             data[6]*other.x+data[7]*other.y+data[8]*other.z};
+}
+V2 Mat3f::operator*(const V2& other) const{
+    return {data[0]*other.x+data[1]*other.y+data[2]*1,
+            data[3]*other.x+data[4]*other.y+data[5]*1};
 }
 
 
