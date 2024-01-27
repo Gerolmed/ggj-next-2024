@@ -1,7 +1,5 @@
 #include "include/physics.h"
 
-AABB bounding_boxes[50];
-int valid_bounding_boxes=0;
 
 V2 far_away = {INFINITY,INFINITY};
 
@@ -17,12 +15,12 @@ AABB AABB::translate(V2& v2) const{
     return {{position.x+v2.x, position.y + v2.y}, size};
 }
 
-bool AABB::move_and_collide(V2& v2){
+bool AABB::move_and_collide(V2& v2, Level* level){
     AABB newAABB = translate(v2);
     V2 old_position = position;
     position = far_away;
-    for(int i=0;i < valid_bounding_boxes;i++){
-        if(newAABB.intersects(bounding_boxes[i])){
+    for(int i=0;i < level->collider_count;i++){
+        if(newAABB.intersects(level->collider[i].aabb)){
             position = old_position;
             return false;
         }
