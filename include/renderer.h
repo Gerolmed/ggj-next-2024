@@ -65,6 +65,8 @@ struct CommandBuffer
     u32 index_curr;
     u32* index_buffer;
 
+    V2 base;
+
     RenderSettings settings;
     // Note: proj and view matrix
     Mat4 proj;
@@ -127,5 +129,7 @@ void renderer_PushSprite(CommandBuffer* buffer,
 void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str, V2 pos);
 
 void renderer_PushPostprocessPass(CommandBuffer* buffer);
+
+void renderer_PushBase(CommandBuffer* buffer, V2 base);
 
 #endif

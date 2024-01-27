@@ -12,6 +12,7 @@ CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory,
                               u32 index_count, u32* index_buffer,
                               Mat4 proj, u32 width, u32 height)
 {
+
     CommandBuffer buffer;
     buffer.settings.width = width;
     buffer.settings.height = height;
@@ -28,6 +29,8 @@ CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory,
     buffer.index_buffer = index_buffer;
 
     buffer.proj = proj;
+    buffer.base.x = 0;
+    buffer.base.y = 0;
     return buffer;
 }
 
@@ -75,26 +78,26 @@ bool PushQuad(CommandBuffer* buffer,
         return false;
     }
 
-    buffer->vertex_buffer[curr + 0].pos.x = v1.x;
-    buffer->vertex_buffer[curr + 0].pos.y = v1.y;
+    buffer->vertex_buffer[curr + 0].pos.x = v1.x - buffer->base.x;
+    buffer->vertex_buffer[curr + 0].pos.y = v1.y - buffer->base.y;
     buffer->vertex_buffer[curr + 0].uv.x = uv1.x;
     buffer->vertex_buffer[curr + 0].uv.y = uv1.y;
     buffer->vertex_buffer[curr + 0].color = color;
 
-    buffer->vertex_buffer[curr + 1].pos.x = v2.x;
-    buffer->vertex_buffer[curr + 1].pos.y = v2.y;
+    buffer->vertex_buffer[curr + 1].pos.x = v2.x - buffer->base.x;
+    buffer->vertex_buffer[curr + 1].pos.y = v2.y - buffer->base.y;
     buffer->vertex_buffer[curr + 1].uv.x = uv2.x;
     buffer->vertex_buffer[curr + 1].uv.y = uv2.y;
     buffer->vertex_buffer[curr + 1].color = color;
 
-    buffer->vertex_buffer[curr + 2].pos.x = v3.x;
-    buffer->vertex_buffer[curr + 2].pos.y = v3.y;
+    buffer->vertex_buffer[curr + 2].pos.x = v3.x - buffer->base.x;
+    buffer->vertex_buffer[curr + 2].pos.y = v3.y - buffer->base.y;
     buffer->vertex_buffer[curr + 2].uv.x = uv3.x;
     buffer->vertex_buffer[curr + 2].uv.y = uv3.y;
     buffer->vertex_buffer[curr + 2].color = color;
 
-    buffer->vertex_buffer[curr + 3].pos.x = v4.x;
-    buffer->vertex_buffer[curr + 3].pos.y = v4.y;
+    buffer->vertex_buffer[curr + 3].pos.x = v4.x - buffer->base.x;
+    buffer->vertex_buffer[curr + 3].pos.y = v4.y - buffer->base.y;
     buffer->vertex_buffer[curr + 3].uv.x = uv4.x;
     buffer->vertex_buffer[curr + 3].uv.y = uv4.y;
     buffer->vertex_buffer[curr + 3].color = color;
@@ -237,4 +240,9 @@ void renderer_PushPostprocessPass(CommandBuffer* buffer)
     postprocess->header.type = PostProcessPass;
 
     buffer->curr_len += sizeof(CommandEntry_PostprocessPass);
+}
+
+void renderer_PushBase(CommandBuffer* buffer, V2 base)
+{
+    buffer->base = base;
 }

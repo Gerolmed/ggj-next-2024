@@ -60,27 +60,24 @@ void game_Init(Level* level, u32 stage, Arena* arena)
 
 void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle* texture)
 {
+    renderer_PushBase(cmd, level->camera.center);
     for (u32 y = 0; y < level->grid_height; ++y) {
         for (u32 x = 0; x < level->grid_width; ++x) {
             u8 type = level->grid[x + level->grid_width * y];
 
             if (type == Wall) {
                 renderer_PushSprite(cmd, 
-                    v2(x * TILE_SIZE - level->camera.center.x, 
-                       y * TILE_SIZE - level->camera.center.y), 
-                    v2((x + 1) * TILE_SIZE - level->camera.center.x, 
-                       (y + 1) * TILE_SIZE - level->camera.center.y), 
+                    v2(x * TILE_SIZE, y * TILE_SIZE), 
+                    v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE), 
                     v2(0), v2(1),
                     mat2(1), v3(0.5, 0.5, 0.5), texture);
             }
             if (type == Box) {
                 renderer_PushSprite(cmd,
-                                    v2(x * TILE_SIZE - level->camera.center.x,
-                                       y * TILE_SIZE - level->camera.center.y),
-                                    v2((x + 1) * TILE_SIZE - level->camera.center.x,
-                                       (y + 1) * TILE_SIZE - level->camera.center.y),
-                                    v2(0), v2(1),
-                                    mat2(1), v3(0.3, 0.225, 0.15), texture);
+                    v2(x * TILE_SIZE, y * TILE_SIZE),
+                    v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE),
+                    v2(0), v2(1),
+                    mat2(1), v3(0.3, 0.225, 0.15), texture);
             }
         }
     }

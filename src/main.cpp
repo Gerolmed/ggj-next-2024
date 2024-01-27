@@ -228,6 +228,7 @@ i32 main() {
         float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
         printf("Got distance: %f\n", t);
 
+        renderer_PushBase(&cmd, level.camera.center);
         scene_root->TryRender(&cmd);
 
         // Queue post processing
