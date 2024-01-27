@@ -88,6 +88,11 @@ void Node::Update() {
         child->Update();
     }
 }
+void Node::PreUpdate() {
+    for (const auto& child : children) {
+        child->PreUpdate();
+    }
+}
 
 void Node::Render(CommandBuffer* buffer) {
     for (const auto& child : children) {

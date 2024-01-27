@@ -175,6 +175,7 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
 
+        node1->PreUpdate();
         node1->Update();
         node1->Render(&cmd);
 

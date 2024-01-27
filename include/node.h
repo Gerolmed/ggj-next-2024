@@ -38,6 +38,7 @@ public:
 
     virtual void Start();
 
+    virtual void PreUpdate();
     virtual void Update();
     virtual void Render(CommandBuffer* buffer);
 
