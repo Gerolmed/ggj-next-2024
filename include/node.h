@@ -16,8 +16,8 @@ public:
 
 
 
-    Matrix3f getRelativeMatrix() const;
-    Matrix3f getAbsoluteMatrix() const;
+    Mat3f getRelativeMatrix() const;
+    Mat3f getAbsoluteMatrix() const;
 
     virtual void update();
     virtual void render();
