@@ -70,6 +70,8 @@ struct CommandBuffer
     RenderSettings settings;
     // Note: proj and view matrix
     Mat4 proj;
+
+    TextureHandle white;
 };
 
 enum CommandEntryType 
@@ -113,7 +115,8 @@ struct CommandEntry_PostprocessPass
 CommandBuffer renderer_Buffer(u32 byte_len, u8* cmd_memory, 
                               u32 vertex_count, Vertex* vertex_buffer, 
                               u32 index_count, u32* index_buffer,
-                              Mat4 proj, u32 width, u32 height);
+                              Mat4 proj, u32 width, u32 height,
+                              TextureHandle white);
 
 TextureLoadOp renderer_TextureLoadOp(TextureHandle* handle, const char* path);
 

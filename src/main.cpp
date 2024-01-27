@@ -206,7 +206,8 @@ i32 main() {
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
                                             index_count, index_buffer,
-                                            proj, global_window.width, global_window.height);
+                                            proj, global_window.width, global_window.height,
+                                            white);
 
         // Request to clear at the beginning
         renderer_PushClear(&cmd, v3(0.1, 0.1, 0.2));
@@ -226,6 +227,8 @@ i32 main() {
         scene_root->TryUpdate();
 
         float t = game_Raycast(&level, level.camera.center, v2(-1, 0));
+        renderer_PushLine(&cmd, level.camera.center, 
+                          v2(-1 * t, 0 * t), 30, v3(0, 0, 1));
         printf("Got distance: %f\n", t);
 
         renderer_PushBase(&cmd, level.camera.center);
