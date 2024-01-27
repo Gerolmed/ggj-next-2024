@@ -11,6 +11,20 @@ public:
 };
 
 
+class PlayerNode : public Node {
+public:
+    explicit PlayerNode(Level* level)
+        : Node(level) {
+    }
+    void PreUpdate() override;
+    void Update() override;
+
+private:
+    AABB* aabb;
+}
+
+
+
 class TextureNode: public Node {
 public:
     explicit TextureNode(Level* level, TextureHandle* texture_handle, int width, int height)
