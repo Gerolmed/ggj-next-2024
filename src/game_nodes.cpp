@@ -18,12 +18,11 @@ void TestNode::Update() {
 
 PlayerNode::PlayerNode(Level* level) : Node(level) {
     TextureHandle pp;
-    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/image.png");
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/player/player_idle.png");
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
-    auto* texNode = new TextureNode(level, pp, 100, 100);
-
+    auto* texNode = new TextureNode(level, pp, 32, 32);
     AddChild(texNode);
 
 
@@ -32,13 +31,13 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
 
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
-    aabb.position = position;
-    aabb.size = { 32, 32 };
+    aabb.position = position - v2(9);
+    aabb.size = { 18, 18 };
 
 }
 void PlayerNode::Update() {
     auto movement = v2(0,0);
-    float speed = 200;
+    float speed = 300;
     if (input_KeyA.is_pressed) {
         movement.x -= 1;
     }
@@ -55,9 +54,9 @@ void PlayerNode::Update() {
     movement = movement.Norm();
 
     aabb.move_and_collide(movement * (time_deltatime * speed), level);
-    position = aabb.position;
+    position = aabb.position + v2(9);
 
-    position = position + movement * (time_deltatime * speed);
+    // position = position + movement * (time_deltatime * speed);
 
     V2 localPos = GetAbsolutePosition();
     printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);

@@ -6,6 +6,12 @@ V2 V2::operator+(const V2 &v2) const {
             y + v2.y,
     };
 }
+V2 V2::operator-(const V2 &v2) const {
+    return {
+            x - v2.x,
+            y - v2.y,
+    };
+}
 
 V2 V2::operator*(const float &value) const {
     return {

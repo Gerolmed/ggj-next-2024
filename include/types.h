@@ -23,6 +23,7 @@ struct V2
     float y;
 
     V2 operator+(const V2& v2) const;
+    V2 operator-(const V2& v2) const;
     V2 operator*(const float& value) const;
     float Magnitude();
     V2 Norm();
