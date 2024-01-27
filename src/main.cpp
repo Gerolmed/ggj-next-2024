@@ -117,7 +117,7 @@ i32 main()
     // ImGui_ImplOpenGL3_Init();
 
     Level level;
-    game_Init(&level);
+    game_Init(&level, 0, &arena);
 
     Mat4 projection = glm::ortho(
         -game_width / 2, 
