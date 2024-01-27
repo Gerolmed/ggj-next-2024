@@ -84,12 +84,10 @@ u64 CalcIndex(int x, int y, int width, int height) {
         y = 0;
     }
 
-    return (x-1)+(y+1)*width;
+    return (x)+(y)*width;
 }
 
 u8 GetSpriteIdFromGridPos(Level* level,u32 x, u32 y, u8 type) {
-    u64 mapRange = level->grid_width * level->grid_height;
-
     bool one = level->grid[CalcIndex(x-1,y+1,level->grid_width,level->grid_height)]==type;
     bool two = level->grid[CalcIndex(x,y+1,level->grid_width,level->grid_height)]==type;
     bool three = level->grid[CalcIndex(x+1,y+1,level->grid_width,level->grid_height)]==type;
@@ -176,6 +174,7 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,Tex
             if (type == Wall) {
 
                 const u8 current_frame = GetSpriteIdFromGridPos(level, x, y, type);
+                printf("x:%d y:%d id:%d\n", x, y,current_frame);
                 const float item_height = 1.0f / 4;
                 const float item_width = 1.0f / 12;
                 const float remainingX = current_frame % 12;
