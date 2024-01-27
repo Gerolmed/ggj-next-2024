@@ -138,11 +138,11 @@ i32 main() {
     float delta = 0.0f;
     float lastFrame = 0.0f;
 
-    auto node1 = new Node();
+    auto node1 = new Node(&level);
     node1->position = {1,1};
     node1->rotation = degreesToRadians(180);
     node1->Start();
-    auto node2 = new TestNode();
+    const auto node2 = new TestNode(&level);
     node2->position = {2,2};
     node1->AddChild(node2);
 
@@ -176,7 +176,7 @@ i32 main() {
         opengl_RenderCommands(&cmd);
 
         node1->Update();
-        node1->Render();
+        node1->Render(&cmd);
         // TODO: Setup imgui
         // ImGui_ImplOpenGL3_NewFrame();
         // ImGui_ImplGlfw_NewFrame();
@@ -190,6 +190,8 @@ i32 main() {
         glfwSwapBuffers(global_window.handle);
         glfwPollEvents();
     }
+
+    delete node1;
 
     glfwTerminate();
     return 0;

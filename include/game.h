@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "physics.h"
 #include "include/types.h"
 #include "include/renderer.h"
 #include "include/arena.h"

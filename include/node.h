@@ -3,14 +3,17 @@
 
 #include <vector>
 
+#include "game.h"
+#include "renderer.h"
 #include "include/types.h"
 
 class Node {
 
 public:
     virtual ~Node();
-    Node();
+    explicit Node(Level* level);
 
+    Level* level;
     Node* parent = nullptr;
 	V2 position = V2();
     float rotation = 0;
@@ -35,7 +38,7 @@ public:
     virtual void Start();
 
     virtual void Update();
-    virtual void Render();
+    virtual void Render(CommandBuffer* buffer);
 
     virtual void Stop();
 };
