@@ -3,6 +3,7 @@
 #include "include/input.h"
 #include "include/renderer.h"
 #include "include/time.h"
+#include <stdio.h>
 
 
 void TestNode::Update() {
@@ -19,8 +20,29 @@ void PlayerNode::PreUpdate() {
 
 }
 void PlayerNode::Update() {
-    Node::Update();
+    auto movement = v2(0,0);
+    float speed = 1;
+    if (input_KeyA.is_pressed) {
+        movement.x -= speed;
+    }
+    if (input_KeyD.is_pressed) {
+        movement.x += speed;
+    }
+    if (input_KeyW.is_pressed) {
+        movement.y += speed;
+    }
+    if (input_KeyS.is_pressed) {
+        movement.y -= speed;
+    }
 
+    movement = movement.Normalized();
+
+
+    position = position + movement * time_deltatime;
+
+    V2 localPos = GetAbsolutePosition();
+    printf("Update test (X: %f, Y: %f)\n", localPos.x, localPos.y);
+    Node::Update();
 }
 
 void TextureNode::Render(CommandBuffer* buffer) {
