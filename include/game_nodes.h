@@ -18,7 +18,7 @@ public:
     void Update() override;
 
 private:
-    Node* rotation_root;
+Node* rotation_root;
     AABB aabb;
 };
 
@@ -32,6 +32,8 @@ private:
     AABB aabb;
 };
 
+
+
 class RotatingNode final : public Node {
 public:
     explicit RotatingNode(Level* level)
@@ -42,6 +44,27 @@ public:
 
     void Update() override;
 };
+
+
+
+
+
+
+
+
+class ObjectiveNode : public Node {
+    u8 value;
+public:
+    explicit ObjectiveNode(Level* level);
+    void PreUpdate() override;
+    void Update() override;
+    void Render(CommandBuffer* buffer) override;
+
+private:
+    AABB aabb;
+};
+
+
 
 class TextureNode: public Node {
 public:
