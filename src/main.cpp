@@ -148,7 +148,8 @@ i32 main() {
     Level level;
     auto* scene_root = new Node(&level);
 
-    game_Init(&level, stage, &arena, scene_root);
+    StageAttributes attributes;
+    game_Init(&level, stage, &game_arena, scene_root, &attributes);
 
     Mat4 projection = glm::ortho(
         -game_width / 2,
@@ -202,7 +203,7 @@ i32 main() {
             scene_root = new Node(&level);
             dispose(&game_arena);
             init_arena(&game_arena,&pool);
-            game_Init(&level, stage, &game_arena,scene_root);
+            game_Init(&level, stage, &game_arena,scene_root, &attributes);
         }
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
