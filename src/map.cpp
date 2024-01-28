@@ -49,7 +49,7 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
 
     for (u32 y = 0; y < level->grid_height; ++y) {
         if (y = 0) {
-            ParseFirstRow();
+            //ParseFirstRow();
             continue;
         }
         for (u32 x = 0; x < level->grid_width; ++x) {
