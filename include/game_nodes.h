@@ -10,6 +10,14 @@ public:
     void Update() override;
 };
 
+class CameraNode final : public Node {
+public:
+    explicit CameraNode(Level* level)
+        : Node(level) {
+    }
+    void Update() override;
+};
+
 
 class PlayerNode : public Node {
 public:

@@ -82,8 +82,9 @@ i32 main() {
 
     Arena arena;
     init_arena(&arena, &pool);
+
     Arena game_arena;
-    init_arena(&arena, &pool);
+    init_arena(&game_arena, &pool);
 
     u32 vertex_count = 20000;
     Vertex* vertex_buffer = (Vertex*) push_size(&arena, sizeof(Vertex) * vertex_count);

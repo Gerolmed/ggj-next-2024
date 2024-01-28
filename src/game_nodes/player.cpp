@@ -20,6 +20,7 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
 
     auto* texNode = new TextureNode(level, pp, 32, 32);
     rotation_root->AddChild(texNode);
+    AddChild(new CameraNode(level));
 }
 
 
