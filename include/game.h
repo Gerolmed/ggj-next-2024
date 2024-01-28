@@ -6,6 +6,7 @@
 
 #define MAX_COLLIDERS 150
 #define TILE_SIZE 32
+#define HALF_TILE_SIZE 16
 
 
 struct Level;
