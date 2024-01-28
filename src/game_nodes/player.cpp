@@ -35,8 +35,9 @@ void PlayerNode::Render(CommandBuffer* buffer)
 
     V2 facing = v2(0, -1);
     V2 side = v2(-facing.y, facing.x);
-    V2 r = v2(0.5 * facing.x + 0.5 * side.x, 0.5 * facing.y + 0.5 * side.y);
-    V2 l = v2(0.5 * facing.x - 0.5 * side.x, 0.5 * facing.y - 0.5 * side.y);
+    float fov = 0.2;
+    V2 r = v2((1 - fov) * facing.x + fov * side.x, (1 - fov) * facing.y + fov * side.y);
+    V2 l = v2((1 - fov) * facing.x - fov * side.x, (1 - fov) * facing.y - fov * side.y);
 
     float tr = game_Raycast(level, pos, r);
     float tl = game_Raycast(level, pos, l);
