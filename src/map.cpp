@@ -58,6 +58,7 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
             level->stage_attributes->max_score = (u32) max_score;
             level->stage_attributes->score_requirement = (u32) score_requirement;
             level->stage_attributes->time_limit = (u32) time_limit;
+
             continue;
         } else for (u32 x = 0; x < level->grid_width; ++x) {
             u32 index = x+(y*level->grid_width);

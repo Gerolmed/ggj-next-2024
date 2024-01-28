@@ -9,6 +9,9 @@
 #include "include/platform.h"
 #include "include/game_math.h"
 
+#define MAX_VERTEX 10000
+#define MAX_INDEX 10000
+#define MAX_DRAW_VERTEX 100
 
 OpenGLContext OpenGL;
 
@@ -211,7 +214,7 @@ void opengl_Init(u32 render_width, u32 render_height)
     glBindVertexArray(OpenGL.mask_arr);
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[3]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(MaskVertex) * 1000, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(MaskVertex) * MAX_DRAW_VERTEX, NULL, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     OpenGL.mask_vertex_buffer = buffers[3];
 
@@ -225,9 +228,9 @@ void opengl_Init(u32 render_width, u32 render_height)
     OpenGL.draw_arr = arrs[0];
     glBindVertexArray(OpenGL.draw_arr);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 10000, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * MAX_VERTEX, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * 10000, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * MAX_INDEX, NULL, GL_DYNAMIC_DRAW);
     OpenGL.vertex_buffer = buffers[0];
 
     glEnableVertexAttribArray(0);
@@ -251,8 +254,16 @@ void opengl_Init(u32 render_width, u32 render_height)
     glUniform1i(OpenGL.post_shader.mask_buffer, 2);
 }
 
-void CopyToBuffer(u32 slot, u32 size, void* data)
+void CopyToBuffer(u32 slot, u32 size, u32 max_size, void* data)
 {
+    if (size == 0) {
+        return;
+    }
+    if (size > max_size) {
+        printf("Max gpu buffer size exceeded. Max %d\n", max_size);
+        size = max_size;
+    }
+
     void* map = glMapBufferRange(slot, 0, size, GL_MAP_WRITE_BIT);
     memcpy(map, data, size);
     glUnmapBuffer(slot);
@@ -274,11 +285,19 @@ void opengl_RenderCommands(CommandBuffer* buffer)
     //              buffer->index_buffer, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, OpenGL.mask_vertex_buffer);
-    CopyToBuffer(GL_ARRAY_BUFFER, sizeof(MaskVertex) * buffer->mask_vertex_count, 
+    CopyToBuffer(GL_ARRAY_BUFFER, 
+                 sizeof(MaskVertex) * buffer->mask_vertex_curr, 
+                 sizeof(MaskVertex) * MAX_DRAW_VERTEX,
                  buffer->mask_vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, OpenGL.vertex_buffer);
-    CopyToBuffer(GL_ARRAY_BUFFER, sizeof(Vertex) * buffer->vertex_curr, buffer->vertex_buffer);
-    CopyToBuffer(GL_ELEMENT_ARRAY_BUFFER, sizeof(u32) * buffer->index_curr, buffer->index_buffer);
+    CopyToBuffer(GL_ARRAY_BUFFER, 
+                 sizeof(Vertex) * buffer->vertex_curr, 
+                 sizeof(Vertex) * MAX_VERTEX, 
+                 buffer->vertex_buffer);
+    CopyToBuffer(GL_ELEMENT_ARRAY_BUFFER, 
+                 sizeof(u32) * buffer->index_curr, 
+                 sizeof(u32) * MAX_INDEX, 
+                 buffer->index_buffer);
 
     glUseProgram(OpenGL.sprite_shader.id);
     glUniformMatrix4fv(OpenGL.sprite_shader.proj, 1, GL_FALSE, &(buffer->proj)[0][0]);
@@ -358,7 +377,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glDisable(GL_CULL_FACE);
                 glDisable(GL_DEPTH_TEST);
 
-                glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
+                glDrawArrays(GL_TRIANGLE_FAN, draw->vertex_offset, draw->vertex_count);
                 // glDrawArrays(GL_TRIANGLES, 0, 3);
 
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
