@@ -1,6 +1,7 @@
 #ifndef GAME_NODES_H
 #define GAME_NODES_H
 #include "node.h"
+#include "game.h"
 
 class TestNode final : public Node {
 public:
