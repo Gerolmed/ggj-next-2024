@@ -25,6 +25,26 @@ struct Camera
     V2 center;
 };
 
+struct AABB;
+
+class CollisionHandler {
+public:
+    virtual void OnCollide();
+};
+
+struct Collider
+{
+    AABB aabb;
+    i32 collision_type;
+    //0: Wall
+    //1: Box
+    //2: Collectable
+
+    CollisionHandler* collision_handler;
+};
+
+
+
 struct AABB {
     V2 position;
     V2 size;
@@ -43,21 +63,6 @@ struct AABB {
     void collision_response(Collider collider, V2 v2, Level* level);
 };
 
-class CollisionHandler {
-public:
-    virtual void OnCollide();
-};
-
-struct Collider
-{
-    AABB aabb;
-    i32 collision_type;
-    //0: Wall
-    //1: Box
-    //2: Collectable
-
-    CollisionHandler* collision_handler;
-};
 
 
 struct Level
