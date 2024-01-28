@@ -100,7 +100,8 @@ void PlayerNode::Update() {
 
     movement = movement.Norm();
 
-    aabb.move_and_collide(movement * (time_deltatime * speed), level);
+    aabb.move_and_collide({movement.x * (time_deltatime * speed) ,0}, level);
+    aabb.move_and_collide({0, movement.y * (time_deltatime * speed)}, level);
     position = aabb.position + v2(9);
 
     if(movement.SqrMagnitude() > 0.1f) {
