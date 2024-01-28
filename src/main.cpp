@@ -177,7 +177,23 @@ i32 main() {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
-        
+
+        if (level.resetStage) {
+            if (level.ffGoNext) {
+                if (stage != LEVEL_COUNT - 1) stage++;
+                else stage = 0;
+            }
+            level.static_collider = 0;
+            level.collider_count = 0;
+            delete scene_root;
+            scene_root = new Node(&level);
+            dispose(&game_arena);
+            init_arena(&game_arena,&pool);
+            game_Init(&level, stage, &game_arena,scene_root, &attributes);
+            level.resetStage = false;
+            level.ffGoNext = false;
+        }
+
 
         // Calculate delta time
         float time = glfwGetTime();
@@ -187,16 +203,10 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
-
         //debug
         if (input_KeyN.down) {
-            if (stage != LEVEL_COUNT - 1) stage++;
-            else stage = 0;
-            delete scene_root;
-            scene_root = new Node(&level);
-            dispose(&game_arena);
-            init_arena(&game_arena,&pool);
-            game_Init(&level, stage, &game_arena,scene_root, &attributes);
+            level.resetStage = true;
+            level.ffGoNext = true;
         }
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
