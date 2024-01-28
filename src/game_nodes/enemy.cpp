@@ -32,7 +32,7 @@ void EnemyNode::Update() {
 void EnemyNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 
-    renderer_PushBase(buffer, v2(0));
+    // renderer_PushBase(buffer, v2(0));
 
     const V2 pos = GetAbsolutePosition();
     const V2 facing = v2(-sin(this->rotation),
@@ -56,8 +56,8 @@ void EnemyNode::Render(CommandBuffer* buffer){
         V2 r = v2((1 - fov) * facing.x + o * fov * side.x,
                   (1 - fov) * facing.y + o * fov * side.y);
         float t = game_Raycast(level, pos, r);
-        test_mask[3 * i + 0].pos.x = 0;
-        test_mask[3 * i + 0].pos.y = 0;
+        test_mask[3 * i + 0].pos.x = pos.x;
+        test_mask[3 * i + 0].pos.y = pos.y;
         test_mask[3 * i + 1].pos.x = last_vert.x;
         test_mask[3 * i + 1].pos.y = last_vert.y;
         test_mask[3 * i + 2].pos.x = r.x * t;
@@ -69,5 +69,4 @@ void EnemyNode::Render(CommandBuffer* buffer){
     }
 
     renderer_PushMaskOp(buffer, 3 * (ENEMY_RAY_COUNT - 1), test_mask);
-    renderer_PushBase(buffer, level->camera.center);
 }
