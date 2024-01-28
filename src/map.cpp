@@ -129,6 +129,9 @@ u8 GetSpriteIdFromGridPos(Level* level, u32 x, u32 y, u8 type) {
         case 0b01111010: return 7;
         case 0b00001011: return 8;
         case 0b01011111: return 9;
+        case 0b10011111:
+        case 0b00111111:
+        case 0b10111111:
         case 0b00011111: return 10;
         case 0b00010110: return 11;
 
