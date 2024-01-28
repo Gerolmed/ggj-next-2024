@@ -89,7 +89,6 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
             }
             else if(type == Objective){
                 u8 score_value = temp[3*(index+level->grid_width)+2];
-                //level->stage_attributes->max_score
 
                 const auto objective_node = new ObjectiveNode(level, score_value);
                 objective_node->position =  v2(x * TILE_SIZE + HALF_TILE_SIZE, y * TILE_SIZE + HALF_TILE_SIZE);
