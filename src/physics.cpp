@@ -27,7 +27,6 @@ bool AABB:: can_move(V2& v2, Level* level){
     this->position = far_away;
     for(int i=0;i < level->collider_count;i++){
         if(newAABB.intersects(level->collider[i].aabb)){
-            printf("%d x:%d y:%d\n",i,level->collider[i].aabb.position.x,level->collider[i].aabb.position.y);
             if(!can_move_into(&level->collider[i], v2, level)){
                 position = old_position;
                 return false;

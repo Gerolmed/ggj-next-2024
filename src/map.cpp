@@ -68,20 +68,24 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
             }
             else if(type == Player){
                 const auto player_node = new PlayerNode(level);
-                player_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
+                player_node->position = v2(x * TILE_SIZE + HALF_TILE_SIZE, y * TILE_SIZE + HALF_TILE_SIZE);
                 scene_root->AddChild(player_node);
 
             } else if(type == Enemy){
 
+                const auto rotator = new RotatingNode(level);
+                rotator->position = v2(x * TILE_SIZE +HALF_TILE_SIZE, y * TILE_SIZE +HALF_TILE_SIZE);
+                rotator->speed = -1;
+                scene_root->AddChild(rotator);
+
                 const auto enemy_node = new EnemyNode(level);
-                enemy_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
-                scene_root->AddChild(enemy_node);
+                rotator->AddChild(enemy_node);
             }
             else if(type == Objective){
                 u8 score_value = temp[index+2];
 
                 const auto objective_node = new ObjectiveNode(level, temp[index+2]);
-                objective_node->position =  v2(x * TILE_SIZE, y * TILE_SIZE);
+                objective_node->position =  v2(x * TILE_SIZE + HALF_TILE_SIZE, y * TILE_SIZE + HALF_TILE_SIZE);
                 scene_root->AddChild(objective_node);
 
                 Collider collider;
