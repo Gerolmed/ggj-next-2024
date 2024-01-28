@@ -1,7 +1,8 @@
 #ifndef GAME_NODES_H
 #define GAME_NODES_H
+#include <string>
+
 #include "node.h"
-#include "game.h"
 
 class TestNode final : public Node {
 public:
@@ -26,13 +27,18 @@ public:
     void PreUpdate() override;
     void Update() override;
     void Render(CommandBuffer* buffer) override;
+    
+    AABB aabb;
 
 private:
-    Node* rotation_root;
-    Node* idle_node;
+Node* rotation_root;
+Node* idle_node;
     Node* walk_node;
-    AABB aabb;
 };
+
+
+extern PlayerNode* global_player_pointer;
+
 
 class EnemyNode : public Node {
 public:
@@ -40,6 +46,8 @@ public:
     void PreUpdate() override;
     void Update() override;
     void Render(CommandBuffer* buffer);
+private:
+    AABB aabb;
 };
 
 
@@ -63,20 +71,38 @@ public:
         : Node(level) {
     }
 
-    void Render(CommandBuffer* buffer) override;
+void Render(CommandBuffer* buffer) override;
 
 };
 
-class TextNode final: public Node {
+class TextNode : public Node {
 public:
-    explicit TextNode(Level* level, Font* font, char* str);
+    explicit TextNode(Level* level, Font* font, std::string str);
 
-    void Render(CommandBuffer* buffer) override;
+void Render(CommandBuffer* buffer) override;
+
+protected:
+    Font* font;
+    std::string str;
+
+};
+
+class ScoreNode final: public TextNode {
+public:
+    explicit ScoreNode(Level* level, Font* font)
+        : TextNode(level, font, "Score: 0") {}
+
+    void Update() override;
+};
+
+class CountDownNode final: public TextNode {
+public:
+    explicit CountDownNode(Level* level, Font* font);
+
+    void Update() override;
 
 private:
-    Font* font;
-    char* str;
-
+    float remaining_time;
 };
 
 
@@ -86,7 +112,7 @@ public:
         : Node(level), texture_handle(texture_handle), width(width), height(height) {
     }
 
-    int depth = 10;
+int depth = 10;
     TextureHandle texture_handle;
     int width;
     int height;
@@ -98,7 +124,7 @@ class SpritesheetNode: public Node {
 public:
     explicit SpritesheetNode(Level* level, TextureHandle texture_handle, int width, int height, int rows, int columns);
 
-    int depth = 10;
+int depth = 10;
     TextureHandle texture_handle;
     int width;
     int height;

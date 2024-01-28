@@ -26,6 +26,37 @@ void EnemyNode::PreUpdate() {
 }
 
 void EnemyNode::Update() {
+    PlayerNode* player_node = global_player_pointer;
+
+    V2 enemy_to_player = v2(player_node->aabb.position.x - position.x, player_node->aabb.position.y - position.y);
+
+    V2 normed_etp = enemy_to_player.Norm();
+    float squared_distance = (enemy_to_player.x*enemy_to_player.x) + (enemy_to_player.y* enemy_to_player.y);
+    
+    float view_distance = game_Raycast(level, position, normed_etp);
+
+    if(view_distance*view_distance >= squared_distance){
+        
+        const V2 pos = GetAbsolutePosition();
+        const V2 facing = v2(-sin(GetAbsoluteRotation()),
+                         cos(GetAbsoluteRotation()));
+        const V2 side = v2(-facing.y, facing.x);
+        const float fov = 0.3;
+
+        
+        const V2 r = v2((1 - fov) * facing.x - fov * side.x,
+                    (1 - fov) * facing.y - fov * side.y).Norm();
+
+        if((normed_etp.x *facing.x) + (normed_etp.y * facing.y) >= 
+            (r.x * facing.x) + (r.y * facing.y) ){
+            level->resetStage = true;
+
+
+        }
+
+
+    }
+
     Node::Update();
 }
 

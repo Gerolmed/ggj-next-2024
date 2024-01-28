@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "include/game_nodes.h"
 #include "include/input.h"
 #include "include/opengl_renderer.h"
@@ -52,7 +53,7 @@ void ObjectiveNode::Render(CommandBuffer* buffer){
 }
 
 void ObjectiveNode::OnCollide(){
-    if(spritesheet_node->current_frame==0){
+    if(spritesheet_node->current_frame == 0){
         spritesheet_node->current_frame=1;
         level->current_score += value;
     }
