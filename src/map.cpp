@@ -124,12 +124,17 @@ u8 GetSpriteIdFromGridPos(Level* level, u32 x, u32 y, u8 type) {
         case 0b00011010: return 2;
         case 0b00010010: return 3;
         case 0b11011010: return 4;
+        case 0b00011011:
         case 0b00111011: return 5;
         case 0b10011110: return 6;
         case 0b01111010: return 7;
         case 0b00001011: return 8;
         case 0b01011111: return 9;
+        case 0b10011111:
+        case 0b00111111:
+        case 0b10111111:
         case 0b00011111: return 10;
+        case 0b00010111:
         case 0b00010110: return 11;
 
         case 0b11000010:
@@ -146,6 +151,8 @@ u8 GetSpriteIdFromGridPos(Level* level, u32 x, u32 y, u8 type) {
         case 0b01111111: return 17;
         case 0b11011111: return 18;
         case 0b01010110: return 19;
+        case 0b11101011:
+        case 0b01101111:
         case 0b01101011: return 20;
         case 0b01111110: return 21;
         case 0b11011110: return 23;
@@ -177,11 +184,17 @@ u8 GetSpriteIdFromGridPos(Level* level, u32 x, u32 y, u8 type) {
         case 0b01111000: return 41;
         case 0b11011000: return 42;
         case 0b01011011: return 43;
+        case 0b11101000:
+        case 0b01101001:
+        case 0b11101001:
         case 0b01101000: return 44;
         case 0b11111100:
         case 0b11111001:
         case 0b11111000: return 45;
         case 0b11111010: return 46;
+        case 0b11010100:
+        case 0b11110100:
+        case 0b11110000:
         case 0b11010000: return 47;
 
         default: return 33;
