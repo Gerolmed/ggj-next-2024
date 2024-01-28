@@ -45,11 +45,12 @@ void ObjectiveNode::Update() {
     Node::Update();
 }
 
+
 void ObjectiveNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 }
 
-void ObjectiveNode::CollisionResponse(){
+void ObjectiveNode::OnCollide(){
     spritesheet_node->current_frame=1;
 }
 
