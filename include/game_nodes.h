@@ -32,7 +32,16 @@ private:
     AABB aabb;
 };
 
+class RotatingNode final : public Node {
+public:
+    explicit RotatingNode(Level* level)
+        : Node(level) {
+    }
 
+    float speed = 1;
+
+    void Update() override;
+};
 
 class TextureNode: public Node {
 public:
