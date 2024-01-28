@@ -28,7 +28,7 @@ u8 GetTileTypeFromRgb(const u8* temp, u32 index) {
              temp[index + 2] == 0)
         type = Enemy;
     else if (temp[index] == 1 &&
-             temp[index + 1] == 2)
+             temp[index + 1] == 125)
         type = Objective;
 
     return type;

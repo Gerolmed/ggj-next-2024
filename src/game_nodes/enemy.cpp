@@ -21,8 +21,6 @@ EnemyNode::EnemyNode(Level* level) : Node(level) {
 
 void EnemyNode::PreUpdate() {
     Node:: PreUpdate();
-
-    Node::PreUpdate();
     aabb.position = position;
     aabb.size = { 32, 32 };
 }
