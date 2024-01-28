@@ -2,6 +2,8 @@
 #include "include/input.h"
 #include "include/opengl_renderer.h"
 
+#define ENEMY_RAY_COUNT 40
+
 /////////////////////////////////
 /// EnemyNode
 /////////////////////////////////
@@ -30,11 +32,42 @@ void EnemyNode::Update() {
 void EnemyNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 
+    renderer_PushBase(buffer, v2(0));
 
-    V2 ray = GetAbsoluteRotationMatrix() * v2(0, 1);
-    V2 world_pos = GetAbsolutePosition();
-    float t = game_Raycast(level, world_pos, ray);
+    const V2 pos = GetAbsolutePosition();
+    const V2 facing = v2(-sin(this->rotation),
+                         cos(this->rotation));
+    const V2 side = v2(-facing.y, facing.x);
+    const float fov = 0.3;
 
-    renderer_PushLine(buffer, v2(world_pos.x, world_pos.y),
-                      world_pos + ray * t, 30, 1, v3(0, 0, 1));
+    MaskVertex test_mask[3 * (ENEMY_RAY_COUNT - 1)];
+
+    V2 last_vert = v2(0);
+    const V2 r = v2((1 - fov) * facing.x - fov * side.x,
+                    (1 - fov) * facing.y - fov * side.y);
+    const float distance = game_Raycast(level, pos, r);
+    last_vert.x = r.x * distance;
+    last_vert.y = r.y * distance;
+
+    float o = 2.0f / ENEMY_RAY_COUNT - 1;
+    for (u32 i = 0; i < ENEMY_RAY_COUNT - 1; ++i) {
+        o += 2.0f / ENEMY_RAY_COUNT;
+
+        V2 r = v2((1 - fov) * facing.x + o * fov * side.x,
+                  (1 - fov) * facing.y + o * fov * side.y);
+        float t = game_Raycast(level, pos, r);
+        test_mask[3 * i + 0].pos.x = 0;
+        test_mask[3 * i + 0].pos.y = 0;
+        test_mask[3 * i + 1].pos.x = last_vert.x;
+        test_mask[3 * i + 1].pos.y = last_vert.y;
+        test_mask[3 * i + 2].pos.x = r.x * t;
+        test_mask[3 * i + 2].pos.y = r.y * t;
+
+        last_vert.x = test_mask[3 * i + 2].pos.x;
+        last_vert.y = test_mask[3 * i + 2].pos.y;
+
+    }
+
+    renderer_PushMaskOp(buffer, 3 * (ENEMY_RAY_COUNT - 1), test_mask);
+    renderer_PushBase(buffer, level->camera.center);
 }

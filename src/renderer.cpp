@@ -348,7 +348,7 @@ void renderer_PushString(CommandBuffer* buffer, Font* font, const char* str,
         V2 up_right = v2(down_left.x + glyph->width, down_left.y + glyph->height);
         if (!PushQuad(buffer, down_left, up_right, depth,
                       v2(uvx0, uvy0), v2(uvx1, uvy1), 
-                      mat2(0), color)) {
+                      mat2(1), color)) {
             break;
         }
 
