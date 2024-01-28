@@ -27,6 +27,9 @@ u8 GetTileTypeFromRgb(const u8* temp, u32 index) {
              temp[index + 1] == 255 &&
              temp[index + 2] == 0)
         type = Enemy;
+    else if (temp[index] == 1 &&
+             temp[index + 1] == 2)
+        type = Objective;
 
     return type;
 }
@@ -69,6 +72,15 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
                 const auto enemy_node = new EnemyNode(level);
                 enemy_node->position = v2(x * TILE_SIZE, y * TILE_SIZE);
                 scene_root->AddChild(enemy_node);
+            }
+            else if(type == Objective){
+                u8 score_value = temp[index+2];
+
+                ObjectiveNode objective_node = ObjectiveNode(level);
+                objective_node.position =  v2(x * TILE_SIZE, y * TILE_SIZE);
+                scene_root->AddChild(&objective_node);
+
+                objective_node.value = temp[index+2];
             }
         }
     }
