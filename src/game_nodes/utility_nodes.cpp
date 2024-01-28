@@ -1,4 +1,5 @@
 #include "include/game_nodes.h"
+#include "include/time.h"
 
 /////////////////////////////////
 /// TestNode
@@ -15,3 +16,10 @@ void TestNode::Update() {
 /////////////////////////////////
 /// RotatingNode
 /////////////////////////////////
+
+void RotatingNode::Update() {
+    rotation += time_deltatime * speed;
+    if(rotation >= PI * 2) {
+        rotation -= PI * 2;
+    }
+}

@@ -7,6 +7,7 @@ extern KeyInput input_KeyW;
 extern KeyInput input_KeyA;
 extern KeyInput input_KeyS;
 extern KeyInput input_KeyD;
+extern KeyInput input_KeyN;
 extern KeyInput input_KeySpace;
 
 

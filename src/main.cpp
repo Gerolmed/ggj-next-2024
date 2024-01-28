@@ -134,7 +134,12 @@ i32 main() {
     Level level;
     auto* scene_root = new Node(&level);
 
+<<<<<<< HEAD
     game_Init(&level, 0, &arena, scene_root);
+=======
+    begin_tmp(&arena);
+    game_Init(&level, stage, &arena, scene_root);
+>>>>>>> 1af33d5f9e39ad3df4af6e2bff9dae82119e394f
 
     Mat4 projection = glm::ortho(
         -game_width / 2,
@@ -155,7 +160,13 @@ i32 main() {
 
     float lastFrame = 0.0f;
 
-
+    {
+        auto* testNode = new RotatingNode(&level);
+        auto* sub_tex = new TextureNode(&level, image, 32, 32);
+        sub_tex->position = v2(20);
+        testNode->AddChild(sub_tex);
+        scene_root->AddChild(testNode);
+    }
     // Begin render loop
     while (!glfwWindowShouldClose(global_window.handle)) {
 
@@ -164,11 +175,6 @@ i32 main() {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
         
-#ifdef DEBUG
-        // TODO: Level change code goes here
-        // if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        // }
-#endif
 
         // Calculate delta time
         float time = glfwGetTime();
@@ -178,6 +184,16 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
+#ifdef DEBUG
+        if (input_KeyN.is_pressed) {
+            stage++;
+            delete scene_root;
+            scene_root = new Node(&level);
+            end_tmp(&arena);
+            begin_tmp(&arena);
+            game_Init(&level, stage, &arena,scene_root);
+        }
+#endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
@@ -197,7 +213,9 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderGrid(&cmd, &level, white, wall_texture);
+        game_RenderWalls(&cmd, &level, white, wall_texture);
+        game_RenderBoxes(&cmd, &level, white, wall_texture);
+
 
         // Rune node tree lifecycle
         scene_root->TryPreUpdate();

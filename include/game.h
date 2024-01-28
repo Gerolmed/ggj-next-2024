@@ -16,7 +16,8 @@ enum TileType
     Wall = 1,
     Box = 2,
     Player = 3,
-    Enemy = 4
+    Enemy = 4,
+    Objective = 5
 };
 
 struct Camera
@@ -59,7 +60,13 @@ struct Level
     Camera camera;
 };
 
-void game_RenderGrid(CommandBuffer* cmd,
+
+void game_RenderWalls(CommandBuffer* cmd,
+                     Level* level, 
+                     TextureHandle texture,
+                     TextureHandle wall_texture);
+
+void game_RenderBoxes(CommandBuffer* cmd,
                      Level* level, 
                      TextureHandle texture,
                      TextureHandle wall_texture);
