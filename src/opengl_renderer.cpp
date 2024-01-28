@@ -248,6 +248,7 @@ void opengl_Init(u32 render_width, u32 render_height)
 
     glUseProgram(OpenGL.post_shader.base.id);
     glUniform1i(OpenGL.post_shader.bloom_buffer, 1);
+    glUniform1i(OpenGL.post_shader.mask_buffer, 2);
 }
 
 void CopyToBuffer(u32 slot, u32 size, void* data)
@@ -336,6 +337,8 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glBindTexture(GL_TEXTURE_2D, OpenGL.color_buffer);
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, OpenGL.bloom_mips[0].texture);
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, OpenGL.mask_color_buffer);
 
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -351,7 +354,11 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glBindVertexArray(OpenGL.mask_arr);
                 glUseProgram(OpenGL.mask_shader.id);
 
-                glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
+                glDisable(GL_CULL_FACE);
+                glDisable(GL_DEPTH_TEST);
+
+                // glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
+                glDrawArrays(GL_TRIANGLES, 0, 3);
 
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
                 glBindVertexArray(OpenGL.draw_arr);
