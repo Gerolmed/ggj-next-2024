@@ -59,6 +59,12 @@ struct Level
     Camera camera;
 };
 
+
+void game_RenderColliders(CommandBuffer* cmd,
+                     Level* level, 
+                     TextureHandle texture,
+                     TextureHandle wall_texture);
+
 void game_RenderGrid(CommandBuffer* cmd,
                      Level* level, 
                      TextureHandle texture,
