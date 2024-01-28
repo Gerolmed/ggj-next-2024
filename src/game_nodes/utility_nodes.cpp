@@ -23,3 +23,7 @@ void RotatingNode::Update() {
         rotation -= PI * 2;
     }
 }
+
+void CameraNode::Update() {
+    level->camera.center = GetAbsolutePosition();
+}
