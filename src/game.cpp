@@ -59,9 +59,6 @@ void game_PushCollider(Level* level, Collider c, bool static_c)
 
     if (static_c) {
         level->static_collider += 1;
-        c.movable = false;
-    }else{
-        c.movable = true;
     }
 }
 
