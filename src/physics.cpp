@@ -5,10 +5,10 @@ V2 far_away = {INFINITY,INFINITY};
 
 bool AABB::intersects(AABB& other) const{
     if(position.x == INFINITY){ return false; }
-    bool intersectsX =  position.x <= (other.position.x + other.size.x) && 
-                        other.position.x <= (position.x + size.x);
-    bool intersectsY = position.y <= (other.position.y + other.size.y) && 
-                        other.position.y <= (position.y + size.y);
+    bool intersectsX =  position.x < (other.position.x + other.size.x) && 
+                        other.position.x < (position.x + size.x);
+    bool intersectsY = position.y < (other.position.y + other.size.y) && 
+                        other.position.y < (position.y + size.y);
     return intersectsX && intersectsY;
 }
 
