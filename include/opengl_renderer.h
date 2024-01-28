@@ -30,6 +30,7 @@ struct PostprocessProgram
 {
     ProgramBase base;
     u32 bloom_buffer;
+    u32 mask_buffer;
 };
 
 struct OpenGLContext

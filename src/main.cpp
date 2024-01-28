@@ -120,6 +120,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle floor_texture;
+    load_op = renderer_TextureLoadOp(&floor_texture, "assets/tilesets/ground.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
@@ -182,7 +187,8 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
-#ifdef DEBUG
+
+        //debug
         if (input_KeyN.down) {
             stage++;
             delete scene_root;
@@ -191,7 +197,6 @@ i32 main() {
             init_arena(&game_arena,&pool);
             game_Init(&level, stage, &game_arena,scene_root);
         }
-#endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
@@ -211,8 +216,8 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderWalls(&cmd, &level, white, wall_texture);
-        game_RenderBoxes(&cmd, &level, white, wall_texture);
+        game_RenderGrid(&cmd, &level, wall_texture, floor_texture);
+        game_RenderBoxes(&cmd, &level, white);
 
 
         // Rune node tree lifecycle

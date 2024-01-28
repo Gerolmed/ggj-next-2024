@@ -4,6 +4,7 @@ in vec2 uv;
 
 uniform sampler2D color_buffer;
 uniform sampler2D bloom_buffer;
+uniform sampler2D mask_buffer;
 
 out vec4 out_Color;
 
@@ -11,9 +12,9 @@ void main() {
     float gamma = 1;
     float saturation = 1;
     float contrast = 1;
-    float brightness = 0;
-    float bloom = 0.2;
-    float exposure = 0.5;
+    float brightness = texture(mask_buffer, uv).r;
+    float bloom = 0.05;
+    float exposure = 1.0;
 
     vec3 hdr_color = texture(color_buffer, uv).rgb;
     hdr_color += bloom * texture(bloom_buffer, uv).rgb;
