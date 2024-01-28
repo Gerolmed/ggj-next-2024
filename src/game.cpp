@@ -3,7 +3,6 @@
 #include "include/stb_image.h"
 #include <assert.h>
 #include "include/arena.h"
-#include "include/game_nodes.h"
 #include "include/map.h"
 
 void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttributes* attributes) {

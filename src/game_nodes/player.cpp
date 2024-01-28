@@ -4,6 +4,8 @@
 #include "include/opengl_renderer.h"
 #include "include/time.h"
 
+PlayerNode* global_player_pointer = nullptr;
+
 /////////////////////////////////
 /// PlayerNode
 /////////////////////////////////
