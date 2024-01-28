@@ -134,16 +134,6 @@ i32 main() {
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
-    // TODO: Setup imgui
-    // Setup Dear ImGui context
-    // IMGUI_CHECKVERSION();
-    // ImGui::CreateContext();
-    // ImGuiIO& io = ImGui::GetIO();
-
-    // Setup Platform/Renderer backends
-    // ImGui_ImplGlfw_InitForOpenGL(global_window.handle, true);
-    // ImGui_ImplOpenGL3_Init();
-
     u32 stage = 0;
     Level level;
     auto* scene_root = new Node(&level);
@@ -172,6 +162,9 @@ i32 main() {
 
     {
         auto* testNode = new CanvasNode(&level);
+        auto* sub_text = new TextNode(&level, &font, "Some example text here");
+        sub_text->position = v2(16);
+        testNode->AddChild(sub_text);
         auto* sub_tex = new TextureNode(&level, image, 32, 32);
         sub_tex->position = v2(16);
         testNode->AddChild(sub_tex);
@@ -216,12 +209,9 @@ i32 main() {
         // Request to clear at the beginning
         renderer_PushClear(&cmd, v3(0.1647058824, 0.1176470588, 0.137254902));
 
-        // renderer_PushSprite(&cmd,
-        //                     v2(-30), v2(-30, 30), v2(30), v2(30, -30),
-        //                     v2(0), v2(1),
-        //                     v3(0, 1, 0), &white);
-        // renderer_PushString(&cmd, &font, "Font rendering, gg!",
-        //                     v2(sin(time) * 150, cos(time) * 150));
+        renderer_PushString(&cmd, &font, "Font rendering, gg!",
+                            v2(sin(time) * 150, cos(time) * 150), 50);
+
 
         // render game grid
         game_RenderGrid(&cmd, &level, wall_texture, floor_texture);
@@ -258,15 +248,6 @@ i32 main() {
 
         // Execute final rendering operations
         opengl_RenderCommands(&cmd);
-        // TODO: Setup imgui
-        // ImGui_ImplOpenGL3_NewFrame();
-        // ImGui_ImplGlfw_NewFrame();
-        // ImGui::NewFrame();
-        // ImGui::ShowDemoWindow();
-
-        // TODO: Setup
-        // ImGui::Render();
-        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(global_window.handle);
         glfwPollEvents();

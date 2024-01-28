@@ -67,10 +67,17 @@ public:
 
 };
 
+class TextNode final: public Node {
+public:
+    explicit TextNode(Level* level, Font* font, char* str);
 
+    void Render(CommandBuffer* buffer) override;
 
+private:
+    Font* font;
+    char* str;
 
-
+};
 
 
 class TextureNode: public Node {
