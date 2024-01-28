@@ -6,9 +6,22 @@
 /// ObjectiveNode
 /////////////////////////////////
 
-ObjectiveNode::ObjectiveNode(Level* level) : Node(level) {
+ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
     TextureHandle pp;
-    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/objective.png");
+    TextureLoadOp load_op;
+
+    switch(value) {
+  case 5:
+    load_op = renderer_TextureLoadOp(&pp, "assets/objective5.png");
+    break;
+  case 10:
+    load_op = renderer_TextureLoadOp(&pp, "assets/objective10.png");
+    break;
+  default:
+    load_op = renderer_TextureLoadOp(&pp, "assets/objective1.png");
+    }    
+
+
     opengl_LoadTexture(&load_op);
 
     renderer_FreeTextureLoadOp(&load_op);
