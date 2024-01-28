@@ -49,9 +49,9 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
 
     for (u32 y = 0; y < level->grid_height; ++y) {
         if (y == 0) {
-            u16 max_score = 0;//temp[0] << 8 | temp[1];
-            u16 score_requirement = 0;//temp[3] << 8 | temp[4];
-            u16 time_limit = 0;//= temp[6] << 8 | temp[7];
+            u16 max_score = temp[0] << 8 | temp[1];
+            u16 score_requirement = temp[3] << 8 | temp[4];
+            u16 time_limit = temp[6] << 8 | temp[7];
 
             level->stage_attributes = attributes;
 
