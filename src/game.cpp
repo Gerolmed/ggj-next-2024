@@ -25,7 +25,7 @@ void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture) {
             renderer_PushSprite(cmd, v2(collider.aabb.position.x, collider.aabb.position.y),
                                 v2(collider.aabb.position.x + collider.aabb.size.x,
                                    collider.aabb.position.y + collider.aabb.size.y),
-                                0,
+                                1,
                                 sprite(
                                     v2(0),
                                     v2(1)

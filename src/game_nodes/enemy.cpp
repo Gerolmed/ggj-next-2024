@@ -8,21 +8,19 @@
 
 EnemyNode::EnemyNode(Level* level) : Node(level) {
     TextureHandle pp;
-    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/enemy.png");
+    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/enemies/drone.png");
     opengl_LoadTexture(&load_op);
 
     renderer_FreeTextureLoadOp(&load_op);
 
-    auto* texNode = new TextureNode(level, pp, 100, 100);
-
+    auto* texNode = new AnimatedSpriteNode(level, pp, 32, 32, 1, 3);
+    texNode->seconds_per_frame = 0.1f;
     AddChild(texNode);
 
 }
 
 void EnemyNode::PreUpdate() {
     Node:: PreUpdate();
-    aabb.position = position;
-    aabb.size = { 32, 32 };
 }
 
 void EnemyNode::Update() {
@@ -32,18 +30,11 @@ void EnemyNode::Update() {
 void EnemyNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 
-    aabb.position = {INFINITY,INFINITY};
 
-    float time = glfwGetTime();
+    V2 ray = GetAbsoluteRotationMatrix() * v2(0, 1);
+    V2 world_pos = GetAbsolutePosition();
+    float t = game_Raycast(level, world_pos, ray);
 
-    V2 ray = v2(position.x + sin( time), position.y + cos(time));
-    float t = game_Raycast(level, position, ray);
-
-    renderer_PushLine(buffer, v2(position.x, position.y),
-                      v2(position.x + ray.x * t, position.y + ray.y * t), 30, 1, v3(0, 0, 1));
-    aabb.position = {position.x, position.y};
-
-
-    renderer_PushLine(buffer, v2(0),
-                      v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
+    renderer_PushLine(buffer, v2(world_pos.x, world_pos.y),
+                      world_pos + ray * t, 30, 1, v3(0, 0, 1));
 }

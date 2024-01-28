@@ -105,6 +105,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle box_texture;
+    load_op = renderer_TextureLoadOp(&box_texture, "assets/props/crate.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     TextureHandle image;
     load_op = renderer_TextureLoadOp(&image, "assets/image.png");
     opengl_LoadTexture(&load_op);
@@ -217,7 +222,7 @@ i32 main() {
 
         // render game grid
         game_RenderGrid(&cmd, &level, wall_texture, floor_texture);
-        game_RenderBoxes(&cmd, &level, white);
+        game_RenderBoxes(&cmd, &level, box_texture);
 
 
         // Rune node tree lifecycle
