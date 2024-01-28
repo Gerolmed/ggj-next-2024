@@ -221,6 +221,7 @@ i32 main() {
 
 
         // Rune node tree lifecycle
+        renderer_PushBase(&cmd, level.camera.center);
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 

@@ -26,7 +26,7 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
 
 void PlayerNode::Render(CommandBuffer* buffer)
 {
-    Node::Render();
+    Node::Render(buffer);
 
 #ifdef DEBUG
     V2 pos = GetAbsolutePosition();
