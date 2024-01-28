@@ -196,7 +196,7 @@ i32 main() {
         scene_root->TryPreUpdate();
         scene_root->TryUpdate();
 
-#ifdef false
+#ifdef DEBUG
         renderer_PushBase(&cmd, level.camera.center);
         for (u32 i = 0; i < level.collider_count; ++i) {
             AABB aabb = level.collider[i].aabb;
