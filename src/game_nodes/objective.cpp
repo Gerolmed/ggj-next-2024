@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "include/game_nodes.h"
 #include "include/input.h"
 #include "include/opengl_renderer.h"
