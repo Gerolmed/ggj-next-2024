@@ -1,5 +1,7 @@
 #ifndef GAME_NODES_H
 #define GAME_NODES_H
+#include <string>
+
 #include "node.h"
 
 class TestNode final : public Node {
@@ -74,16 +76,34 @@ void Render(CommandBuffer* buffer) override;
 
 };
 
-class TextNode final: public Node {
+class TextNode : public Node {
 public:
-    explicit TextNode(Level* level, Font* font, char* str);
+    explicit TextNode(Level* level, Font* font, std::string str);
 
 void Render(CommandBuffer* buffer) override;
 
-private:
+protected:
     Font* font;
-    char* str;
+    std::string str;
 
+};
+
+class ScoreNode final: public TextNode {
+public:
+    explicit ScoreNode(Level* level, Font* font)
+        : TextNode(level, font, "Score: 0") {}
+
+    void Update() override;
+};
+
+class CountDownNode final: public TextNode {
+public:
+    explicit CountDownNode(Level* level, Font* font);
+
+    void Update() override;
+
+private:
+    float remaining_time;
 };
 
 

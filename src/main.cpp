@@ -74,6 +74,19 @@ void init_window() {
     glfwMakeContextCurrent(global_window.handle);
 }
 
+void init_ui(Level* level, Node* scene_root, Font* font) {
+    {
+        auto* ui_wrapper = new CanvasNode(level);
+        auto* score = new ScoreNode(level, font);
+        score->position = v2(0, 40-GAME_HEIGHT);
+        ui_wrapper->AddChild(score);
+        auto* timer = new CountDownNode(level, font);
+        timer->position = v2(0, -10);
+        ui_wrapper->AddChild(timer);
+        scene_root->AddChild(ui_wrapper);
+    }
+}
+
 i32 main() {
 #ifdef DEBUG
     printf("Running Debug build\n");
@@ -133,7 +146,7 @@ i32 main() {
     renderer_FreeTextureLoadOp(&load_op);
 
     Font font;
-    opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
+    opengl_SetupFont(&font, "assets/Dosis.ttf", 38);
 
     u32 stage = 0;
     Level level;
@@ -161,16 +174,9 @@ i32 main() {
 
     float lastFrame = 0.0f;
 
-    {
-        auto* testNode = new CanvasNode(&level);
-        auto* sub_text = new TextNode(&level, &font, "Some example text here");
-        sub_text->position = v2(16);
-        testNode->AddChild(sub_text);
-        auto* sub_tex = new TextureNode(&level, image, 32, 32);
-        sub_tex->position = v2(16);
-        testNode->AddChild(sub_tex);
-        scene_root->AddChild(testNode);
-    }
+    // Load UI
+    init_ui(&level, scene_root, &font);
+
     // Begin render loop
     while (!glfwWindowShouldClose(global_window.handle)) {
 
@@ -193,6 +199,9 @@ i32 main() {
             game_Init(&level, stage, &game_arena,scene_root, &attributes);
             level.resetStage = false;
             level.ffGoNext = false;
+
+            // Load UI
+            init_ui(&level, scene_root, &font);
         }
 
 
