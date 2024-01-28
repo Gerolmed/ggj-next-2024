@@ -5,10 +5,10 @@
 #include <assert.h>
 #include <glm/mat4x4.hpp>
 
-#define DEBUG
+// #define DEBUG
 #define WINDOWS
 #define LEVEL_COUNT 7
-// #define FULLSCREEN
+#define FULLSCREEN
 
 #ifdef WINDOWS
 #ifndef DEBUG

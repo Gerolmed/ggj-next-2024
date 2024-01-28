@@ -2,7 +2,7 @@
 #include "include/input.h"
 #include "include/opengl_renderer.h"
 
-#define ENEMY_RAY_COUNT 40
+#define ENEMY_RAY_COUNT 80
 
 /////////////////////////////////
 /// EnemyNode
