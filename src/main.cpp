@@ -82,6 +82,8 @@ i32 main() {
 
     Arena arena;
     init_arena(&arena, &pool);
+    Arena game_arena;
+    init_arena(&arena, &pool);
 
     u32 vertex_count = 20000;
     Vertex* vertex_buffer = (Vertex*) push_size(&arena, sizeof(Vertex) * vertex_count);
@@ -134,7 +136,6 @@ i32 main() {
     Level level;
     auto* scene_root = new Node(&level);
 
-    begin_tmp(&arena);
     game_Init(&level, stage, &arena, scene_root);
 
     Mat4 projection = glm::ortho(
@@ -181,13 +182,13 @@ i32 main() {
         input_UpdateAll(global_window.handle);
 
 #ifdef DEBUG
-        if (input_KeyN.is_pressed) {
+        if (input_KeyN.down) {
             stage++;
             delete scene_root;
             scene_root = new Node(&level);
-            end_tmp(&arena);
-            begin_tmp(&arena);
-            game_Init(&level, stage, &arena,scene_root);
+            dispose(&game_arena);
+            init_arena(&game_arena,&pool);
+            game_Init(&level, stage, &game_arena,scene_root);
         }
 #endif
         // Construct command buffer for visual/rendering operations
