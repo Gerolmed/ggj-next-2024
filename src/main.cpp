@@ -182,7 +182,7 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
-#ifdef DEBUG
+#ifdef TRUE
         if (input_KeyN.down) {
             stage++;
             delete scene_root;

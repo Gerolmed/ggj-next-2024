@@ -8,6 +8,7 @@
 // #define DEBUG
 #define WINDOWS
 // #define FULLSCREEN
+#define TRUE
 
 #ifdef WINDOWS
 #ifndef DEBUG
