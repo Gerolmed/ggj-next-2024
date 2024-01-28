@@ -134,12 +134,8 @@ i32 main() {
     Level level;
     auto* scene_root = new Node(&level);
 
-<<<<<<< HEAD
-    game_Init(&level, 0, &arena, scene_root);
-=======
     begin_tmp(&arena);
     game_Init(&level, stage, &arena, scene_root);
->>>>>>> 1af33d5f9e39ad3df4af6e2bff9dae82119e394f
 
     Mat4 projection = glm::ortho(
         -game_width / 2,

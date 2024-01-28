@@ -161,7 +161,7 @@ void renderer_PushSprite(CommandBuffer* buffer,
 void renderer_PushSprite(CommandBuffer* buffer,
                          V2 down_left, V2 up_right, float depth,
                          Sprite sprite,
-                         Mat3f transform_matrix, V3 color, TextureHandle texture);
+                         Mat3f trans, V3 color, TextureHandle texture);
 
 void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
                        float depth, float width, V3 color);

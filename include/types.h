@@ -43,11 +43,15 @@ inline V2 v2(float x, float y)
     return {x, y};
 }
 
-struct V3
+union V3
 {
-    float x;
-    float y;
-    float z;
+    struct {
+        float x;
+        float y;
+        float z;
+    };
+
+    V2 xy;
 };
 
 inline V3 v3(float x)

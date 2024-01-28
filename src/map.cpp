@@ -33,7 +33,7 @@ u8 GetTileTypeFromRgb(const u8* temp, u32 index) {
 
 void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
     char path[1024];
-    sprintf(path,"assets/stages/%d.png",stage);
+    sprintf(path, "assets/stages/%d.png",stage);
     u8* temp = stbi_load(
             path,
             &level->grid_width,
