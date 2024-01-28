@@ -17,7 +17,7 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
 
 
 
-void game_RenderColliders(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture){
+void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture){
     renderer_PushBase(cmd, level->camera.center);
     
     V3 color = {0, 0, 0};
@@ -37,26 +37,16 @@ void game_RenderColliders(CommandBuffer* cmd, Level* level, TextureHandle textur
                                 mat2(1), color, texture);
 
 
-        }else{
-            
-            renderer_PushSprite(cmd, v2(collider.aabb.position.x, collider.aabb.position.y),
-                                v2(collider.aabb.position.x + collider.aabb.size.x, 
-                                    collider.aabb.position.y + collider.aabb.size.y),
-                                0,
-                                sprite(
-                                        v2(0),
-                                        v2(1)
-                                ),
-                                mat2(1), v3(1), wall_texture);
         }
     }
 }
 
 
 
-void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture)
+void game_RenderWalls(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture)
 {
     renderer_PushBase(cmd, level->camera.center);
+    
     for (u32 y = 0; y < level->grid_height; ++y) {
         for (u32 x = 0; x < level->grid_width; ++x) {
             u8 type = level->grid[x + level->grid_width * y];
@@ -75,17 +65,6 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,Tex
                                     mat2(1), v3(1), wall_texture);
                 continue;
             }
-            if (type == Box) {
-                color = v3(0.3, 0.225, 0.15);
-            }
-            renderer_PushSprite(cmd, v2(x * TILE_SIZE, y * TILE_SIZE),
-                                v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE),
-                                0,
-                                sprite(
-                                        v2(0),
-                                        v2(1)
-                                ),
-                                mat2(1), color, texture);
         }
     }
 }
