@@ -164,11 +164,6 @@ i32 main() {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
         
-#ifdef DEBUG
-        // TODO: Level change code goes here
-        // if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        // }
-#endif
 
         // Calculate delta time
         float time = glfwGetTime();
@@ -178,6 +173,9 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
+#ifdef DEBUG
+
+#endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
