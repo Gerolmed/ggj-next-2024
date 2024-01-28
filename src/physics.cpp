@@ -67,7 +67,8 @@ void collision_response(Collider collider, V2 v2, Level* level){
 }
 
 
-bool AABB::can_move_into(Collider collider, V2 v2, Level* level){
+bool can_move_into(Collider collider, V2 v2, Level* level){
+    
     switch(collider.collision_type){
         case 0: return false;
         case 1: return collider.aabb.can_move(v2,level);
