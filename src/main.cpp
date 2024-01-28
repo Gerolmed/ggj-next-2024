@@ -154,7 +154,13 @@ i32 main() {
 
     float lastFrame = 0.0f;
 
-
+    {
+        auto* testNode = new RotatingNode(&level);
+        auto* sub_tex = new TextureNode(&level, image, 32, 32);
+        sub_tex->position = v2(20);
+        testNode->AddChild(sub_tex);
+        scene_root->AddChild(testNode);
+    }
     // Begin render loop
     while (!glfwWindowShouldClose(global_window.handle)) {
 
