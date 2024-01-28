@@ -195,7 +195,8 @@ i32 main() {
 
         //debug
         if (input_KeyN.down) {
-            stage++;
+            if (stage != LEVEL_COUNT - 1) stage++;
+            else stage = 0;
             delete scene_root;
             scene_root = new Node(&level);
             dispose(&game_arena);

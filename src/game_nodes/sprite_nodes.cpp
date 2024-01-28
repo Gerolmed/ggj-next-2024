@@ -16,8 +16,8 @@ SpritesheetNode::SpritesheetNode(Level* level, TextureHandle texture_handle, int
 
 void SpritesheetNode::Render(CommandBuffer* buffer) {
     Node::Render(buffer);
-    const V2 down_left = V2{-std::ceil(width / 2.0f), -std::ceil(height / 2.0f)} + GetAbsolutePosition();
-    const V2 up_right = V2{std::floor(width / 2.0f), std::floor(height / 2.0f)} + GetAbsolutePosition();
+    const V2 down_left = V2{-std::ceil(width / 2.0f), -std::ceil(height / 2.0f)};
+    const V2 up_right = V2{std::floor(width / 2.0f), std::floor(height / 2.0f)};
     const float remainingX = current_frame % columns;
     const V2 uv_bot_left = V2{
         remainingX * item_width, (rows - ((current_frame - remainingX) / columns + 1)) * item_height
@@ -25,7 +25,7 @@ void SpritesheetNode::Render(CommandBuffer* buffer) {
     renderer_PushSprite(buffer,
                         down_left, up_right, 10,
                         {uv_bot_left, uv_bot_left + V2{item_width, item_height}},
-                        GetAbsoluteRotationMatrix(), V3{1, 1, 1}, texture_handle
+                        GetAbsoluteMatrix(), V3{1, 1, 1}, texture_handle
     );
 }
 

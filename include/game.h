@@ -6,6 +6,7 @@
 
 #define MAX_COLLIDERS 150
 #define TILE_SIZE 32
+#define HALF_TILE_SIZE 16
 
 
 struct Level;
@@ -64,9 +65,9 @@ struct Collider
     CollisionHandler* collision_handler;
 };
 
-bool can_move_into( Collider collider, V2 v2, Level* level);
+bool can_move_into( Collider* collider, V2 v2, Level* level);
 
-void collision_response( Collider collider, V2 v2, Level* level);
+void collision_response( Collider* collider, V2 v2, Level* level);
 
 
 struct Level

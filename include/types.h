@@ -7,6 +7,7 @@
 
 #define DEBUG
 #define WINDOWS
+#define LEVEL_COUNT 2
 // #define FULLSCREEN
 
 #ifdef WINDOWS
