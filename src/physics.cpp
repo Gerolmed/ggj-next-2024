@@ -17,14 +17,6 @@ AABB AABB::translate(V2& v2) const{
 }
 
 
-bool AABB::can_move_into(Collider moving_into, V2 v2, Level* level){
-    switch(moving_into.collision_type){
-        case 0: return false;
-        case 1: return moving_into.aabb.can_move(v2,level);
-        case 2: return true;
-    }
-}
-
 
 bool AABB:: can_move(V2& v2, Level* level){
     AABB newAABB = translate(v2);
@@ -55,12 +47,30 @@ void AABB::move_and_push_boxes(V2& v2, Level* level){
     AABB newAABB = translate(v2);
     position = far_away;
         for(int i=0;i < level->collider_count;i++){
-            if(level->collider[i].movable && newAABB.intersects(level->collider[i].aabb)){
-                level->collider[i].aabb.move_and_push_boxes(v2,level);
+            if (newAABB.intersects(level -> collider[i].aabb)){
+                collision_response(level -> collider[i], v2, level);
             }
         }
     position = newAABB.position;
 }
+
+void collision_response(Collider collider, V2 v2, Level* level){
+    switch(collider.collision_type){
+        case 0: return;
+        case 1: collider.aabb.move_and_push_boxes(v2, level);
+        case 2: collider.collision_handler->OnCollide();
+    }
+}
+
+
+bool AABB::can_move_into(Collider collider, V2 v2, Level* level){
+    switch(collider.collision_type){
+        case 0: return false;
+        case 1: return collider.aabb.can_move(v2,level);
+        case 2: return true;
+    }
+}
+
 
 
 

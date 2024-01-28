@@ -43,6 +43,10 @@ struct AABB {
     void collision_response(Collider collider, V2 v2, Level* level);
 };
 
+class CollisionHandler {
+public:
+    virtual void OnCollide();
+};
 
 struct Collider
 {
@@ -51,6 +55,8 @@ struct Collider
     //0: Wall
     //1: Box
     //2: Collectable
+
+    CollisionHandler* collision_handler;
 };
 
 
