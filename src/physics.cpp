@@ -57,8 +57,12 @@ void AABB::move_and_push_boxes(V2& v2, Level* level){
 void collision_response(Collider collider, V2 v2, Level* level){
     switch(collider.collision_type){
         case 0: return;
-        case 1: collider.aabb.move_and_push_boxes(v2, level);
-        case 2: collider.collision_handler->OnCollide();
+        case 1: collider.aabb.move_and_push_boxes(v2, level); return;
+        case 2:
+            if(collider.collision_handler != NULL){
+                collider.collision_handler->OnCollide();
+                return;
+            } 
     }
 }
 
