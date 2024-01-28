@@ -6,11 +6,11 @@
 #include "include/game_nodes.h"
 #include "include/map.h"
 
-void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
+void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttributes* attributes) {
     level->static_collider = 0;
     level->collider_count = 0;
     level->camera.center = v2(10.5 * TILE_SIZE, 10.5 * TILE_SIZE);
-    map_init(level, stage, arena, scene_root);
+    map_init(level, stage, arena, scene_root,attributes);
 }
 
 void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture) {

@@ -27,7 +27,7 @@ float V2::SqrMagnitude() {
     return x * x + y * y;
 };
 float V2::ToRad() {
-    return atan2(x, y);
+    return atan2(-x, y);
 };
 
 V2 V2::Norm() {

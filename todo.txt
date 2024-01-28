@@ -15,3 +15,11 @@ Gamplay concept
 
 
 
+
+
+Things to fix:
+Memory leak
+Vision
+Color?
+
+
