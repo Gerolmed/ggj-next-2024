@@ -16,7 +16,8 @@ enum TileType
     Wall = 1,
     Box = 2,
     Player = 3,
-    Enemy = 4
+    Enemy = 4,
+    Objective = 5
 };
 
 struct Camera
