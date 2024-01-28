@@ -130,10 +130,12 @@ i32 main() {
     // ImGui_ImplGlfw_InitForOpenGL(global_window.handle, true);
     // ImGui_ImplOpenGL3_Init();
 
+    u32 stage = 0;
     Level level;
     auto* scene_root = new Node(&level);
 
-    game_Init(&level, 1, &arena, scene_root);
+    begin_tmp(&arena);
+    game_Init(&level, stage, &arena, scene_root);
 
     Mat4 projection = glm::ortho(
         -game_width / 2,
@@ -168,6 +170,7 @@ i32 main() {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
+        
 
         // Calculate delta time
         float time = glfwGetTime();
@@ -177,6 +180,16 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
+#ifdef DEBUG
+        if (input_KeyN.is_pressed) {
+            stage++;
+            delete scene_root;
+            scene_root = new Node(&level);
+            end_tmp(&arena);
+            begin_tmp(&arena);
+            game_Init(&level, stage, &arena,scene_root);
+        }
+#endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
@@ -196,7 +209,9 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderGrid(&cmd, &level, white, wall_texture);
+        game_RenderWalls(&cmd, &level, white, wall_texture);
+        game_RenderBoxes(&cmd, &level, white, wall_texture);
+
 
         // Rune node tree lifecycle
         scene_root->TryPreUpdate();

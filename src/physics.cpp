@@ -22,7 +22,7 @@ bool AABB:: can_move(V2& v2, Level* level){
     position = far_away;
     for(int i=0;i < level->collider_count;i++){
         if(newAABB.intersects(level->collider[i].aabb)){
-            if(!level->collider[i].movable  || !level->collider[i].aabb.can_move(v2,level)){
+            if((!level->collider[i].movable)  || !level->collider[i].aabb.can_move(v2,level)){
                 position = old_position;
                 return false;
             }

@@ -7,6 +7,7 @@ KeyInput input_KeyW = KeyInput(GLFW_KEY_W);
 KeyInput input_KeyA = KeyInput(GLFW_KEY_A);
 KeyInput input_KeyS = KeyInput(GLFW_KEY_S);
 KeyInput input_KeyD = KeyInput(GLFW_KEY_D);
+KeyInput input_KeyN = KeyInput(GLFW_KEY_N);
 KeyInput input_KeySpace = KeyInput(GLFW_KEY_SPACE);
 
 void input_UpdateAll(GLFWwindow* window) {
@@ -14,6 +15,7 @@ void input_UpdateAll(GLFWwindow* window) {
     input_KeyA.Update(window);
     input_KeyS.Update(window);
     input_KeyD.Update(window);
+    input_KeyN.Update(window);
     input_KeySpace.Update(window);
 }
 
