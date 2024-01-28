@@ -2,6 +2,8 @@
 #include "include/input.h"
 #include "include/opengl_renderer.h"
 
+
+
 #define ENEMY_RAY_COUNT 40
 
 /////////////////////////////////
@@ -28,15 +30,17 @@ void EnemyNode::PreUpdate() {
 void EnemyNode::Update() {
     PlayerNode* player_node = global_player_pointer;
 
-    V2 enemy_to_player = v2(player_node->aabb.position.x - position.x, player_node->aabb.position.y - position.y);
+    V2 abs_position = GetAbsolutePosition();
+    V2 enemy_to_player = v2(player_node->aabb.position.x - abs_position.x, player_node->aabb.position.y - abs_position.y);
 
     V2 normed_etp = enemy_to_player.Norm();
     float squared_distance = (enemy_to_player.x*enemy_to_player.x) + (enemy_to_player.y* enemy_to_player.y);
-    
-    float view_distance = game_Raycast(level, position, normed_etp);
 
+    float view_distance = game_Raycast(level, abs_position, normed_etp);
     if(view_distance*view_distance >= squared_distance){
-        
+
+        printf("Player visible");
+
         const V2 pos = GetAbsolutePosition();
         const V2 facing = v2(-sin(GetAbsoluteRotation()),
                          cos(GetAbsoluteRotation()));
@@ -49,6 +53,8 @@ void EnemyNode::Update() {
 
         if((normed_etp.x *facing.x) + (normed_etp.y * facing.y) >= 
             (r.x * facing.x) + (r.y * facing.y) ){
+
+            printf("Reset level");
             level->resetStage = true;
 
 
