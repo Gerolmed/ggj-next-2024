@@ -3,6 +3,8 @@
 #include "include/stb_image.h"
 #include "include/game_nodes.h"
 
+
+
 u8 GetTileTypeFromRgb(const u8* temp, u32 index) {
     u8 type = Floor;
     index *= 3;
@@ -73,9 +75,11 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
                 game_PushCollider(level, collider, true);
             }
             else if(type == Player){
-                const auto player_node = new PlayerNode(level);
+                PlayerNode* player_node = new PlayerNode(level);
                 player_node->position = v2(x * TILE_SIZE + HALF_TILE_SIZE, y * TILE_SIZE + HALF_TILE_SIZE);
                 scene_root->AddChild(player_node);
+
+                global_player_pointer = player_node;
 
             } else if(type == Enemy){
 
