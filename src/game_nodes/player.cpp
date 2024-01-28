@@ -24,6 +24,21 @@ PlayerNode::PlayerNode(Level* level) : Node(level) {
 }
 
 
+void PlayerNode::Render(CommandBuffer* buffer)
+{
+    Node::Render(buffer);
+
+#ifdef DEBUG
+    V2 pos = GetAbsolutePosition();
+    MaskVertex test_mask[3] = {
+        pos,
+        v2(0, 0),
+        v2(100, 0)
+    };
+    renderer_PushMaskOp(buffer, 3, test_mask);
+#endif
+}
+
 void PlayerNode::PreUpdate() {
     Node::PreUpdate();
     aabb.position = position - v2(9);

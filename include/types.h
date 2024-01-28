@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <glm/mat4x4.hpp>
 
-// #define DEBUG
+#define DEBUG
 #define WINDOWS
 // #define FULLSCREEN
 

@@ -88,7 +88,6 @@ bool PushQuad(CommandBuffer* buffer,
     buffer->vertex_buffer[curr + 0].pos.x = v1.x - buffer->base.x;
     buffer->vertex_buffer[curr + 0].pos.y = v1.y - buffer->base.y;
     buffer->vertex_buffer[curr + 0].pos.z = depth;
-    buffer->vertex_buffer[curr + 0].pos.y = v1.y - buffer->base.y;
     buffer->vertex_buffer[curr + 0].uv.x = uv1.x;
     buffer->vertex_buffer[curr + 0].uv.y = uv1.y;
     buffer->vertex_buffer[curr + 0].color = color;
@@ -399,7 +398,8 @@ void renderer_PushMaskOp(CommandBuffer* buffer, u32 vertex_count, MaskVertex* ve
     u32 cur = buffer->mask_vertex_curr;
 
     for (u32 i = 0; i < vertex_count; ++i) {
-        buffer->mask_vertex_buffer[i + cur] = vertices[i];
+        buffer->mask_vertex_buffer[i + cur].pos.x = vertices[i].pos.x - buffer->base.x;
+        buffer->mask_vertex_buffer[i + cur].pos.y = vertices[i].pos.y - buffer->base.y;
     }
 
     buffer->mask_vertex_curr += vertex_count;
