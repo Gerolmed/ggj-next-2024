@@ -26,7 +26,7 @@ ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
 
     renderer_FreeTextureLoadOp(&load_op);
 
-    auto* texNode = new SpritesheetNode(level, pp, 16, 16, 1, 2);
+    auto* texNode = new SpritesheetNode(level, pp, 32, 32, 1, 2);
     texNode->current_frame = 0;
 
     spritesheet_node = texNode;
