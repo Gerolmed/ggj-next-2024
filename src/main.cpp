@@ -37,6 +37,7 @@ const float game_height = GAME_HEIGHT;
 
 Window global_window;
 
+
 void resize_cb(GLFWwindow* window, int width, int height) {
     global_window.width = width;
     global_window.height = height;
