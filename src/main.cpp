@@ -91,7 +91,7 @@ i32 main() {
     Vertex* vertex_buffer = (Vertex*) push_size(&arena, sizeof(Vertex) * vertex_count);
     u32 index_count = 20000;
     u32* index_buffer = (u32*) push_size(&arena, sizeof(u32) * index_count);
-    u32 mask_vertex_count = 200;
+    u32 mask_vertex_count = 2000;
     MaskVertex* mask_vertices = (MaskVertex*) push_size(&arena, sizeof(MaskVertex) * mask_vertex_count);
     u32 cmd_len = 40000;
     u8* cmd_memory = (u8*) push_size(&arena, cmd_len);
