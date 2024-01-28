@@ -209,14 +209,11 @@ i32 main() {
         // Request to clear at the beginning
         renderer_PushClear(&cmd, v3(0.1647058824, 0.1176470588, 0.137254902));
 
-        renderer_PushString(&cmd, &font, "Font rendering, gg!",
-                            v2(sin(time) * 150, cos(time) * 150), 50);
 
 
         // render game grid
         game_RenderGrid(&cmd, &level, wall_texture, floor_texture);
         game_RenderBoxes(&cmd, &level, box_texture);
-
 
         // Rune node tree lifecycle
         renderer_PushBase(&cmd, level.camera.center);
