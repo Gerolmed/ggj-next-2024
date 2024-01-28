@@ -35,8 +35,8 @@ void EnemyNode::Render(CommandBuffer* buffer){
     // renderer_PushBase(buffer, v2(0));
 
     const V2 pos = GetAbsolutePosition();
-    const V2 facing = v2(-sin(this->rotation),
-                         cos(this->rotation));
+    const V2 facing = v2(-sin(GetAbsoluteRotation()),
+                         cos(GetAbsoluteRotation()));
     const V2 side = v2(-facing.y, facing.x);
     const float fov = 0.3;
 
@@ -46,8 +46,8 @@ void EnemyNode::Render(CommandBuffer* buffer){
     const V2 r = v2((1 - fov) * facing.x - fov * side.x,
                     (1 - fov) * facing.y - fov * side.y);
     const float distance = game_Raycast(level, pos, r);
-    last_vert.x = r.x * distance;
-    last_vert.y = r.y * distance;
+    last_vert.x = r.x * distance + pos.x;
+    last_vert.y = r.y * distance + pos.y;
 
     float o = 2.0f / ENEMY_RAY_COUNT - 1;
     for (u32 i = 0; i < ENEMY_RAY_COUNT - 1; ++i) {
@@ -60,8 +60,8 @@ void EnemyNode::Render(CommandBuffer* buffer){
         test_mask[3 * i + 0].pos.y = pos.y;
         test_mask[3 * i + 1].pos.x = last_vert.x;
         test_mask[3 * i + 1].pos.y = last_vert.y;
-        test_mask[3 * i + 2].pos.x = r.x * t;
-        test_mask[3 * i + 2].pos.y = r.y * t;
+        test_mask[3 * i + 2].pos.x = r.x * t + pos.x;
+        test_mask[3 * i + 2].pos.y = r.y * t + pos.y;
 
         last_vert.x = test_mask[3 * i + 2].pos.x;
         last_vert.y = test_mask[3 * i + 2].pos.y;
