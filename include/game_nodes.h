@@ -112,7 +112,7 @@ private:
 
 
 
-class ObjectiveNode : public Node {
+class ObjectiveNode : public Node, public CollisionHandler {
 public:
     u8 value;
     explicit ObjectiveNode(Level* level, u8 value);
@@ -120,7 +120,7 @@ public:
     void Update() override;
     void Render(CommandBuffer* buffer) override;
 
-    void CollisionResponse() override;
+    void OnCollide() override;
 
 private:
     AABB aabb;

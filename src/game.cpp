@@ -20,7 +20,7 @@ void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture) {
     Collider collider;
     for (int i = 0; i < level->collider_count; i++) {
         collider = level->collider[i];
-        if (collider.movable) {
+        if (collider.collision_type == 1) {
             color = v3(0.3, 0.225, 0.15);
             renderer_PushSprite(cmd, v2(collider.aabb.position.x, collider.aabb.position.y),
                                 v2(collider.aabb.position.x + collider.aabb.size.x,
