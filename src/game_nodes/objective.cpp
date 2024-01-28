@@ -12,13 +12,13 @@ ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
 
     switch(value) {
   case 5:
-    load_op = renderer_TextureLoadOp(&pp, "assets/objective5.png");
+    load_op = renderer_TextureLoadOp(&pp, "assets/objectives/blue_vase.png");
     break;
   case 10:
-    load_op = renderer_TextureLoadOp(&pp, "assets/objective10.png");
+    load_op = renderer_TextureLoadOp(&pp, "assets/objectives/red_vase.png");
     break;
   default:
-    load_op = renderer_TextureLoadOp(&pp, "assets/objective1.png");
+    load_op = renderer_TextureLoadOp(&pp, "assets/objectives/green_vase.png");
     }    
 
 
