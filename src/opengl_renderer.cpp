@@ -198,10 +198,11 @@ void opengl_Init(u32 render_width, u32 render_height)
     glGenTextures(1, &OpenGL.mask_color_buffer);
     glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
     glBindTexture(GL_TEXTURE_2D, OpenGL.mask_color_buffer);
+    // MARK
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, render_width,
                  render_height, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
@@ -359,6 +360,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glBindTexture(GL_TEXTURE_2D, OpenGL.bloom_mips[0].texture);
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, OpenGL.mask_color_buffer);
+                glActiveTexture(GL_TEXTURE0);
 
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -371,6 +373,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
             {
                 CommandEntry_MaskOp* draw = (CommandEntry_MaskOp*) (buffer->cmd_memory + offset);
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
+                // glViewport(0, 0, OpenGL.render_width / 2, OpenGL.render_height / 2);
                 glBindVertexArray(OpenGL.mask_arr);
                 glUseProgram(OpenGL.mask_shader.id);
 
@@ -380,6 +383,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
                 
                 glEnable(GL_DEPTH_TEST);
+                // glViewport(0, 0, OpenGL.render_width, OpenGL.render_height);
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
                 glBindVertexArray(OpenGL.draw_arr);
                 offset += sizeof(CommandEntry_MaskOp);

@@ -4,7 +4,8 @@
 
 
 
-#define ENEMY_RAY_COUNT 40
+
+#define ENEMY_RAY_COUNT 80
 
 /////////////////////////////////
 /// EnemyNode

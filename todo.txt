@@ -19,7 +19,8 @@ Gamplay concept
 
 Things to fix:
 Memory leak     (done?)
-Vision
+Vision          (done)
+Font rendering  (done)
 Color?
 
 
