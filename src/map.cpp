@@ -56,7 +56,8 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root) {
                 collider.aabb.position.y = y * TILE_SIZE;
                 collider.aabb.size.x = TILE_SIZE;
                 collider.aabb.size.y = TILE_SIZE;
-                game_PushCollider(level, collider, type == Wall);
+                collider.movable = (type == Box);
+                game_PushCollider(level, collider, true);
             }
             else if(type == Player){
                 const auto player_node = new PlayerNode(level);
