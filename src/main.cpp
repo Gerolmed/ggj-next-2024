@@ -239,12 +239,6 @@ i32 main() {
         renderer_PushLine(&cmd, v2(0),
                           v2(ray.x * t, ray.y * t), 30, 1, v3(0, 0, 1));
 
-        MaskVertex test_mask[3] = {
-            v2(0, 0),
-            v2(100, 100),
-            v2(100, 0)
-        };
-        renderer_PushMaskOp(&cmd, 3, test_mask);
 #endif
 
         renderer_PushBase(&cmd, level.camera.center);

@@ -24,6 +24,7 @@ public:
     explicit PlayerNode(Level* level);
     void PreUpdate() override;
     void Update() override;
+    void Render(CommandBuffer* buffer) override;
 
 private:
 Node* rotation_root;

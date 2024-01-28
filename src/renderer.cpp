@@ -399,7 +399,8 @@ void renderer_PushMaskOp(CommandBuffer* buffer, u32 vertex_count, MaskVertex* ve
     u32 cur = buffer->mask_vertex_curr;
 
     for (u32 i = 0; i < vertex_count; ++i) {
-        buffer->mask_vertex_buffer[i + cur] = vertices[i];
+        buffer->mask_vertex_buffer[i + cur].x = vertices[i].x - buffer->base.x;
+        buffer->mask_vertex_buffer[i + cur].y = vertices[i].y - bufffer->base.y;
     }
 
     buffer->mask_vertex_curr += vertex_count;
