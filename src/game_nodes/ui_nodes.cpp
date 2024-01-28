@@ -25,6 +25,13 @@ void TextNode::Render(CommandBuffer* buffer) {
 
 void ScoreNode::Update() {
     TextNode::Update();
+
+    str = string_format("Score: %d/%d", level->current_score, level->stage_attributes->score_requirement);
+
+    if(level->current_score >= level->stage_attributes->max_score) {
+        level->resetStage = true;
+        level->ffGoNext = true;
+    }
 }
 
 
