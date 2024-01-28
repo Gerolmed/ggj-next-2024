@@ -6,4 +6,6 @@
 #define HALF_GAME_WIDTH 480
 #define HALF_GAME_HEIGHT 270
 
+#define DEPTH_UI 50
+
 #endif //CONSTANTS_H
