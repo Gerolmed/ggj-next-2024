@@ -130,6 +130,7 @@ i32 main() {
     // ImGui_ImplGlfw_InitForOpenGL(global_window.handle, true);
     // ImGui_ImplOpenGL3_Init();
 
+    u32 stage = 0;
     Level level;
     auto* scene_root = new Node(&level);
 
@@ -162,6 +163,12 @@ i32 main() {
         if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(global_window.handle, true);
         }
+        
+#ifdef DEBUG
+        // TODO: Level change code goes here
+        // if (glfwGetKey(global_window.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        // }
+#endif
 
         // Calculate delta time
         float time = glfwGetTime();
