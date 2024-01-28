@@ -43,6 +43,7 @@ void ObjectiveNode::PreUpdate() {
 
 void ObjectiveNode::Update() {
     Node::Update();
+    
 }
 
 
