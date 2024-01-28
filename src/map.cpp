@@ -45,24 +45,18 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
             STBI_rgb
     );
     assert(temp);
-    level->grid = (u8*) push_size(arena, sizeof(u8) * level->grid_width * level->grid_height);
+    level->grid_height--;
+    level->grid = (u8*) push_size(arena, sizeof(u8) * level->grid_width * (level->grid_height));
+    level->stage_attributes = attributes;
+
+    level->stage_attributes->max_score = (u32) temp[0] << 8 | temp[1];
+    level->stage_attributes->score_requirement = (u32) temp[3] << 8 | temp[4];
+    level->stage_attributes->time_limit = (u32) temp[6] << 8 | temp[7];
 
     for (u32 y = 0; y < level->grid_height; ++y) {
-        if (y == 0) {
-            u16 max_score = temp[0] << 8 | temp[1];
-            u16 score_requirement = temp[3] << 8 | temp[4];
-            u16 time_limit = temp[6] << 8 | temp[7];
-
-            level->stage_attributes = attributes;
-
-            level->stage_attributes->max_score = (u32) max_score;
-            level->stage_attributes->score_requirement = (u32) score_requirement;
-            level->stage_attributes->time_limit = (u32) time_limit;
-
-            continue;
-        } else for (u32 x = 0; x < level->grid_width; ++x) {
+        for (u32 x = 0; x < level->grid_width; ++x) {
             u32 index = x+(y*level->grid_width);
-            u8 type = GetTileTypeFromRgb(temp, index);
+            u8 type = GetTileTypeFromRgb(temp, index+level->grid_width);
             level->grid[index] = type;
 
             if (type == Box || type == Wall) {
