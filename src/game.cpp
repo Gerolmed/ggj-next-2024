@@ -15,8 +15,6 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
 
 }
 
-
-
 void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture){
     renderer_PushBase(cmd, level->camera.center);
 

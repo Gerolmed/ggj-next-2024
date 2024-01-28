@@ -61,9 +61,9 @@ public:
 
 
 class ObjectiveNode : public Node {
-    u8 value;
 public:
-    explicit ObjectiveNode(Level* level);
+    u8 value;
+    explicit ObjectiveNode(Level* level, u8 value);
     void PreUpdate() override;
     void Update() override;
     void Render(CommandBuffer* buffer) override;
