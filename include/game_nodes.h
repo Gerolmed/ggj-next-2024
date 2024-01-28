@@ -34,11 +34,10 @@ private:
 Node* rotation_root;
 Node* idle_node;
     Node* walk_node;
-    AABB aabb;
 };
 
 
-PlayerNode* global_player_pointer;
+extern PlayerNode* global_player_pointer;
 
 
 class EnemyNode : public Node {
