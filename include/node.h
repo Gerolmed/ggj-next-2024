@@ -23,6 +23,7 @@ public:
 
     std::vector<Node*> children = {};
 
+    float GetAbsoluteRotation() const;
     Mat3f GetRelativeMatrix() const;
     Mat3f GetAbsoluteMatrix() const;
     Mat2f GetAbsoluteRotationMatrix() const;

@@ -23,6 +23,10 @@ Mat2f Node::GetAbsoluteRotationMatrix() const {
     if (parent == nullptr) return rotationMatrix2f(rotation);
     return parent->GetAbsoluteRotationMatrix() * rotationMatrix2f(rotation);
 }
+float Node::GetAbsoluteRotation() const {
+    if (parent == nullptr) return rotation;
+    return parent->GetAbsoluteRotation() + rotation;
+}
 
 Mat3f Node::GetRelativeMatrix() const {
     float s = sinf(rotation);
