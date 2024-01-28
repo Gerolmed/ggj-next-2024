@@ -54,7 +54,8 @@ void PlayerNode::Update() {
     position = aabb.position + v2(9);
 
     if(movement.SqrMagnitude() > 0.1f) {
-        // rotation_root->rotation = degreesToRadians(90);
+        movement.x = -movement.x;
+        rotation_root->rotation = movement.ToRad();
     }
 
     // V2 localPos = GetAbsolutePosition();
