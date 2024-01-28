@@ -16,6 +16,7 @@
 #include "include/types.h"
 #include "include/arena.h"
 #include "include/audio.h"
+#include "include/constants.h"
 #include "include/renderer.h"
 #include "include/opengl_renderer.h"
 #include "include/game.h"
@@ -31,8 +32,8 @@ struct Window {
     GLFWwindow* handle;
 };
 
-const float game_width = 960;
-const float game_height = 540;
+const float game_width = GAME_WIDTH;
+const float game_height = GAME_HEIGHT;
 
 Window global_window;
 
@@ -53,8 +54,8 @@ void init_window() {
     global_window.height = 1080;
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 #else
-    global_window.width = 960;
-    global_window.height = 540;
+    global_window.width = GAME_WIDTH;
+    global_window.height = GAME_HEIGHT;
     GLFWmonitor* monitor = NULL;
 #endif
     global_window.handle = glfwCreateWindow(global_window.width,
@@ -170,9 +171,9 @@ i32 main() {
     float lastFrame = 0.0f;
 
     {
-        auto* testNode = new RotatingNode(&level);
+        auto* testNode = new CanvasNode(&level);
         auto* sub_tex = new TextureNode(&level, image, 32, 32);
-        sub_tex->position = v2(20);
+        sub_tex->position = v2(16);
         testNode->AddChild(sub_tex);
         scene_root->AddChild(testNode);
     }

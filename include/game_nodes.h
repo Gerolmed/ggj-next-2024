@@ -55,7 +55,15 @@ public:
 
 
 
+class CanvasNode final: public Node {
+public:
+    explicit CanvasNode(Level* level)
+        : Node(level) {
+    }
 
+    void Render(CommandBuffer* buffer) override;
+
+};
 
 
 
@@ -69,6 +77,7 @@ public:
         : Node(level), texture_handle(texture_handle), width(width), height(height) {
     }
 
+    int depth = 10;
     TextureHandle texture_handle;
     int width;
     int height;
@@ -80,6 +89,7 @@ class SpritesheetNode: public Node {
 public:
     explicit SpritesheetNode(Level* level, TextureHandle texture_handle, int width, int height, int rows, int columns);
 
+    int depth = 10;
     TextureHandle texture_handle;
     int width;
     int height;

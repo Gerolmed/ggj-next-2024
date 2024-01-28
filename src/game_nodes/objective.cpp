@@ -53,6 +53,8 @@ void ObjectiveNode::Render(CommandBuffer* buffer){
 
 void ObjectiveNode::OnCollide(){
     spritesheet_node->current_frame=1;
+
+    level->current_score += value;
 }
 
 
