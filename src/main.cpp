@@ -120,6 +120,11 @@ i32 main() {
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
+    TextureHandle floor_texture;
+    load_op = renderer_TextureLoadOp(&floor_texture, "assets/tilesets/ground.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
     Font font;
     opengl_SetupFont(&font, "assets/Dosis.ttf", 48);
 
@@ -211,8 +216,8 @@ i32 main() {
         //                     v2(sin(time) * 150, cos(time) * 150));
 
         // render game grid
-        game_RenderWalls(&cmd, &level, white, wall_texture);
-        game_RenderBoxes(&cmd, &level, white, wall_texture);
+        game_RenderGrid(&cmd, &level, wall_texture, floor_texture);
+        game_RenderBoxes(&cmd, &level, white);
 
 
         // Rune node tree lifecycle

@@ -61,15 +61,14 @@ struct Level
 };
 
 
-void game_RenderWalls(CommandBuffer* cmd,
+void game_RenderGrid(CommandBuffer* cmd,
                      Level* level, 
-                     TextureHandle texture,
-                     TextureHandle wall_texture);
+                     TextureHandle wall_texture,
+                     TextureHandle floor_texture);
 
 void game_RenderBoxes(CommandBuffer* cmd,
                      Level* level, 
-                     TextureHandle texture,
-                     TextureHandle wall_texture);
+                     TextureHandle texture);
 void game_PushCollider(Level* level, Collider c, bool static_c);
 void game_ClearDynamicCollider(Level* level);
 
