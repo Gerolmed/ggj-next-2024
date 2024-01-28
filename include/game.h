@@ -25,7 +25,26 @@ struct Camera
     V2 center;
 };
 
-struct AABB;
+
+
+
+
+
+struct AABB {
+    V2 position;
+    V2 size;
+
+    bool intersects(AABB& other) const;
+    AABB translate(V2& v2) const;
+    //Tries to move. Fails if it hits a wall. Pushes all boxes in the way.
+    bool move_and_collide(V2 v2, Level* level);
+    //Checks whether it can move.
+    bool can_move(V2& v2, Level* level);
+    //Moves and pushes boxes, ignoring wall collisions.
+    void move_and_push_boxes(V2& v2, Level* level);
+
+};
+
 
 class CollisionHandler {
 public:
@@ -43,26 +62,9 @@ struct Collider
     CollisionHandler* collision_handler;
 };
 
+bool can_move_into( Collider collider, V2 v2, Level* level);
 
-
-struct AABB {
-    V2 position;
-    V2 size;
-
-    bool intersects(AABB& other) const;
-    AABB translate(V2& v2) const;
-    //Tries to move. Fails if it hits a wall. Pushes all boxes in the way.
-    bool move_and_collide(V2 v2, Level* level);
-    //Checks whether it can move.
-    bool can_move(V2& v2, Level* level);
-    //Moves and pushes boxes, ignoring wall collisions.
-    void move_and_push_boxes(V2& v2, Level* level);
-
-    bool can_move_into(Collider collider, V2 v2, Level* level);
-
-    void collision_response(Collider collider, V2 v2, Level* level);
-};
-
+void collision_response( Collider collider, V2 v2, Level* level);
 
 
 struct Level
