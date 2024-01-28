@@ -182,7 +182,8 @@ i32 main() {
         // Update input keys
         input_UpdateAll(global_window.handle);
 
-#ifdef TRUE
+
+        //debug
         if (input_KeyN.down) {
             stage++;
             delete scene_root;
@@ -191,7 +192,6 @@ i32 main() {
             init_arena(&game_arena,&pool);
             game_Init(&level, stage, &game_arena,scene_root);
         }
-#endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
                                             vertex_count, vertex_buffer,
