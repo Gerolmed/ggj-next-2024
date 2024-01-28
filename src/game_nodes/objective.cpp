@@ -6,9 +6,11 @@
 /// ObjectiveNode
 /////////////////////////////////
 
-ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
+ObjectiveNode::ObjectiveNode(Level* level, u8 new_value) : Node(level) {
     TextureHandle pp;
     TextureLoadOp load_op;
+    
+    value = new_value;
 
     switch(value) {
   case 5:
