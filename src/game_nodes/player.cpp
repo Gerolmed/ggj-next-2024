@@ -10,16 +10,26 @@
 
 PlayerNode::PlayerNode(Level* level) : Node(level) {
 
-    TextureHandle pp;
-    TextureLoadOp load_op = renderer_TextureLoadOp(&pp, "assets/player/player_idle.png");
+    TextureHandle player_idle;
+    TextureLoadOp load_op = renderer_TextureLoadOp(&player_idle, "assets/player/player_idle.png");
+    opengl_LoadTexture(&load_op);
+    renderer_FreeTextureLoadOp(&load_op);
+
+    TextureHandle player_walk;
+    load_op = renderer_TextureLoadOp(&player_walk, "assets/player/player_walk.png");
     opengl_LoadTexture(&load_op);
     renderer_FreeTextureLoadOp(&load_op);
 
     rotation_root = new Node(level);
     AddChild(rotation_root);
 
-    auto* texNode = new TextureNode(level, pp, 32, 32);
-    rotation_root->AddChild(texNode);
+    idle_node = new TextureNode(level, player_idle, 32, 32);
+    rotation_root->AddChild(idle_node);
+    auto* walk_node_temp = new AnimatedSpriteNode(level, player_walk, 32, 32, 1, 4);
+    walk_node_temp->seconds_per_frame = 0.1f;
+    walk_node = walk_node_temp;
+    walk_node->visible = false;
+    rotation_root->AddChild(walk_node);
     AddChild(new CameraNode(level));
 }
 
@@ -83,7 +93,12 @@ void PlayerNode::Update() {
 
     if(movement.SqrMagnitude() > 0.1f) {
         movement.x = -movement.x;
+        walk_node->visible = true;
+        idle_node->visible = false;
         rotation_root->rotation = movement.ToRad();
+    } else {
+        walk_node->visible = false;
+        idle_node->visible = true;
     }
 
     // V2 localPos = GetAbsolutePosition();
