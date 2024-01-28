@@ -14,7 +14,7 @@ void main() {
     float contrast = 1;
     float brightness = texture(mask_buffer, uv).r;
     float bloom = 0.05;
-    float exposure = 0.5;
+    float exposure = 1.0;
 
     vec3 hdr_color = texture(color_buffer, uv).rgb;
     hdr_color += bloom * texture(bloom_buffer, uv).rgb;

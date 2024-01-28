@@ -1,7 +1,7 @@
 #version 440
 
-out float out_Color;
+out vec4 out_Color;
 
 void main() {
-    out_Color = 1;
+    out_Color = vec4(1, 0, 0, 1);
 }

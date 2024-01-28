@@ -293,6 +293,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
         switch (header->type) {
             case Clear: 
             {
+                glClearColor(0, 0, 0, 1);
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
                 glClear(GL_COLOR_BUFFER_BIT);
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
