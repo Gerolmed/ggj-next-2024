@@ -68,12 +68,18 @@ bool can_move_into( Collider* collider, V2 v2, Level* level);
 
 void collision_response( Collider* collider, V2 v2, Level* level);
 
-
+struct StageAttributes {
+    u32 max_score;
+    u32 score_requirement;
+    u32 time_limit;
+};
 struct Level
 {
     u8* grid;
     i32 grid_width;
     i32 grid_height;
+    StageAttributes* stage_attributes;
+    u32 current_score;
 
     Collider collider[MAX_COLLIDERS];
     u32 collider_count;
