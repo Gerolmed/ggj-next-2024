@@ -160,7 +160,7 @@ bool PushQuad(CommandBuffer* buffer,
 
 void renderer_PushSprite(CommandBuffer* buffer, 
                          V2 down_left, V2 up_right, float depth,
-                         V2 uv_down_left, V2 uv_up_right,
+                         Sprite sprite,
                          Mat2f rot, V3 color, TextureHandle texture)
 {
     if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
@@ -185,7 +185,7 @@ void renderer_PushSprite(CommandBuffer* buffer,
 
     if (PushQuad(buffer, 
                  down_left, up_right, depth,
-                 uv_down_left, uv_up_right,
+                 sprite.bottom_left, sprite.top_right,
                  rot, color)) {
         buffer->curr_len += sizeof(CommandEntry_DrawQuads);
     }

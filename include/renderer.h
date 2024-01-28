@@ -144,7 +144,7 @@ void renderer_PushClear(CommandBuffer* buffer, V3 color);
 
 void renderer_PushSprite(CommandBuffer* buffer, 
                          V2 down_left, V2 up_right, float depth,
-                         V2 uv_down_left, V2 uv_up_right,
+                         Sprite sprite,
                          Mat2f rot, V3 color, TextureHandle texture);
 
 void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 

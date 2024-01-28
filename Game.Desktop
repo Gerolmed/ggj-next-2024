@@ -1,0 +1,17 @@
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=/home/stachelbeere1248/CLionProjects/ggj-next-2024/build/debug/game
+GenericName[en_US]=
+GenericName=
+Icon=system-run
+MimeType=
+Name[en_US]=Game
+Name=Game
+Path=/home/stachelbeere1248/CLionProjects/ggj-next-2024
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

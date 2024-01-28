@@ -1,4 +1,3 @@
-build
 .cache
 game.exe
 game.zip
@@ -64,3 +63,4 @@ _deps
 cmake-build-debug-visual-studio
 cmake-build-prod-visual-studio
 cmake-build-release
+build

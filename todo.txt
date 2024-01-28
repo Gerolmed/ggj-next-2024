@@ -1,15 +1,15 @@
+movable vs. immobile colliders
+only cancel movement component that actually collides (x/y)
+
 Art
 
 Vision system
     Rendering
 
 Npc and player movement
-<<<<<<< HEAD
+
 Box movment
     Pathfinding
-=======
-Box movement
->>>>>>> 6e4136eae97a685a584618425dea6272c7a4e781
 
 Gamplay concept
 

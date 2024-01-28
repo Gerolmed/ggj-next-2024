@@ -58,6 +58,16 @@ inline V3 v3(float x, float y, float z)
     return {x, y, z};
 }
 
+struct Sprite {
+    V2 bottom_left;
+    V2 top_right;
+};
+
+inline Sprite sprite(V2 bottom_left, V2 top_right)
+{
+    return {bottom_left, top_right};
+}
+
 struct Mat2f {
     float data[4];
 
