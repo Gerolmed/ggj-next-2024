@@ -28,7 +28,9 @@ public:
     void Render(CommandBuffer* buffer) override;
 
 private:
-Node* rotation_root;
+    Node* rotation_root;
+    Node* idle_node;
+    Node* walk_node;
     AABB aabb;
 };
 
