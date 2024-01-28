@@ -158,6 +158,36 @@ bool PushQuad(CommandBuffer* buffer,
                     uv1, uv2, uv3, uv4, color);
 }
 
+bool PushQuad(CommandBuffer* buffer, 
+              V2 down_left, V2 up_right, float depth,
+              V2 uv_down_left, V2 uv_up_right, 
+              Mat3f trans, V3 color)
+{
+    V2 uv1;
+    V2 vert1 = (trans * v3(down_left.x, down_left.y, 1)).xy;
+    uv1.x = uv_down_left.x;
+    uv1.y = uv_down_left.y;
+
+    V2 vert2 = (trans * v3(down_left.x, up_right.y, 1)).xy;
+    V2 uv2;
+    uv2.x = uv_down_left.x;
+    uv2.y = uv_up_right.y;
+
+    V2 vert3 = (trans * v3(up_right.x, up_right.y, 1)).xy;
+    V2 uv3;
+    uv3.x = uv_up_right.x;
+    uv3.y = uv_up_right.y;
+
+    V2 vert4 = (trans * v3(up_right.x, down_left.y, 1)).xy;
+    V2 uv4;
+    uv4.x = uv_up_right.x;
+    uv4.y = uv_down_left.y;
+
+    return PushQuad(buffer, vert1, vert2, vert3, vert4, depth,
+                    uv1, uv2, uv3, uv4, color);
+}
+
+
 void renderer_PushSprite(CommandBuffer* buffer, 
                          V2 down_left, V2 up_right, float depth,
                          Sprite sprite,
@@ -187,6 +217,39 @@ void renderer_PushSprite(CommandBuffer* buffer,
                  down_left, up_right, depth,
                  sprite.bottom_left, sprite.top_right,
                  rot, color)) {
+        buffer->curr_len += sizeof(CommandEntry_DrawQuads);
+    }
+}
+
+void renderer_PushSprite(CommandBuffer* buffer,
+                         V2 down_left, V2 up_right, float depth,
+                         Sprite sprite,
+                         Mat3f trans, V3 color, TextureHandle texture)
+{
+    if (buffer->curr_len + sizeof(CommandEntry_DrawQuads) > buffer->byte_len) {
+        printf("Warning: Buffer size exceeded on draw\n");
+        return;
+    }
+
+    // TODO: Pixelperfect?
+    // if (1) {
+    //     down_left.x = floor(down_left.x + 0.5);
+    //     down_left.y = floor(down_left.y + 0.5);
+    //     up_right.x = floor(up_right.x + 0.5);
+    //     up_right.y = floor(up_right.y + 0.5);
+    // }
+
+    CommandEntry_DrawQuads* draw = (CommandEntry_DrawQuads*) (buffer->cmd_memory + buffer->curr_len);
+    draw->header.type = DrawQuads;
+    draw->index_offset = buffer->index_curr;
+    draw->index_count = 6;
+    draw->texture = texture;
+    draw->type = QuadTypeSprite;
+
+    if (PushQuad(buffer, 
+                 down_left, up_right, depth,
+                 sprite.bottom_left, sprite.top_right,
+                 trans, color)) {
         buffer->curr_len += sizeof(CommandEntry_DrawQuads);
     }
 }
