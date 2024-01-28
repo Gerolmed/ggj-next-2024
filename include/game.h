@@ -37,13 +37,20 @@ struct AABB {
     bool can_move(V2& v2, Level* level);
     //Moves and pushes boxes, ignoring wall collisions.
     void move_and_push_boxes(V2& v2, Level* level);
+
+    bool can_move_into(Collider collider, V2 v2, Level* level);
+
+    void collision_response(Collider collider, V2 v2, Level* level);
 };
 
 
 struct Collider
 {
     AABB aabb;
-    bool movable;
+    i32 collision_type;
+    //0: Wall
+    //1: Box
+    //2: Collectable
 };
 
 

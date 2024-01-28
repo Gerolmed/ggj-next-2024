@@ -44,6 +44,8 @@ public:
     void TryUpdate();
     void TryRender(CommandBuffer* buffer);
 
+    void CollisionResponse();
+
     virtual void Stop();
 protected:
 

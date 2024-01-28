@@ -60,17 +60,6 @@ public:
 
 
 
-class ObjectiveNode : public Node {
-public:
-    u8 value;
-    explicit ObjectiveNode(Level* level, u8 value);
-    void PreUpdate() override;
-    void Update() override;
-    void Render(CommandBuffer* buffer) override;
-
-private:
-    AABB aabb;
-};
 
 
 
@@ -117,5 +106,26 @@ public:
 private:
     float currentDelta = 0;
 };
+
+
+
+
+
+
+class ObjectiveNode : public Node {
+public:
+    u8 value;
+    explicit ObjectiveNode(Level* level, u8 value);
+    void PreUpdate() override;
+    void Update() override;
+    void Render(CommandBuffer* buffer) override;
+
+    void CollisionResponse() override;
+
+private:
+    AABB aabb;
+    SpritesheetNode* spritesheet_node;
+};
+
 
 #endif //GAME_NODES_H

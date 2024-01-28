@@ -26,7 +26,10 @@ ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
 
     renderer_FreeTextureLoadOp(&load_op);
 
-    auto* texNode = new TextureNode(level, pp, 100, 100);
+    auto* texNode = new SpritesheetNode(level, pp, 16, 16, 1, 2);
+    texNode->current_frame = 0;
+
+    spritesheet_node = texNode;
 
     AddChild(texNode);
 
@@ -34,8 +37,6 @@ ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
 
 void ObjectiveNode::PreUpdate() {
     Node:: PreUpdate();
-
-    Node::PreUpdate();
     aabb.position = position;
     aabb.size = { 32, 32 };
 }
@@ -47,3 +48,9 @@ void ObjectiveNode::Update() {
 void ObjectiveNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 }
+
+void ObjectiveNode::CollisionResponse(){
+    spritesheet_node->current_frame=1;
+}
+
+

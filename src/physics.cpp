@@ -16,13 +16,23 @@ AABB AABB::translate(V2& v2) const{
     return {{position.x+v2.x, position.y + v2.y}, size};
 }
 
+
+bool AABB::can_move_into(Collider moving_into, V2 v2, Level* level){
+    switch(moving_into.collision_type){
+        case 0: return false;
+        case 1: return moving_into.aabb.can_move(v2,level);
+        case 2: return true;
+    }
+}
+
+
 bool AABB:: can_move(V2& v2, Level* level){
     AABB newAABB = translate(v2);
     V2 old_position = position;
     position = far_away;
     for(int i=0;i < level->collider_count;i++){
         if(newAABB.intersects(level->collider[i].aabb)){
-            if((!level->collider[i].movable)  || !level->collider[i].aabb.can_move(v2,level)){
+            if(!can_move_into(level->collider[i], v2, level)){
                 position = old_position;
                 return false;
             }

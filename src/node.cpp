@@ -114,4 +114,6 @@ void Node::Render(CommandBuffer* buffer) {
 }
 
 
+void Node:: CollisionResponse(){}
+
 
