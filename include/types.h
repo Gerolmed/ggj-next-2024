@@ -14,6 +14,8 @@
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS")
 #endif
 #endif
+
+#define PI 3.141592653f
 #define degreesToRadians(angleDegrees) ((angleDegrees) * 3.141592653f / 180.0f)
 #define radiansToDegrees(angleRadians) ((angleRadians) * 180.0f / 3.141592653f)
 

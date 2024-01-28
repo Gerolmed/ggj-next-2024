@@ -147,6 +147,22 @@ void renderer_PushSprite(CommandBuffer* buffer,
                          Sprite sprite,
                          Mat2f rot, V3 color, TextureHandle texture);
 
+/**
+ * \brief Pushes an action to render a sprite to the command buffer. This includes pushing a quad internally.
+ * \param buffer the buffer to push to
+ * \param down_left bottom left corner relative to pivot point. Should not be rotated!
+ * \param up_right top right corner relative to pivot point. Should not be rotated!
+ * \param depth the depth to render the object at. the higher the closer to the screen
+ * \param sprite the uv coordinates for the respecting vertex corners
+ * \param transform_matrix a transformation (tranlate + rotate) matrix to modify vertices
+ * \param color the texture tint to render with
+ * \param texture the texture to render
+ */
+void renderer_PushSprite(CommandBuffer* buffer,
+                         V2 down_left, V2 up_right, float depth,
+                         Sprite sprite,
+                         Mat3f transform_matrix, V3 color, TextureHandle texture);
+
 void renderer_PushLine(CommandBuffer* buffer, V2 start, V2 end, 
                        float depth, float width, V3 color);
 

@@ -19,7 +19,7 @@ void game_Init(Level* level, u32 stage, Arena* arena, Node* scene_root)
 
 void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture){
     renderer_PushBase(cmd, level->camera.center);
-    
+
     V3 color = {0, 0, 0};
     Collider collider;
     for(int i=0; i < level->collider_count;i++){
@@ -27,7 +27,7 @@ void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture,Te
         if(collider.movable){
             color = v3(0.3, 0.225, 0.15);
             renderer_PushSprite(cmd, v2(collider.aabb.position.x, collider.aabb.position.y),
-                                v2(collider.aabb.position.x + collider.aabb.size.x, 
+                                v2(collider.aabb.position.x + collider.aabb.size.x,
                                     collider.aabb.position.y + collider.aabb.size.y),
                                 0,
                                 sprite(
@@ -42,11 +42,10 @@ void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture,Te
 }
 
 
-
 void game_RenderWalls(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture)
 {
     renderer_PushBase(cmd, level->camera.center);
-    
+
     for (u32 y = 0; y < level->grid_height; ++y) {
         for (u32 x = 0; x < level->grid_width; ++x) {
             u8 type = level->grid[x + level->grid_width * y];
