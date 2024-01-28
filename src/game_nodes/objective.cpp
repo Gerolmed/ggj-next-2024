@@ -19,7 +19,7 @@ ObjectiveNode::ObjectiveNode(Level* level, u8 value) : Node(level) {
     break;
   default:
     load_op = renderer_TextureLoadOp(&pp, "assets/objectives/green_vase.png");
-    }    
+    } 
 
 
     opengl_LoadTexture(&load_op);
@@ -52,9 +52,10 @@ void ObjectiveNode::Render(CommandBuffer* buffer){
 }
 
 void ObjectiveNode::OnCollide(){
-    spritesheet_node->current_frame=1;
-
-    level->current_score += value;
+    if(spritesheet_node->current_frame==0){
+        spritesheet_node->current_frame=1;
+        level->current_score += value;
+    }
 }
 
 

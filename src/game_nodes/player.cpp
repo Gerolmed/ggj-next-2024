@@ -39,25 +39,33 @@ void PlayerNode::Render(CommandBuffer* buffer)
     Node::Render(buffer);
 
 #ifdef DEBUG
+#define RAY_COUNT 10
     renderer_PushBase(buffer, v2(0));
 
     V2 pos = GetAbsolutePosition();
 
-    V2 facing = v2(0, -1);
+    float rotation = rotation_root->rotation / PI;
+    V2 facing = v2(-sin(rotation_root->rotation),
+                   cos(rotation_root->rotation));
     V2 side = v2(-facing.y, facing.x);
     float fov = 0.2;
-    V2 r = v2((1 - fov) * facing.x + fov * side.x, (1 - fov) * facing.y + fov * side.y);
-    V2 l = v2((1 - fov) * facing.x - fov * side.x, (1 - fov) * facing.y - fov * side.y);
 
-    float tr = game_Raycast(level, pos, r);
-    float tl = game_Raycast(level, pos, l);
-
-    MaskVertex test_mask[3] = {
+    MaskVertex test_mask[RAY_COUNT + 1] = {
         v2(0),
-        v2(tr * r.x, tr * r.y),
-        v2(tl * l.x, tl * l.y),
     };
-    renderer_PushMaskOp(buffer, 3, test_mask);
+
+    float o = -1;
+    for (u32 i = 0; i < RAY_COUNT; ++i) {
+        V2 r = v2((1 - fov) * facing.x + o * fov * side.x,
+                  (1 - fov) * facing.y + o * fov * side.y);
+        float t = game_Raycast(level, pos, r);
+        test_mask[1 + i].pos.x = r.x * t;
+        test_mask[1 + i].pos.y = r.y * t;
+
+        o += 4 / RAY_COUNT;
+    }
+
+    renderer_PushMaskOp(buffer, RAY_COUNT + 1, test_mask);
     renderer_PushBase(buffer, level->camera.center);
 #endif
 }
@@ -92,7 +100,6 @@ void PlayerNode::Update() {
     position = aabb.position + v2(9);
 
     if(movement.SqrMagnitude() > 0.1f) {
-        movement.x = -movement.x;
         walk_node->visible = true;
         idle_node->visible = false;
         rotation_root->rotation = movement.ToRad();

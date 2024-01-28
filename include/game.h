@@ -27,10 +27,6 @@ struct Camera
 };
 
 
-
-
-
-
 struct AABB {
     V2 position;
     V2 size;
