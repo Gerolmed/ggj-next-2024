@@ -29,7 +29,7 @@ void PlayerNode::Render(CommandBuffer* buffer)
     Node::Render(buffer);
 
 #ifdef DEBUG
-#define RAY_COUNT 4
+#define RAY_COUNT 10
     renderer_PushBase(buffer, v2(0));
 
     V2 pos = GetAbsolutePosition();
