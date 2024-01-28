@@ -78,6 +78,9 @@ struct Level
     StageAttributes* stage_attributes;
     u32 current_score;
 
+    bool resetStage;
+    bool ffGoNext;
+
     Collider collider[MAX_COLLIDERS];
     u32 collider_count;
     u32 static_collider;
