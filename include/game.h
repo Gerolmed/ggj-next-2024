@@ -4,7 +4,7 @@
 #include "include/types.h"
 #include "include/renderer.h"
 
-#define MAX_COLLIDERS 150
+#define MAX_COLLIDERS 400
 #define TILE_SIZE 32
 #define HALF_TILE_SIZE 16
 
