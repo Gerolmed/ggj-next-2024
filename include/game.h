@@ -4,7 +4,7 @@
 #include "include/types.h"
 #include "include/renderer.h"
 
-#define MAX_COLLIDERS 150
+#define MAX_COLLIDERS 400
 #define TILE_SIZE 32
 #define HALF_TILE_SIZE 16
 
@@ -69,12 +69,18 @@ bool can_move_into( Collider* collider, V2 v2, Level* level);
 
 void collision_response( Collider* collider, V2 v2, Level* level);
 
-
+struct StageAttributes {
+    u32 max_score;
+    u32 score_requirement;
+    u32 time_limit;
+};
 struct Level
 {
     u8* grid;
     i32 grid_width;
     i32 grid_height;
+    StageAttributes* stage_attributes;
+    u32 current_score;
 
     Collider collider[MAX_COLLIDERS];
     u32 collider_count;
