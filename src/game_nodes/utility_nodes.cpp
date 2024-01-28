@@ -18,6 +18,7 @@ void TestNode::Update() {
 /////////////////////////////////
 
 void RotatingNode::Update() {
+    Node::Update();
     rotation += time_deltatime * speed;
     if(rotation >= PI * 2) {
         rotation -= PI * 2;
