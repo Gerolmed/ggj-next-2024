@@ -54,7 +54,7 @@ void game_RenderColliders(CommandBuffer* cmd, Level* level, TextureHandle textur
 
 
 
-void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture,TextureHandle wall_texture)
+void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle texture, TextureHandle wall_texture)
 {
     renderer_PushBase(cmd, level->camera.center);
     for (u32 y = 0; y < level->grid_height; ++y) {

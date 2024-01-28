@@ -134,7 +134,7 @@ i32 main() {
     Level level;
     auto* scene_root = new Node(&level);
 
-    game_Init(&level, 1, &arena, scene_root);
+    game_Init(&level, stage, &arena, scene_root);
 
     Mat4 projection = glm::ortho(
         -game_width / 2,
@@ -174,7 +174,7 @@ i32 main() {
         input_UpdateAll(global_window.handle);
 
 #ifdef DEBUG
-
+        //if ()
 #endif
         // Construct command buffer for visual/rendering operations
         CommandBuffer cmd = renderer_Buffer(cmd_len, cmd_memory,
