@@ -39,7 +39,10 @@ void CountDownNode::Update() {
 
     remaining_time -= time_deltatime;
 
-    if(remaining_time < 0) remaining_time = 0;
+    if(remaining_time < 0) {
+        remaining_time = 0;
+        level->resetStage = true;
+    }
 
     std::string prefix = "Remaining Time: ";
     const int time = static_cast <int> (std::ceil(remaining_time));;
