@@ -18,7 +18,7 @@ Gamplay concept
 
 
 Things to fix:
-Memory leak
+Memory leak     (done?)
 Vision
 Color?
 

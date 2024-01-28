@@ -12,7 +12,7 @@ void main() {
     float gamma = 1;
     float saturation = 1;
     float contrast = 1;
-    float brightness = texture(mask_buffer, uv).r;
+    float brightness = 0.3 * texture(mask_buffer, uv).r;
     float bloom = 0.05;
     float exposure = 1.0;
 
