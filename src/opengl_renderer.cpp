@@ -378,8 +378,8 @@ void opengl_RenderCommands(CommandBuffer* buffer)
                 glDisable(GL_DEPTH_TEST);
 
                 glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
-                // glDrawArrays(GL_TRIANGLES, 0, 3);
-
+                
+                glEnable(GL_DEPTH_TEST);
                 glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
                 glBindVertexArray(OpenGL.draw_arr);
                 offset += sizeof(CommandEntry_MaskOp);
