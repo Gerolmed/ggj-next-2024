@@ -191,6 +191,20 @@ void opengl_Init(u32 render_width, u32 render_height)
     u32 attachments[] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(1, attachments);
 
+    glGenFramebuffers(1, &OpenGL.mask_framebuffer);
+    glGenTextures(1, &OpenGL.mask_color_buffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
+    glBindTexture(GL_TEXTURE_2D, OpenGL.mask_color_buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, render_width,
+                 render_height, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+                           GL_TEXTURE_2D, OpenGL.mask_color_buffer, 0);
+    glDrawBuffers(1, attachments);
+
     SetupBloomMips();
 
     OpenGL.mask_arr = arrs[2];
@@ -230,6 +244,7 @@ void opengl_Init(u32 render_width, u32 render_height)
     OpenGL.downsample_shader.base = load_program("shader/post.vert", "shader/downsample.frag");
     OpenGL.downsample_shader.res = glGetUniformLocation(OpenGL.downsample_shader.base.id, "res");
     OpenGL.upsample_shader = load_program("shader/post.vert", "shader/upsample.frag");
+    OpenGL.mask_shader = load_program("shader/mask.vert", "shader/mask.frag");
 
     glUseProgram(OpenGL.post_shader.base.id);
     glUniform1i(OpenGL.post_shader.bloom_buffer, 1);
@@ -248,7 +263,6 @@ void opengl_RenderCommands(CommandBuffer* buffer)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
-    // TODO: Fix postprocessing resize
     glViewport(0, 0, OpenGL.render_width, OpenGL.render_height);
     glBindVertexArray(OpenGL.draw_arr);
 
@@ -269,6 +283,8 @@ void opengl_RenderCommands(CommandBuffer* buffer)
     glUniformMatrix4fv(OpenGL.sprite_shader.proj, 1, GL_FALSE, &(buffer->proj)[0][0]);
     glUseProgram(OpenGL.font_shader.id);
     glUniformMatrix4fv(OpenGL.font_shader.proj, 1, GL_FALSE, &(buffer->proj)[0][0]);
+    glUseProgram(OpenGL.mask_shader.id);
+    glUniformMatrix4fv(OpenGL.mask_shader.proj, 1, GL_FALSE, &(buffer->proj)[0][0]);
 
     u32 offset = 0;
     while (offset < buffer->curr_len) {
@@ -276,6 +292,10 @@ void opengl_RenderCommands(CommandBuffer* buffer)
         switch (header->type) {
             case Clear: 
             {
+                glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
+                glClear(GL_COLOR_BUFFER_BIT);
+                glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
+
                 CommandEntry_Clear* clear = (CommandEntry_Clear*) (buffer->cmd_memory + offset);
                 glClearColor(clear->color.x, clear->color.y, clear->color.z, 1);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -327,7 +347,14 @@ void opengl_RenderCommands(CommandBuffer* buffer)
             case MaskOp:
             {
                 CommandEntry_MaskOp* draw = (CommandEntry_MaskOp*) (buffer->cmd_memory + offset);
-                // TODO: Render to mask here
+                glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.mask_framebuffer);
+                glBindVertexArray(OpenGL.mask_arr);
+                glUseProgram(OpenGL.mask_shader.id);
+
+                glDrawArrays(GL_TRIANGLES, draw->vertex_offset, draw->vertex_count);
+
+                glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.render_framebuffer);
+                glBindVertexArray(OpenGL.draw_arr);
                 offset += sizeof(CommandEntry_MaskOp);
             }
 
