@@ -29,13 +29,25 @@ void PlayerNode::Render(CommandBuffer* buffer)
     Node::Render(buffer);
 
 #ifdef DEBUG
+    renderer_PushBase(buffer, v2(0));
+
     V2 pos = GetAbsolutePosition();
+
+    V2 facing = v2(0, -1);
+    V2 side = v2(-facing.y, facing.x);
+    V2 r = v2(0.5 * facing.x + 0.5 * side.x, 0.5 * facing.y + 0.5 * side.y);
+    V2 l = v2(0.5 * facing.x - 0.5 * side.x, 0.5 * facing.y - 0.5 * side.y);
+
+    float tr = game_Raycast(level, pos, r);
+    float tl = game_Raycast(level, pos, l);
+
     MaskVertex test_mask[3] = {
-        pos,
-        v2(0, 0),
-        v2(100, 0)
+        v2(0),
+        v2(tr * r.x, tr * r.y),
+        v2(tl * l.x, tl * l.y),
     };
     renderer_PushMaskOp(buffer, 3, test_mask);
+    renderer_PushBase(buffer, level->camera.center);
 #endif
 }
 
