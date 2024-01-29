@@ -149,7 +149,7 @@ void SetupBloomMips()
     glDrawBuffers(1, attachments);
 }
 
-void RenderDownsamples()
+void RenderBloomSamples()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.bloom_framebuffer);
     glActiveTexture(GL_TEXTURE0);
@@ -169,12 +169,7 @@ void RenderDownsamples()
         glUniform2f(OpenGL.downsample_shader.res, mip->width, mip->height);
         glBindTexture(GL_TEXTURE_2D, mip->texture);
     }
-}
 
-void RenderUpsamples()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, OpenGL.bloom_framebuffer);
-    glActiveTexture(GL_TEXTURE0);
     glUseProgram(OpenGL.upsample_shader.id);
     glBindVertexArray(OpenGL.quad_arr);
 
@@ -398,8 +393,7 @@ void opengl_RenderCommands(CommandBuffer* buffer)
 
             case PostProcessPass:
             {
-                RenderDownsamples();
-                RenderUpsamples();
+                RenderBloomSamples();
 
                 glDisable(GL_DEPTH_TEST);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

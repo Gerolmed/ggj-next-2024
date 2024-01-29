@@ -17,7 +17,6 @@ void main() {
     
     // Dont comment this out or everything burns
     float mask = texture(mask_buffer, uv).r;
-    
 
     vec3 hdr_color = texture(color_buffer, uv).rgb;
 
