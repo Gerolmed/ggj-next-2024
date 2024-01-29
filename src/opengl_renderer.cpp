@@ -295,6 +295,7 @@ void opengl_Init(u32 render_width, u32 render_height)
     OpenGL.font_shader = load_program("shader/default.vert", "shader/font.frag");
     OpenGL.post_shader.base = load_program("shader/post.vert", "shader/post.frag");
     OpenGL.post_shader.bloom_buffer = glGetUniformLocation(OpenGL.post_shader.base.id, "bloom_buffer");
+    OpenGL.post_shader.mask_buffer = glGetUniformLocation(OpenGL.post_shader.base.id, "mask_buffer");
     OpenGL.downsample_shader.base = load_program("shader/post.vert", "shader/downsample.frag");
     OpenGL.downsample_shader.res = glGetUniformLocation(OpenGL.downsample_shader.base.id, "res");
     OpenGL.upsample_shader = load_program("shader/post.vert", "shader/upsample.frag");
