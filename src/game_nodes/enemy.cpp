@@ -39,9 +39,6 @@ void EnemyNode::Update() {
 
     float view_distance = game_Raycast(level, abs_position, normed_etp);
     if(view_distance*view_distance >= squared_distance){
-
-        printf("Player visible");
-
         const V2 pos = GetAbsolutePosition();
         const V2 facing = v2(-sin(GetAbsoluteRotation()),
                          cos(GetAbsoluteRotation()));

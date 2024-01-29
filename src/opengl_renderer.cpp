@@ -15,6 +15,54 @@
 
 OpenGLContext OpenGL;
 
+
+void APIENTRY debug_output(GLenum source, 
+                           GLenum type, 
+                           u32 id, 
+                           GLenum severity, 
+                           GLsizei length, 
+                           const char *message, 
+                           const void *userParam)
+{
+    if(id == 131169 || id == 131185 || id == 131218 || id == 131204) 
+        return; 
+
+    printf("---------------\n");
+    printf("Debug message (%u): %s\n", id, message);
+
+    switch (source)
+    {
+        case GL_DEBUG_SOURCE_API:             printf("Source: API\n"); break;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   printf("Source: Window System\n"); break;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER: printf("Source: Shader Compiler\n"); break;
+        case GL_DEBUG_SOURCE_THIRD_PARTY:     printf("Source: Third Party\n"); break;
+        case GL_DEBUG_SOURCE_APPLICATION:     printf("Source: Application\n"); break;
+        case GL_DEBUG_SOURCE_OTHER:           printf("Source: Other\n"); break;
+    }
+
+    switch (type)
+    {
+        case GL_DEBUG_TYPE_ERROR:               printf("Type: Error\n"); break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: printf("Type: Deprecated Behaviour\n"); break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  printf("Type: Undefined Behaviour\n"); break; 
+        case GL_DEBUG_TYPE_PORTABILITY:         printf("Type: Portability\n"); break;
+        case GL_DEBUG_TYPE_PERFORMANCE:         printf("Type: Performance\n"); break;
+        case GL_DEBUG_TYPE_MARKER:              printf("Type: Marker\n"); break;
+        case GL_DEBUG_TYPE_PUSH_GROUP:          printf("Type: Push Group\n"); break;
+        case GL_DEBUG_TYPE_POP_GROUP:           printf("Type: Pop Group\n"); break;
+        case GL_DEBUG_TYPE_OTHER:               printf("Type: Other\n"); break;
+    }
+    
+    switch (severity)
+    {
+        case GL_DEBUG_SEVERITY_HIGH:         printf("Severity: high\n"); break;
+        case GL_DEBUG_SEVERITY_MEDIUM:       printf("Severity: medium\n"); break;
+        case GL_DEBUG_SEVERITY_LOW:          printf("Severity: low\n"); break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION: printf("Severity: notification\n"); break;
+    }
+    printf("\n");
+}
+
 ProgramBase load_program(const char* vertex_file, const char* frag_file)
 {
     begin_tmp(&OpenGL.render_arena);
@@ -151,6 +199,13 @@ void opengl_Init(u32 render_width, u32 render_height)
         printf("Failed to load required extensions\n");
     }
     init_arena(&OpenGL.render_arena, &pool);
+
+#ifdef DEBUG
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); 
+    glDebugMessageCallback(debug_output, NULL);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+#endif
 
     OpenGL.render_width = render_width;
     OpenGL.render_height = render_height;
