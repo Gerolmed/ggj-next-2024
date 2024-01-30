@@ -89,6 +89,9 @@ float game_Raycast(Level* level, V2 pos, V2 dir) {
     float min_t = 99999999;
     for (u32 i = 0; i < level->collider_count; ++i) {
         Collider* col = level->collider + i;
+        if(col->transparency_type == 1){
+            continue;
+        }
 
         // x collision
         if (dir.x > 0.00001 || dir.x < 0.00001) {

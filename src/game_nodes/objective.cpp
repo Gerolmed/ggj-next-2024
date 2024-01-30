@@ -54,8 +54,9 @@ void ObjectiveNode::Render(CommandBuffer* buffer){
     Node::Render(buffer);
 }
 
-void ObjectiveNode::OnCollide(){
+void ObjectiveNode::OnCollide(Collider* collider){
     if(spritesheet_node->current_frame == 0){
+        collider->transparency_type = 1;
         spritesheet_node->current_frame=1;
         level->current_score += value;
     }

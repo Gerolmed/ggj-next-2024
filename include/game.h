@@ -43,9 +43,11 @@ struct AABB {
 };
 
 
+struct Collider;
+
 class CollisionHandler {
 public:
-    virtual void OnCollide();
+    virtual void OnCollide(Collider* collider);
 };
 
 
@@ -56,7 +58,12 @@ struct Collider
     i32 collision_type;
     //0: Wall
     //1: Box
-    //2: Collectable
+    //2: Noclip
+
+    i32 transparency_type;
+    //0: Opaque
+    //1: Transparent
+    //2: Mirror [not yet implemented]
 
     CollisionHandler* collision_handler;
 };

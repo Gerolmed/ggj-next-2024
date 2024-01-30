@@ -165,7 +165,7 @@ public:
     void Update() override;
     void Render(CommandBuffer* buffer) override;
 
-    void OnCollide() override;
+    void OnCollide(Collider* collider) override;
 
 private:
     AABB aabb;

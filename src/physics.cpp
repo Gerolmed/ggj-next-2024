@@ -4,7 +4,7 @@
 V2 far_away = {INFINITY,INFINITY};
 
 
-void CollisionHandler::OnCollide(){}
+void CollisionHandler::OnCollide(Collider* collider){}
 
 bool AABB::intersects(AABB& other) const{
     if(position.x == INFINITY || other.position.x == INFINITY || position.y == INFINITY || other.position.y == INFINITY){ return false; }
@@ -63,7 +63,7 @@ void collision_response(Collider* collider, V2 v2, Level* level){
         case 1: collider->aabb.move_and_push_boxes(v2, level); return;
         case 2:
             if(collider->collision_handler != NULL){
-                collider->collision_handler->OnCollide();
+                collider->collision_handler->OnCollide(collider);
                 return;
             } 
     }

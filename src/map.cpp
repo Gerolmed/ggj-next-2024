@@ -72,6 +72,7 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
                 }else{
                     collider.collision_type = 0;
                 }
+                collider.transparency_type = 0;
                 game_PushCollider(level, collider, true);
             }
             else if(type == Player){
@@ -106,6 +107,8 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
 
                 collider.collision_handler = objective_node;
                 collider.collision_type = 2;
+
+                collider.transparency_type = 0;
 
                 game_PushCollider(level, collider, true);
 
