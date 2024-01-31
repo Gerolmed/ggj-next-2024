@@ -89,22 +89,29 @@ void AABB::collision_response(Collider* collider, V2 v2, Level* level){
 
 
 
+
+V2 AABB::get_distance_vector(AABB& other, bool x_positive, bool y_positive) const{
+    V2 res;
+            if(x_positive){
+                res.x = other.position.x - position.x - size.x;
+            }else{
+                res.x = other.position.x + other.size.x - position.x;
+            }
+            if(y_positive){
+                res.y = other.position.y - position.y - size.y;
+            }else{
+                res.y = other.position.y + other.size.y - position.y;
+            }
+            return res;
+}
+
 V2 AABB::get_amount_can_move_into(Collider* collider, V2 v2, Level* level){
     switch(collider->collision_type){
         case 0:
-            V2 res;
-            if(v2.x >= 0){
-                res.x = collider->aabb.position.x - position.x - size.x;
-            }else{
-                res.x = collider->aabb.position.x + collider->aabb.size.x - position.x;
-            }
-            if(v2.y >= 0){
-                res.y = collider->aabb.position.y - position.y - size.y;
-            }else{
-                res.y = collider->aabb.position.y + collider->aabb.size.y - position.y;
-            }
-            return res;
-        case 1: return collider->aabb.get_collided_movement_vector(v2,level);
+            return get_distance_vector(collider->aabb, v2.x >=0, v2.y >= 0);
+        case 1:
+            return collider->aabb.get_collided_movement_vector(v2,level) + 
+                get_distance_vector(collider->aabb, v2.x >=0, v2.y >= 0);
         case 2: return v2;
     }
 }

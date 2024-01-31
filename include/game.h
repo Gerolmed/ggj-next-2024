@@ -46,6 +46,7 @@ struct AABB {
 
     void collision_response( Collider* collider, V2 v2, Level* level);
 
+    V2 get_distance_vector(AABB& other, bool x_positive, bool y_positive) const;
 };
 
 //Helper function in collision system.
