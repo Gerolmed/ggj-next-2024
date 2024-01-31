@@ -89,6 +89,18 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
                 rotator->speed = -1;
                 scene_root->AddChild(rotator);
 
+                Collider collider;
+                collider.aabb.position.x = x * TILE_SIZE;
+                collider.aabb.position.y = y * TILE_SIZE;
+                collider.aabb.size.x = TILE_SIZE;
+                collider.aabb.size.y = TILE_SIZE;
+
+                collider.collision_type = 0;
+
+                collider.transparency_type = 1;
+
+                game_PushCollider(level, collider, true);
+
                 const auto enemy_node = new EnemyNode(level);
                 rotator->AddChild(enemy_node);
             }

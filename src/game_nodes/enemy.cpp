@@ -31,35 +31,42 @@ void EnemyNode::PreUpdate() {
 void EnemyNode::Update() {
     PlayerNode* player_node = global_player_pointer;
 
+    V2 player_vertices[4] = {
+        player_node->aabb.position,
+        v2(player_node->aabb.position.x + player_node->aabb.size.x,player_node->aabb.position.y),
+        v2(player_node->aabb.position.x, player_node->aabb.position.y + player_node->aabb.size.y),
+        v2(player_node->aabb.position.x + player_node->aabb.size.x,player_node->aabb.position.y  + player_node->aabb.size.y),
+    };
+    
     V2 abs_position = GetAbsolutePosition();
-    V2 enemy_to_player = v2(player_node->aabb.position.x - abs_position.x, player_node->aabb.position.y - abs_position.y);
 
-    V2 normed_etp = enemy_to_player.Norm();
-    float squared_distance = (enemy_to_player.x*enemy_to_player.x) + (enemy_to_player.y* enemy_to_player.y);
+    for(V2 player_vertex : player_vertices){
+        V2 enemy_to_player = v2(player_vertex.x - abs_position.x, player_vertex.y - abs_position.y);
 
-    float view_distance = game_Raycast(level, abs_position, normed_etp);
-    if(view_distance*view_distance >= squared_distance){
-        const V2 pos = GetAbsolutePosition();
-        const V2 facing = v2(-sin(GetAbsoluteRotation()),
+        V2 normed_etp = enemy_to_player.Norm();
+        float squared_distance = (enemy_to_player.x*enemy_to_player.x) + (enemy_to_player.y* enemy_to_player.y);
+
+        float view_distance = game_Raycast(level, abs_position, normed_etp);
+        if(view_distance*view_distance >= squared_distance){
+            const V2 facing = v2(-sin(GetAbsoluteRotation()),
                          cos(GetAbsoluteRotation()));
-        const V2 side = v2(-facing.y, facing.x);
-        const float fov = 0.3;
+            const V2 side = v2(-facing.y, facing.x);
+            const float fov = 0.3;
 
         
-        const V2 r = v2((1 - fov) * facing.x - fov * side.x,
+            const V2 r = v2((1 - fov) * facing.x - fov * side.x,
                     (1 - fov) * facing.y - fov * side.y).Norm();
 
-        if((normed_etp.x *facing.x) + (normed_etp.y * facing.y) >= 
-            (r.x * facing.x) + (r.y * facing.y) ){
-
-            printf("Reset level");
-            level->resetStage = true;
-
-
+            if((normed_etp.x *facing.x) + (normed_etp.y * facing.y) >= 
+                (r.x * facing.x) + (r.y * facing.y) ){
+                printf("Reset level");
+                level->resetStage = true;
+                break;
+            }
         }
-
-
     }
+
+    
 
     Node::Update();
 }
