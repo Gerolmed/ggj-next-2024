@@ -1,5 +1,6 @@
 #include "include/game.h"
 #include <stdio.h>
+#include <algorithm>
 
 V2 far_away = {INFINITY,INFINITY};
 
@@ -21,29 +22,43 @@ AABB AABB::translate(V2& v2) const{
 
 
 
-bool AABB:: can_move(V2& v2, Level* level){
-    AABB newAABB = translate(v2);
-    V2 old_position = position;
-    this->position = far_away;
-    for(int i=0;i < level->collider_count;i++){
-        if(newAABB.intersects(level->collider[i].aabb)){
-            if(!can_move_into(&level->collider[i], v2, level)){
-                position = old_position;
-                return false;
-            }
-        }
+
+
+
+float clamp(float first, float second){
+    if(second == 0){
+        return 0;
+    }else if(second > 0){
+        return std::min(first, second);
+    }else{
+        return std::max(first, second);
     }
-    position = old_position;
-    return true;
 }
 
 
-bool AABB::move_and_collide(V2 v2, Level* level){
-    if(can_move(v2, level)){
-        move_and_push_boxes(v2,level);
-        return true;
+V2 AABB:: get_collided_movement_vector(V2& v2, Level* level){
+    AABB newAABB = translate(v2);
+    AABB oldAABB = {position, size};
+    this->position = far_away;
+    V2 res = v2;
+    for(int i=0;i < level->collider_count;i++){
+        if(newAABB.intersects(level->collider[i].aabb)){
+            V2 move_into = oldAABB.get_amount_can_move_into(&level->collider[i], v2, level);
+            res.x = clamp(res.x, move_into.x);
+            res.y = clamp(res.y, move_into.y);
+        }
     }
-    return false;
+    this->position = oldAABB.position;
+    return res;
+}
+
+
+V2 AABB::move_and_collide(V2 v2, Level* level){
+    V2 actual_movement = get_collided_movement_vector(v2, level);
+    if(actual_movement.x != 0 || actual_movement.y != 0){
+        move_and_push_boxes(actual_movement,level);
+    }
+    return actual_movement;
 }
 
 void AABB::move_and_push_boxes(V2& v2, Level* level){
@@ -57,10 +72,10 @@ void AABB::move_and_push_boxes(V2& v2, Level* level){
     position = newAABB.position;
 }
 
-void collision_response(Collider* collider, V2 v2, Level* level){
+void AABB::collision_response(Collider* collider, V2 v2, Level* level){
     switch(collider->collision_type){
         case 0: return;
-        case 1: collider->aabb.move_and_push_boxes(v2, level); return;
+        case 1: collider->aabb.move_and_collide(v2, level); return;
         case 2:
             if(collider->collision_handler != NULL){
                 collider->collision_handler->OnCollide(collider);
@@ -70,12 +85,27 @@ void collision_response(Collider* collider, V2 v2, Level* level){
 }
 
 
-bool can_move_into(Collider* collider, V2 v2, Level* level){
 
+
+
+
+V2 AABB::get_amount_can_move_into(Collider* collider, V2 v2, Level* level){
     switch(collider->collision_type){
-        case 0: return false;
-        case 1: return collider->aabb.can_move(v2,level);
-        case 2: return true;
+        case 0:
+            V2 res;
+            if(v2.x >= 0){
+                res.x = collider->aabb.position.x - position.x - size.x;
+            }else{
+                res.x = collider->aabb.position.x + collider->aabb.size.x - position.x;
+            }
+            if(v2.y >= 0){
+                res.y = collider->aabb.position.y - position.y - size.y;
+            }else{
+                res.y = collider->aabb.position.y + collider->aabb.size.y - position.y;
+            }
+            return res;
+        case 1: return collider->aabb.get_collided_movement_vector(v2,level);
+        case 2: return v2;
     }
 }
 

@@ -27,23 +27,33 @@ struct Camera
 };
 
 
+struct Collider;
+
 struct AABB {
     V2 position;
     V2 size;
 
     bool intersects(AABB& other) const;
     AABB translate(V2& v2) const;
-    //Tries to move. Fails if it hits a wall. Pushes all boxes in the way.
-    bool move_and_collide(V2 v2, Level* level);
-    //Checks whether it can move.
-    bool can_move(V2& v2, Level* level);
+    //Tries to move. Stops at walls. Returns how far it actually moved. Pushes all boxes in the way.
+    V2 move_and_collide(V2 v2, Level* level);
+    //Returns how far one can move along v2 until one hits an immovable wall.
+    V2 get_collided_movement_vector(V2& v2, Level* level);
     //Moves and pushes boxes, ignoring wall collisions.
     void move_and_push_boxes(V2& v2, Level* level);
 
+    V2 get_amount_can_move_into( Collider* collider, V2 v2, Level* level);
+
+    void collision_response( Collider* collider, V2 v2, Level* level);
+
 };
 
+//Helper function in collision system.
+//If first and second have the same sign, it's the number of smaller magnitude.
+//If they have different sign it's just first.
+float clamp(float first, float second);
 
-struct Collider;
+
 
 class CollisionHandler {
 public:
@@ -68,9 +78,6 @@ struct Collider
     CollisionHandler* collision_handler;
 };
 
-bool can_move_into( Collider* collider, V2 v2, Level* level);
-
-void collision_response( Collider* collider, V2 v2, Level* level);
 
 struct StageAttributes {
     u32 max_score;
