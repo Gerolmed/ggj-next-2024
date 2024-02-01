@@ -36,7 +36,7 @@ void game_RenderBoxes(CommandBuffer* cmd, Level* level, TextureHandle texture) {
 }
 
 
-void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle wall_texture, TextureHandle floor_texture) {
+void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle wall_texture, TextureHandle floor_texture, TextureHandle glass_wall_texture) {
     renderer_PushBase(cmd, level->camera.center);
 
     for (u32 y = 0; y < level->grid_height; ++y) {
@@ -53,6 +53,16 @@ void game_RenderGrid(CommandBuffer* cmd, Level* level, TextureHandle wall_textur
                                     0,
                                     sprite,
                                     mat2(1), v3(1), wall_texture);
+                continue;
+            }else if(type == Glass_Wall){
+                Sprite sprite = GetSpriteFromGridPos(level, y, x, type);
+
+
+                renderer_PushSprite(cmd, v2(x * TILE_SIZE, y * TILE_SIZE),
+                                    v2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE),
+                                    0,
+                                    sprite,
+                                    mat2(1), v3(1), glass_wall_texture);
                 continue;
             }
 

@@ -32,6 +32,10 @@ u8 GetTileTypeFromRgb(const u8* temp, u32 index) {
     else if (temp[index] == 1 &&
              temp[index + 1] == 125)
         type = Objective;
+    else if (temp[index] == 208 &&
+             temp[index + 1] == 251 &&
+             temp[index + 2] == 255)
+        type = Glass_Wall;
 
     return type;
 }
@@ -61,7 +65,7 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
             u8 type = GetTileTypeFromRgb(temp, index+level->grid_width);
             level->grid[index] = type;
 
-            if (type == Box || type == Wall) {
+            if (type == Box || type == Wall || type == Glass_Wall) {
                 Collider collider;
                 collider.aabb.position.x = x * TILE_SIZE;
                 collider.aabb.position.y = y * TILE_SIZE;
@@ -72,7 +76,11 @@ void map_init(Level* level, u32 stage, Arena* arena, Node* scene_root, StageAttr
                 }else{
                     collider.collision_type = 0;
                 }
-                collider.transparency_type = 0;
+                if (type == Glass_Wall){
+                    collider.transparency_type = 1;
+                }else{
+                    collider.transparency_type = 0;
+                }
                 game_PushCollider(level, collider, true);
             }
             else if(type == Player){

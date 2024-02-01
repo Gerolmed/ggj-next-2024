@@ -18,7 +18,8 @@ enum TileType
     Box = 2,
     Player = 3,
     Enemy = 4,
-    Objective = 5
+    Objective = 5,
+    Glass_Wall = 6
 };
 
 struct Camera
@@ -107,7 +108,8 @@ struct Level
 void game_RenderGrid(CommandBuffer* cmd,
                      Level* level, 
                      TextureHandle wall_texture,
-                     TextureHandle floor_texture);
+                     TextureHandle floor_texture,
+                     TextureHandle glass_wall_texture);
 
 void game_RenderBoxes(CommandBuffer* cmd,
                      Level* level, 
